@@ -61,14 +61,23 @@ const Canvas = () => {
     <>
     <canvas 
     ref={canvasRef}
-    className="border1 absolute top-0 left-o z-0 cursor-none"/>
-    <div className="bg-black absolute rounded-full cursor-none"
+    className="absolute top-0 left-o z-0 cursor-none"
     style={{
-      left: state.pointer.x - state.size/ 2,
+      backgroundColor: state.bgColor
+    }}/>
+
+    <div 
+    className="absolute rounded-full cursor-none"
+    
+    style={{
+      left: state.pointer.x - state.size / 2,
       top: state.pointer.y - state.size / 2,
       width: state.size,
-      height: state.size
-    }}></div>
+      height: state.size,
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: state.borderColor,
+    }}/>
     </>
   )
 }
