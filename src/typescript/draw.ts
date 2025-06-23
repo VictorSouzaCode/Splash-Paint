@@ -1,0 +1,1 @@
+//Pure TypeScript drawing logic
