@@ -9,22 +9,18 @@
 
 // Displaying a brush indicator (a circle following the mouse)
 
-import { useRef, useEffect, useState } from "react"
+import { useRef, useEffect } from "react"
+import { setPointerPosition } from "../redux/slices/tools"
+import { useDispatch, useSelector } from "react-redux"
+import type { RootState } from "../redux/store"
 
-// remove it later
-type MouseMoveState = {
-  x: number,
-  y: number
-}
 
 const Canvas = () => {
+  const dispatch = useDispatch()
+  const state = useSelector((state: RootState) => state.tools)
 
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
-
-  // remove it later
-  const circleSize = 40;
-  const [moviment, setMoviment] =useState<MouseMoveState>({x: 0, y: 0})
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -51,10 +47,7 @@ const Canvas = () => {
     if(!canvas) { return }
 
     const handleMouseMove = (e:MouseEvent) => {
-      setMoviment({
-        x: e.clientX,
-        y: e.clientY
-      })
+      dispatch(setPointerPosition({x: e.clientX, y: e.clientY}))
     }
 
     canvas.addEventListener('mousemove', handleMouseMove)
@@ -62,7 +55,7 @@ const Canvas = () => {
     return () => {
       canvas.removeEventListener('mousemove', handleMouseMove)
     }
-  },[moviment])
+  },[state])
 
   return (
     <>
@@ -71,10 +64,10 @@ const Canvas = () => {
     className="border1 absolute top-0 left-o z-0 cursor-none"/>
     <div className="bg-black absolute rounded-full cursor-none"
     style={{
-      left: moviment.x - circleSize / 2,
-      top: moviment.y - circleSize / 2,
-      width: circleSize,
-      height: circleSize
+      left: state.pointer.x - state.size/ 2,
+      top: state.pointer.y - state.size / 2,
+      width: state.size,
+      height: state.size
     }}></div>
     </>
   )
