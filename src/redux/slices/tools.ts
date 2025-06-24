@@ -51,11 +51,20 @@ const toolsSlice = createSlice({
         setDrawing: (state, action: PayloadAction<boolean>) => {
             state.isDrawing = action.payload
             // console.log(state.isDrawing)
+        },
+        setEraser: (state) => {
+            state.tool = 'eraser'
+        },
+        setPencil: (state) => {
+            state.tool = 'pencil'
+        }, 
+        setPencilColor: (state, action: PayloadAction<string>) => {
+            state.pencilColor = action.payload
         }
     }
 })
 
 
-export const { setPointerPosition, increasePointerSize, decreasePointerSize, setDrawing} = toolsSlice.actions;
+export const { setPointerPosition, increasePointerSize, decreasePointerSize, setDrawing, setEraser, setPencil, setPencilColor} = toolsSlice.actions;
 
 export default toolsSlice.reducer

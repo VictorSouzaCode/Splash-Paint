@@ -101,7 +101,7 @@ const Canvas = () => {
     }}/>
 
     <div 
-    className="absolute rounded-full pointer-events-none"
+    className="absolute rounded-full pointer-events-none z-0"
     
     style={{
       left: state.pointer.x - state.size / 2,
