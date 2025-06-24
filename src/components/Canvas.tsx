@@ -9,11 +9,11 @@
 
 // Displaying a brush indicator (a circle following the mouse)
 
-import { useRef, useEffect } from "react"
-import { setPointerPosition } from "../redux/slices/tools"
+import { useRef, useEffect, useState } from "react"
+import { setPointerPosition, setDrawing } from "../redux/slices/tools"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-
+import draw from "../typescript/draw"
 
 const Canvas = () => {
   const dispatch = useDispatch()
@@ -21,6 +21,8 @@ const Canvas = () => {
 
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
+  const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null)
+  // holds the previous mouse position so i can draw a line segment from that point to the current point. Without this, fast mouse movements result in disconnected circles.
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,32 +44,64 @@ const Canvas = () => {
   },[])
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-
+    const canvas = canvasRef.current!;
     if(!canvas) { return }
+    const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
       dispatch(setPointerPosition({x: e.clientX, y: e.clientY}))
+      if(state.isDrawing) {
+        if(prevPos) {
+          draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
+        }
+      }
+      setPrevPos({x: e.clientX, y: e.clientY})
+      // Save the current position as prevPos for the next draw step.
     }
 
+    const handleMouseDown = () => {
+      dispatch(setDrawing(true))
+
+      if(state.isDrawing) {
+
+        setPrevPos({x: state.pointer.x, y: state.pointer.y})
+        // Initializes prevPos so i know where to start the line.
+      }
+    }
+
+    const handleMouseUp = () => {
+      dispatch(setDrawing(false))
+      setPrevPos(null)
+    }
+
+    const click = () => {
+      console.log('clicked')
+    }
+
+    canvas.addEventListener('click', click)
+    canvas.addEventListener('mousedown', handleMouseDown)
+    canvas.addEventListener('mouseup', handleMouseUp)
     canvas.addEventListener('mousemove', handleMouseMove)
 
     return () => {
+      canvas.removeEventListener('mousedown', handleMouseDown)
+      canvas.removeEventListener('mouseup', handleMouseUp)
       canvas.removeEventListener('mousemove', handleMouseMove)
+      canvas.removeEventListener('click', click)
     }
-  },[state])
+  },[state, prevPos])
 
   return (
     <>
     <canvas 
     ref={canvasRef}
-    className="absolute top-0 left-o z-0"
+    className="absolute top-0 left-0 z-0"
     style={{
-      backgroundColor: state.screenColor
+      backgroundColor: state.screenColor,
     }}/>
 
     <div 
-    className="absolute rounded-full"
+    className="absolute rounded-full pointer-events-none"
     
     style={{
       left: state.pointer.x - state.size / 2,

@@ -9,10 +9,9 @@ import { useHoldAction } from "../hooks/useHoldAction"
 
 
 const Toolbar = () => {
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const increaseHandlers = useHoldAction(() => dispatch(increasePointerSize()))
-
     const decreaseHandlers = useHoldAction(() => dispatch(decreasePointerSize()))
 
   return (
@@ -33,7 +32,7 @@ const Toolbar = () => {
 
           <button 
           className="text-5xl bg- h-full w-8 rounded-md bg-green-400 grid place-content-center"
-          {...decreaseHandlers}
+          // {...decreaseHandlers}
           >
             -
           </button>

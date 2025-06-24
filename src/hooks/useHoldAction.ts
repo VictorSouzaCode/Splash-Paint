@@ -1,5 +1,7 @@
 import { useRef } from "react";
 
+// This Hook servers to increase the mouse size clicking or holding a button
+
 type ActionFunction = () => void;
 
 
@@ -8,7 +10,6 @@ export const useHoldAction = (action: ActionFunction) => {
 
     const onMouseDown = () => {
         action()
-
         intervalRef.current = setInterval(() => {
             action()
         },50)
@@ -24,9 +25,6 @@ export const useHoldAction = (action: ActionFunction) => {
     return {
         onMouseDown,
         onMouseUp,
-        // onMouseLeave: onMouseUp,
     }
     
 }
-
-// This Hook servers to increase the mouse size clicking or holding a button
