@@ -13,6 +13,7 @@ function draw (
 ) {
     ctx.strokeStyle = state.tool === 'pencil' ? state.pencilColor : state.screenColor
     ctx.lineWidth = state.size
+    ctx.lineCap = 'round'
     ctx.beginPath()
     ctx.moveTo(startX, startY)
     ctx.lineTo(endX, endY)
