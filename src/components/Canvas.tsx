@@ -61,13 +61,13 @@ const Canvas = () => {
     <>
     <canvas 
     ref={canvasRef}
-    className="absolute top-0 left-o z-0 cursor-none"
+    className="absolute top-0 left-o z-0"
     style={{
-      backgroundColor: state.bgColor
+      backgroundColor: state.screenColor
     }}/>
 
     <div 
-    className="absolute rounded-full cursor-none"
+    className="absolute rounded-full"
     
     style={{
       left: state.pointer.x - state.size / 2,
