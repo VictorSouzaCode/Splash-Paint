@@ -60,11 +60,14 @@ const toolsSlice = createSlice({
         }, 
         setPencilColor: (state, action: PayloadAction<string>) => {
             state.pencilColor = action.payload
+        },
+        setScreenColor: (state, action: PayloadAction<string>) => {
+            state.screenColor = action.payload
         }
     }
 })
 
 
-export const { setPointerPosition, increasePointerSize, decreasePointerSize, setDrawing, setEraser, setPencil, setPencilColor} = toolsSlice.actions;
+export const { setPointerPosition, increasePointerSize, decreasePointerSize, setDrawing, setEraser, setPencil, setPencilColor, setScreenColor} = toolsSlice.actions;
 
 export default toolsSlice.reducer

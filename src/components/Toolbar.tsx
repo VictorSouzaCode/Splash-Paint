@@ -1,7 +1,7 @@
 // UI for tools, colors, size, download
 
 import { useDispatch } from "react-redux"
-import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPencilColor} from "../redux/slices/tools"
+import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPencilColor, setScreenColor} from "../redux/slices/tools"
 // import { useSelector } from "react-redux"
 // import type { RootState } from "../redux/store"
 // import { useEffect, useRef } from "react"
@@ -10,10 +10,13 @@ import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 
 
+// i need to add a button that changes the background color
+
+
 const Toolbar = () => {
     const dispatch = useDispatch()
 
-    const {pencilColor, tool} = useSelector((state:RootState) => state.tools)
+    const {pencilColor, tool, screenColor} = useSelector((state:RootState) => state.tools)
 
     const increaseHandlers = useHoldAction(() => dispatch(increasePointerSize()))
     const decreaseHandlers = useHoldAction(() => dispatch(decreasePointerSize()))
@@ -63,6 +66,18 @@ const Toolbar = () => {
           value={pencilColor}
           onChange={(e) => {
             dispatch(setPencilColor(e.target.value))
+          }}
+          disabled={tool === 'eraser'}
+          />
+        </div>
+
+        <div>
+          <p>background color</p>
+           <input 
+          type="color" 
+          value={screenColor}
+          onChange={(e) => {
+            dispatch(setScreenColor(e.target.value))
           }}
           disabled={tool === 'eraser'}
           />
