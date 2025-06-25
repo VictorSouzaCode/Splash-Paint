@@ -10,6 +10,10 @@ import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 
 
+// pencil color is done and eraser as well
+// now i need to make a circle when i click because now i can only draw if i drag the mouse, and i want the user to be able make little circles when they click, and eraser as well
+
+
 const Toolbar = () => {
     const dispatch = useDispatch()
 

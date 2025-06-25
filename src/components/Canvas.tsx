@@ -14,6 +14,7 @@ import { setPointerPosition, setDrawing } from "../redux/slices/tools"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
+import drawCircleOnClick from "../typescript/drawCircleOnClick"
 
 const Canvas = () => {
   const dispatch = useDispatch()
@@ -59,8 +60,10 @@ const Canvas = () => {
       // Save the current position as prevPos for the next draw step.
     }
 
-    const handleMouseDown = () => {
+    const handleMouseDown = (e:MouseEvent) => {
       dispatch(setDrawing(true))
+
+      drawCircleOnClick(ctx, state, e.clientX, e.clientY)
 
       if(state.isDrawing) {
 
@@ -74,11 +77,6 @@ const Canvas = () => {
       setPrevPos(null)
     }
 
-    const click = () => {
-      console.log('clicked')
-    }
-
-    canvas.addEventListener('click', click)
     canvas.addEventListener('mousedown', handleMouseDown)
     canvas.addEventListener('mouseup', handleMouseUp)
     canvas.addEventListener('mousemove', handleMouseMove)
@@ -87,7 +85,6 @@ const Canvas = () => {
       canvas.removeEventListener('mousedown', handleMouseDown)
       canvas.removeEventListener('mouseup', handleMouseUp)
       canvas.removeEventListener('mousemove', handleMouseMove)
-      canvas.removeEventListener('click', click)
     }
   },[state, prevPos])
 
