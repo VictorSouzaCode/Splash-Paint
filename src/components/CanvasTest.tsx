@@ -1,14 +1,7 @@
 
-// This component is responsible for:
-
-// Managing canvas drawing behavior
-
-// Listening to mouse events
-
-// Triggering draw actions
 
 import { useRef, useEffect, useState } from "react"
-import { setDrawing } from "../redux/slices/tools"
+import { setPointerPosition, setDrawing } from "../redux/slices/tools"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
@@ -16,13 +9,18 @@ import drawCircleOnClick from "../typescript/drawCircleOnClick"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 
 
-const Canvas = () => {
+const CanvasTest = () => {
   const dispatch = useDispatch()
   const state = useSelector((state: RootState) => state.tools)
+
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
-  const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null)
+
   // holds the previous mouse position so i can draw a line segment from that point to the current point. Without this, fast mouse movements result in disconnected circles.
+  const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null)
+
+  const { followerRef } = usePointerFollower()
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,6 +47,7 @@ const Canvas = () => {
     const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
+    //   dispatch(setPointerPosition({x: e.clientX, y: e.clientY}))
 
       if(state.isDrawing) {
         if(prevPos) {
@@ -87,9 +86,6 @@ const Canvas = () => {
     }
   },[state, prevPos])
 
-  const { followerRef } = usePointerFollower()
-
-
   return (
     <>
     <canvas 
@@ -98,20 +94,37 @@ const Canvas = () => {
     style={{
       backgroundColor: state.screenColor,
     }}/>
-    <div
-    ref={followerRef}
+
+    {/* <div 
     className="absolute rounded-full pointer-events-none z-0"
+    
     style={{
+      left: state.pointer.x - state.size / 2,
+      top: state.pointer.y - state.size / 2,
       width: state.size,
       height: state.size,
-      borderWidth: state.tool === 'eraser' ? '2px' : '1px',
+      borderWidth: '1px',
       borderStyle: 'solid',
-      borderColor: state.tool === 'eraser' ? 'black' : state.pencilColor,
-      willChange: 'transform',
-    }}
+      borderColor: state.borderColor,
+    }}/> */}
+    <div
+      ref={followerRef}
+      style={{
+        position: 'absolute',
+        width: state.size,
+        height: state.size,
+        borderRadius: '50%',
+        backgroundColor: 'transparent',
+        pointerEvents: 'none',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: 'black',
+        zIndex: 1000,
+        willChange: 'transform',
+      }}
     />
     </>
   )
 }
 
-export default Canvas
+export default CanvasTest
