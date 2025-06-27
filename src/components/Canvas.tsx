@@ -13,17 +13,9 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
 import drawCircleOnClick from "../typescript/drawCircleOnClick"
+import drawSquare from "../typescript/drawSquare"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 
-
-// Now i need to add square pencil
-// first step i think is to add a button to the toolbar that change the circle pencil to a square pencil
-// second is make a draw file that draws a square and there add all the functions that the circle has type of color if it is a eraser or pencil etc
-// then i need to adapt the function that draws the circle here in canvas to include the square pencil when it is selected
-// then i need to change the circle that follows the mouse to a square, there are a lot of ways i can do that, i can simply change rounded to none or i can make a saparate div
-
-//i think that i can start changing the mouse follower format when i click on a button
-// then i working in the draw logic
 
 
 const Canvas = () => {
@@ -64,6 +56,9 @@ const Canvas = () => {
         if(prevPos && state.toolForm === 'circle') {
           draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
         }
+        if(prevPos && state.toolForm === 'square') {
+          drawSquare(ctx, state, e.clientX, e.clientY)
+        }
       }
       setPrevPos({x: e.clientX, y: e.clientY})
       // Save the current position as prevPos for the next draw step.
@@ -77,10 +72,10 @@ const Canvas = () => {
       }
 
       if(state.toolForm === 'square') {
-        console.log('square drawn') // PUT SQUARE DRAWING LOGIC HERE
+        drawSquare(ctx, state, e.clientX, e.clientY)
       }
 
-      if(state.isDrawing && state.toolForm === 'circle') {
+      if(state.isDrawing) {
 
         setPrevPos({x: state.pointer.x, y: state.pointer.y})
         // Initializes prevPos so i know where to start the line.
