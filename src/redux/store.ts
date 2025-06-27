@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import toolsReducer from "./slices/tools";
+import strokeSlice from "./slices/undoRedo"
 
 
 export const store = configureStore({
     reducer: {
-        tools: toolsReducer
+        tools: toolsReducer,
+        undoRedo: strokeSlice
     }
 })
 

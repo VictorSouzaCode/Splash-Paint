@@ -8,6 +8,7 @@ import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPenc
 import { useHoldAction } from "../hooks/useHoldAction"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
+import { redoStroke, undoStroke } from "../redux/slices/undoRedo"
 
 const Toolbar = () => {
     const dispatch = useDispatch()
@@ -97,6 +98,21 @@ const Toolbar = () => {
             dispatch(setToolForm('square'))
           }}
           ></button>
+        </div>
+
+        <div className="flex justify-around">
+          <button 
+          className="rounded-md bg-green-300"
+          onClick={() => {
+            dispatch(undoStroke())
+          }}
+          >Undo</button>
+          <button 
+          className="rounded-md bg-green-300"
+          onClick={() => {
+            dispatch(redoStroke())
+          }}
+          >Redo</button>
         </div>
 
       </div>

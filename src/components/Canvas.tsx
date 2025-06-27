@@ -17,6 +17,11 @@ import drawSquare from "../typescript/drawSquare"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 
 
+// Now i need to work on the undo/redo functionality
+// i really dont know where i am going to start doing this
+// i think i will ask chat gpt for guidance
+// question: in a canvas project where i use react for the ui and typescript for the drawing logic How i can make a undo/redo function
+
 
 const Canvas = () => {
   const dispatch = useDispatch()
