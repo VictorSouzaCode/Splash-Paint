@@ -3,8 +3,11 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type Tools = 'pencil' | 'eraser'
 
+export type ToolForm = 'square' | 'circle'
+
 export type ToolState = {
     tool: Tools,
+    toolForm: ToolForm,
     pencilColor: string,
     borderColor: string,
     screenColor: string,
@@ -13,13 +16,13 @@ export type ToolState = {
     pointer: {
         x: number,
         y: number
-    },
-    test: string
+    }
 }
 
 
 const initialState: ToolState = {
     tool: 'pencil',
+    toolForm: 'circle',
     pencilColor: '#000000',
     borderColor: '#000000',
     screenColor: "#ffffff",
@@ -29,7 +32,6 @@ const initialState: ToolState = {
         x: 0,
         y: 0
     },
-    test: ''
 }
 
 
@@ -63,11 +65,24 @@ const toolsSlice = createSlice({
         },
         setScreenColor: (state, action: PayloadAction<string>) => {
             state.screenColor = action.payload
+        },
+        setToolForm: (state, action: PayloadAction<ToolForm>) => {
+            state.toolForm = action.payload
         }
     }
 })
 
 
-export const { setPointerPosition, increasePointerSize, decreasePointerSize, setDrawing, setEraser, setPencil, setPencilColor, setScreenColor} = toolsSlice.actions;
+export const { 
+    setPointerPosition, 
+    increasePointerSize, 
+    decreasePointerSize, 
+    setDrawing, 
+    setEraser, 
+    setPencil, 
+    setPencilColor, 
+    setScreenColor,
+    setToolForm
+} = toolsSlice.actions;
 
 export default toolsSlice.reducer

@@ -1,17 +1,13 @@
 // UI for tools, colors, size, download
 
 import { useDispatch } from "react-redux"
-import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPencilColor, setScreenColor} from "../redux/slices/tools"
+import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPencilColor, setScreenColor, setToolForm} from "../redux/slices/tools"
 // import { useSelector } from "react-redux"
 // import type { RootState } from "../redux/store"
 // import { useEffect, useRef } from "react"
 import { useHoldAction } from "../hooks/useHoldAction"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-
-
-// i need to add a button that changes the background color
-
 
 const Toolbar = () => {
     const dispatch = useDispatch()
@@ -60,7 +56,8 @@ const Toolbar = () => {
           >Eraser</button>
         </div>
 
-        <div>
+        <div className="border1">
+          <p>Tool Color</p>
           <input 
           type="color" 
           value={pencilColor}
@@ -71,8 +68,8 @@ const Toolbar = () => {
           />
         </div>
 
-        <div>
-          <p>background color</p>
+        <div className="border1">
+          <p>BG Color</p>
            <input 
           type="color" 
           value={screenColor}
@@ -81,6 +78,25 @@ const Toolbar = () => {
           }}
           disabled={tool === 'eraser'}
           />
+        </div>
+
+        <div className="border1 flex justify-around">
+          <button className="w-8 h-8 rounded-full"
+          style={{
+            backgroundColor: pencilColor
+          }}
+          onClick={() => {
+            dispatch(setToolForm('circle'))
+          }}
+          ></button>
+          <button className="w-8 h-8"
+          style={{
+            backgroundColor: pencilColor
+          }}
+          onClick={() => {
+            dispatch(setToolForm('square'))
+          }}
+          ></button>
         </div>
 
       </div>
