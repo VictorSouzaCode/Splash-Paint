@@ -1,9 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
-export type Tools = 'pencil' | 'eraser'
+export type Tools = 'pencil' | 'eraser';
 
-export type ToolForm = 'square' | 'circle'
+export type ToolForm = 'square' | 'circle';
+
+export type StoredStrokes = {x:number, y:number}
 
 export type ToolState = {
     tool: Tools,
@@ -17,6 +19,7 @@ export type ToolState = {
         x: number,
         y: number
     }
+    storedStrokes: StoredStrokes[]
 }
 
 
@@ -32,6 +35,7 @@ const initialState: ToolState = {
         x: 0,
         y: 0
     },
+    storedStrokes: []
 }
 
 
