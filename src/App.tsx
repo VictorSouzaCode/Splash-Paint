@@ -7,8 +7,8 @@ function App() {
   return (
     <div className="h-screen w-scre overflow-hidden relative">
       <Toolbar/>
-      {/* <Canvas/> */}
-      <CanvasTest/>
+      <Canvas/>
+      {/* <CanvasTest/> */}
     </div>
   )
 }

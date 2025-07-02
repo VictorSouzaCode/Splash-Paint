@@ -24,15 +24,23 @@ function drawUndoRedo (
 
   if (state.toolForm === 'square') {
     for (let i = 0; i < strokes.length; i++) {
-      const p = strokes[i];
-      ctx.fillRect(p.x - state.size / 2, p.y - state.size / 2, state.size, state.size);
+
+      const getPosition = strokes[i];
+
+      const positionX = getPosition.x - state.size / 2;
+      const positionY = getPosition.y - state.size / 2;
+
+      ctx.fillRect(positionX, positionY, state.size, state.size);
     }
   }
 
+  // This is a pairwise loop — each iteration processes two points:
+  // This is perfect for reconstructing a stroke as a series of connected lines.
+  // Plain for loops are the fastest in JavaScript.
   if (state.toolForm === 'circle') {
     ctx.beginPath();
     for (let i = 1; i < strokes.length; i++) {
-      const from = strokes[i - 1];
+      const from = strokes[i - 1]; // This gets the previous point in the stroke history so you can draw a line from it to the current point.
       const to = strokes[i];
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);
@@ -48,9 +56,11 @@ export function redrawCircleOnClick (
 ) {
 
     for (let i = 0; i < strokes.length; i++) {
-      const p = strokes[i];
+      const position = strokes[i];
+      const radius = state.size / 2
+
       ctx.beginPath();
-      ctx.arc(p.x, p.y, state.size / 2, 0, Math.PI * 2);
+      ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
       ctx.fillStyle = ctx.strokeStyle;
       ctx.fill();
     }

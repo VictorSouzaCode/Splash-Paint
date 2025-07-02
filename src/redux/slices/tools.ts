@@ -20,7 +20,6 @@ export type ToolState = {
         y: number
     }
     storedStrokes: StoredStrokes[]
-    clickShape: boolean
 }
 
 
@@ -36,8 +35,7 @@ const initialState: ToolState = {
         x: 0,
         y: 0
     },
-    storedStrokes: [],
-    clickShape: false,
+    storedStrokes: []
 }
 
 

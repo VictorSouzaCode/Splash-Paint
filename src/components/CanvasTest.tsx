@@ -11,7 +11,6 @@ import drawSquare from "../typescript/drawSquare"
 import drawUndoRedo, {redrawCircleOnClick} from "../typescript/drawUndoRedo"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 import { saveStroke } from "../redux/slices/undoRedo"
-import { current } from "@reduxjs/toolkit"
 
 
 const CanvasTest = () => {
@@ -23,6 +22,7 @@ const CanvasTest = () => {
   const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null)
   const currentPos = useRef<{x: number, y: number}[]>([])
   // holds the previous mouse position so i can draw a line segment from that point to the current point. Without this, fast mouse movements result in disconnected circles.
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -70,13 +70,13 @@ const CanvasTest = () => {
     const handleMouseDown = (e:MouseEvent) => {
       dispatch(setDrawing(true))
 
+      currentPos.current = [{x: e.clientX, y: e.clientY}]
+
       if(state.toolForm === 'circle') {
-        currentPos.current = [{x: e.clientX, y: e.clientY}]
         drawCircleOnClick(ctx, state, e.clientX, e.clientY)
       }
 
       if(state.toolForm === 'square') {
-        currentPos.current = [{x: e.clientX, y: e.clientY}]
         drawSquare(ctx, state, e.clientX, e.clientY)
       }
 
@@ -101,8 +101,7 @@ const CanvasTest = () => {
           x: state.pointer.x,
           y: state.pointer.y
         },
-        storedStrokes: [...currentPos.current], // A continuous path that the user drew from mouse down to mouse up. // When redrawing the canvas, i use this array to “retrace” the path.
-        clickShape: true
+        storedStrokes: [...currentPos.current], // When redrawing the canvas, i use this array to “retrace” the path.
       }))
       currentPos.current = []
       setPrevPos(null)
