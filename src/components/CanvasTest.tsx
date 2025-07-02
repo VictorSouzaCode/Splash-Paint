@@ -70,13 +70,13 @@ const CanvasTest = () => {
     const handleMouseDown = (e:MouseEvent) => {
       dispatch(setDrawing(true))
 
-      currentPos.current = [{x: e.clientX, y: e.clientY}]
-
       if(state.toolForm === 'circle') {
+        currentPos.current = [{x: e.clientX, y: e.clientY}]
         drawCircleOnClick(ctx, state, e.clientX, e.clientY)
       }
 
       if(state.toolForm === 'square') {
+        currentPos.current = [{x: e.clientX, y: e.clientY}]
         drawSquare(ctx, state, e.clientX, e.clientY)
       }
 
@@ -108,16 +108,21 @@ const CanvasTest = () => {
       setPrevPos(null)
     }
 
+    const handleMouseLeave = () => {
+      dispatch(setDrawing(false))
+      setPrevPos(null)
+    }
+
     canvas.addEventListener('mousedown', handleMouseDown)
     canvas.addEventListener('mouseup', handleMouseUp)
     canvas.addEventListener('mousemove', handleMouseMove)
-    canvas.addEventListener('mouseleave', handleMouseUp)
+    canvas.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown)
       canvas.removeEventListener('mouseup', handleMouseUp)
       canvas.removeEventListener('mousemove', handleMouseMove)
-      canvas.removeEventListener('mouseleave', handleMouseUp)
+      canvas.removeEventListener('mouseleave', handleMouseLeave)
     }
   },[state, prevPos])
 

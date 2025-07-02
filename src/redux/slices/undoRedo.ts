@@ -21,6 +21,7 @@ const strokeSlice = createSlice({
         saveStroke: (state, action: PayloadAction<ToolState>) => {
             state.history.push(action.payload);
             state.redoStack = [] // clear redo when drawing new stroke
+            console.log(state.history)
         },
         undoStroke: (state) => {
 
@@ -28,7 +29,8 @@ const strokeSlice = createSlice({
 
             const undo = state.history.pop();
             if(undo) state.redoStack.unshift(undo)
-            console.log('undo')
+            console.log(state.history)
+            console.log(undo)
             // Removes last stroke and pushes it to redo.
         },
         redoStroke: (state) => {
