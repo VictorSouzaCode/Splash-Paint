@@ -1,6 +1,5 @@
 import type { ToolState } from "../redux/slices/tools";
 
-
 function drawCircleOnClick (
     ctx: CanvasRenderingContext2D,
     state: ToolState,

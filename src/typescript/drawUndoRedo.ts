@@ -41,4 +41,19 @@ function drawUndoRedo (
 }
 }
 
+export function redrawCircleOnClick (
+    ctx: CanvasRenderingContext2D,
+    state: ToolState,
+    strokes: StoredStrokes[]
+) {
+
+    for (let i = 0; i < strokes.length; i++) {
+      const p = strokes[i];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, state.size / 2, 0, Math.PI * 2);
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.fill();
+    }
+}
+
 export default drawUndoRedo
