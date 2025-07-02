@@ -10,7 +10,7 @@ type StrokeState = {
 
 const initialState: StrokeState = {
     history: [],
-    redoStack: [] // Stores undone strokes, so you can redo them.
+    redoStack: [] // Stores undone strokes, so i can redo them.
 }
 
 
@@ -36,10 +36,13 @@ const strokeSlice = createSlice({
             if(redo) state.history.push(redo)
             // Moves stroke from redo back to history. 
         },
-        reset: () => {}
+        resetCanvas: (state) => {
+            state.history = []
+            state.redoStack = []
+        }
     }
 })
 
 
-export const { saveStroke, undoStroke, redoStroke} = strokeSlice.actions
+export const { saveStroke, undoStroke, redoStroke, resetCanvas} = strokeSlice.actions
 export default strokeSlice.reducer

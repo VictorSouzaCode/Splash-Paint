@@ -40,7 +40,7 @@ function drawUndoRedo (
   if (state.toolForm === 'circle') {
     ctx.beginPath();
     for (let i = 1; i < strokes.length; i++) {
-      const from = strokes[i - 1]; // This gets the previous point in the stroke history so you can draw a line from it to the current point.
+      const from = strokes[i - 1]; // This gets the previous point in the stroke history so i can draw a line from it to the current point.
       const to = strokes[i];
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);

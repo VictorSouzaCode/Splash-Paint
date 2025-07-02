@@ -8,7 +8,7 @@ import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPenc
 import { useHoldAction } from "../hooks/useHoldAction"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-import { redoStroke, undoStroke } from "../redux/slices/undoRedo"
+import { redoStroke, undoStroke, resetCanvas } from "../redux/slices/undoRedo"
 
 const Toolbar = () => {
     const dispatch = useDispatch()
@@ -113,6 +113,13 @@ const Toolbar = () => {
             dispatch(redoStroke())
           }}
           >Redo</button>
+        </div>
+
+        <div>
+          <button
+          onClick={() => {
+            dispatch(resetCanvas())
+          }}>Reset</button>
         </div>
 
       </div>

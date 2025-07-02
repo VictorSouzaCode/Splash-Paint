@@ -16,7 +16,7 @@ import drawCircleOnClick from "../typescript/drawCircleOnClick"
 import drawSquare from "../typescript/drawSquare"
 import drawUndoRedo, {redrawCircleOnClick} from "../typescript/drawUndoRedo"
 import { usePointerFollower } from "../hooks/usePointerFollower"
-import { saveStroke } from "../redux/slices/undoRedo"
+import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
 
 
 
@@ -72,6 +72,8 @@ const Canvas = () => {
     }
 
     const handleMouseDown = (e:MouseEvent) => {
+      if(e.button === 2) return;
+
       dispatch(setDrawing(true))
 
       currentPosition.current = [{x: e.clientX, y: e.clientY}]
@@ -116,25 +118,16 @@ const Canvas = () => {
       setPrevPos(null)
     }
 
-    // const handleRightClick = (e:MouseEvent) => {
-    //   if(e.button === 2) {
-    //     e.preventDefault()
-    //     console.log('right clicked')
-    //   }
-    // }
-
     canvas.addEventListener('mousedown', handleMouseDown)
     canvas.addEventListener('mouseup', handleMouseUp)
     canvas.addEventListener('mousemove', handleMouseMove)
     canvas.addEventListener('mouseleave', handleMouseLeave)
-    // canvas.addEventListener('mousedown', handleRightClick)
 
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown)
       canvas.removeEventListener('mouseup', handleMouseUp)
       canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mouseleave', handleMouseLeave)
-      // canvas.removeEventListener('mousedown', handleRightClick)
     }
   },[state, prevPos])
 
@@ -151,6 +144,15 @@ const Canvas = () => {
       redrawCircleOnClick(ctx, stroke, stroke.storedStrokes)
     })
   },[history])
+
+  // clear canvas on reset button
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    if(!canvas) { return }
+    const ctx = canvas.getContext('2d')!
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+  },[resetCanvas])
 
   const { followerRef } = usePointerFollower()
 
