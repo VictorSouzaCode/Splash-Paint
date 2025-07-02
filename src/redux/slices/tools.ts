@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type Tools = 'pencil' | 'eraser';
 
-export type ToolForm = 'square' | 'circle';
+export type ToolForm = 'square' | 'circle' | 'line' | 'squareBox' | 'circleBox';
 
 export type StoredStrokes = {x:number, y:number}
 

@@ -100,6 +100,28 @@ const Toolbar = () => {
           ></button>
         </div>
 
+        <div>
+          <button
+          onClick={() => {
+            dispatch(setToolForm('line'))
+          }}
+          >Line /</button>
+        </div>
+        <div>
+          <button
+           onClick={() => {
+            dispatch(setToolForm('squareBox'))
+          }}
+          >Square |_|</button>
+        </div>
+        <div>
+          <button
+          onClick={() => {
+            dispatch(setToolForm('circleBox'))
+          }}
+          >Circle O</button>
+        </div>
+
         <div className="flex justify-around">
           <button 
           className="rounded-md bg-green-300"

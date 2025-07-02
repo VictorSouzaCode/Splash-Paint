@@ -15,6 +15,7 @@ import draw from "../typescript/draw"
 import drawCircleOnClick from "../typescript/drawCircleOnClick"
 import drawSquare from "../typescript/drawSquare"
 import drawUndoRedo, {redrawCircleOnClick} from "../typescript/drawUndoRedo"
+import { drawStraightLine } from "../typescript/drawStraightLine"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
 
@@ -28,6 +29,8 @@ const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
   const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null) // holds the previous mouse position so i can draw a line segment from that point to the current point. Without this, fast mouse movements result in disconnected circles.
   const currentPosition = useRef<{x: number, y:number}[]>([])
+
+  const [lineStartPoint, setLineStartPoint] = useState<{x:number, y:number}| null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -57,14 +60,15 @@ const Canvas = () => {
 
       if(state.isDrawing) {
 
-        const points = {x: e.clientX, y: e.clientY}
-        currentPosition.current.push(points)
-
         if(prevPos && state.toolForm === 'circle') {
           draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
+          const points = {x: e.clientX, y: e.clientY}
+          currentPosition.current.push(points)
         }
         if(prevPos && state.toolForm === 'square') {
           drawSquare(ctx, state, e.clientX, e.clientY)
+          const points = {x: e.clientX, y: e.clientY}
+          currentPosition.current.push(points)
         }
       }
       setPrevPos({x: e.clientX, y: e.clientY})
@@ -76,14 +80,47 @@ const Canvas = () => {
 
       dispatch(setDrawing(true))
 
-      currentPosition.current = [{x: e.clientX, y: e.clientY}]
+      const point = {x: e.clientX, y: e.clientY}
+
+      if(state.toolForm === 'line') {
+        // const point = {x: e.clientX, y: e.clientY}
+
+        if(!lineStartPoint) {
+
+          setLineStartPoint(point)
+
+        } else {
+
+          drawStraightLine(ctx, state, lineStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [lineStartPoint, point]
+          }))
+
+          setLineStartPoint(null)
+        }
+        return
+      }
 
       if(state.toolForm === 'circle') {
         drawCircleOnClick(ctx, state, e.clientX, e.clientY)
+        currentPosition.current = [point]
       }
 
       if(state.toolForm === 'square') {
         drawSquare(ctx, state, e.clientX, e.clientY)
+        currentPosition.current = [point]
       }
 
       if(state.isDrawing) {

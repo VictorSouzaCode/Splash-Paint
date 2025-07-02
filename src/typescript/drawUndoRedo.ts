@@ -34,6 +34,17 @@ function drawUndoRedo (
     }
   }
 
+  if (state.toolForm === 'line') {
+  ctx.beginPath();
+  const [start, end] = strokes;
+  if (!start || !end) return;
+  ctx.moveTo(start.x, start.y);
+  ctx.lineTo(end.x, end.y);
+  ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+  ctx.lineWidth = state.size;
+  ctx.stroke();
+  }
+
   // This is a pairwise loop — each iteration processes two points:
   // This is perfect for reconstructing a stroke as a series of connected lines.
   // Plain for loops are the fastest in JavaScript.
