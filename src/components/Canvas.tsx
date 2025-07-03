@@ -14,7 +14,7 @@ import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
 import drawCircleOnClick from "../typescript/drawCircleOnClick"
 import drawSquare from "../typescript/drawSquare"
-import drawUndoRedo, {redrawCircleOnClick} from "../typescript/drawUndoRedo"
+import drawUndoRedo, {redrawCircleOnClick, redrawStraightLine} from "../typescript/drawUndoRedo"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
@@ -27,10 +27,13 @@ const Canvas = () => {
   const history = useSelector((state: RootState) => state.undoRedo.history)
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
+  const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
   const [prevPos, setPrevPos] = useState<{x: number, y: number} | null>(null) // holds the previous mouse position so i can draw a line segment from that point to the current point. Without this, fast mouse movements result in disconnected circles.
   const currentPosition = useRef<{x: number, y:number}[]>([])
 
+  // useState to draw lines
   const [lineStartPoint, setLineStartPoint] = useState<{x:number, y:number}| null>(null)
+  const [mousePos, setMousePos] = useState<{x:number, y:number}| null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,8 +41,14 @@ const Canvas = () => {
     if(!canvas) { return }
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (canvasRef.current) {
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
+      }
+      if (canvasPreviewRef.current) {
+        canvasPreviewRef.current.width = window.innerWidth;
+        canvasPreviewRef.current.height = window.innerHeight;
+      }
     }
 
     resizeCanvas()
@@ -57,6 +66,9 @@ const Canvas = () => {
     const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
+
+      // this is for preview straight lines
+      setMousePos({x: e.clientX, y: e.clientY})
 
       if(state.isDrawing) {
 
@@ -83,7 +95,6 @@ const Canvas = () => {
       const point = {x: e.clientX, y: e.clientY}
 
       if(state.toolForm === 'line') {
-        // const point = {x: e.clientX, y: e.clientY}
 
         if(!lineStartPoint) {
 
@@ -130,7 +141,18 @@ const Canvas = () => {
       }
     }
 
+    const clearPreviewCanvasOnMouseUp = () => {
+      const canvasPreview = canvasPreviewRef.current!
+
+      const ctxPreview = canvasPreviewRef.current?.getContext('2d')
+
+      if (!ctxPreview) return;
+
+      ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
+    }
+
     const handleMouseUp = () => {
+      
       dispatch(setDrawing(false))
       dispatch(saveStroke({
         tool: state.tool,
@@ -147,6 +169,7 @@ const Canvas = () => {
         storedStrokes: [...currentPosition.current]
       }))
       currentPosition.current = []
+      clearPreviewCanvasOnMouseUp()
       setPrevPos(null)
     }
 
@@ -179,16 +202,33 @@ const Canvas = () => {
     history.forEach((stroke) => {
       drawUndoRedo(ctx, stroke, stroke.storedStrokes)
       redrawCircleOnClick(ctx, stroke, stroke.storedStrokes)
+      redrawStraightLine(ctx, stroke, stroke.storedStrokes)
     })
   },[history])
 
+  // draw preview of lines and shapes
+  useEffect(() => {
+    if(!lineStartPoint || !mousePos || state.toolForm !== 'line' || !canvasPreviewRef.current) return;
+
+    const canvasPreview = canvasPreviewRef.current
+
+    const ctxPreview = canvasPreviewRef.current.getContext('2d')
+    if(!ctxPreview) return;
+
+    ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
+
+    drawStraightLine(ctxPreview, state, lineStartPoint, mousePos)
+
+  },[mousePos, lineStartPoint, state])
+
   // clear canvas on reset button
   useEffect(() => {
-    const canvas = canvasRef.current!;
+    const canvas = canvasRef.current!
     if(!canvas) { return }
     const ctx = canvas.getContext('2d')!
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
   },[resetCanvas])
 
   const { followerRef } = usePointerFollower()
@@ -202,11 +242,15 @@ const Canvas = () => {
     style={{
       backgroundColor: state.screenColor,
     }}/>
+    <canvas
+    ref={canvasPreviewRef}
+    className="absolute top-0 left-0 z-0 bg-transparent pointer-events-none"
+    />
     <div
     ref={followerRef}
     className="absolute pointer-events-none z-0"
     style={{
-      borderRadius: state.toolForm === 'circle' ? '50%' : '0%',
+      borderRadius: state.toolForm === 'circle' || state.toolForm === 'line' ? '50%' : '0%',
       width: state.size,
       height: state.size,
       borderWidth: state.tool === 'eraser' ? '2px' : '1px',
