@@ -54,7 +54,6 @@ export function redrawStraightLine (
     state: ToolState,
     strokes: StoredStrokes[]
 ) {
-  if (state.toolForm === 'line') {
   ctx.beginPath();
   const [start, end] = strokes;
   if (!start || !end) return;
@@ -63,7 +62,6 @@ export function redrawStraightLine (
   ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
   ctx.lineWidth = state.size;
   ctx.stroke();
-  }
 }
 
 export function redrawCircleOnClick (

@@ -20,7 +20,7 @@ const Toolbar = () => {
 
   return (
     <>
-    <div className="border1 z-10 w-32 min-h-[300px] h-full max-h-[500px] absolute top-[50%] translate-y-[-50%] left-2 rounded-xl px-2 flex flex-col gap-4">
+    <div className="border1 z-10 w-32 min-h-[300px] h-fit absolute top-[50%] translate-y-[-50%] left-2 rounded-xl px-2 flex flex-col gap-4">
         
         <div className="flex justify-center items-center gap-x-4 h-8 rounded-xl mt-2">
           <button 
@@ -110,16 +110,23 @@ const Toolbar = () => {
         <div>
           <button
            onClick={() => {
-            dispatch(setToolForm('squareBox'))
+            dispatch(setToolForm('square-shape'))
           }}
-          >Square |_|</button>
+          >🟥</button>
         </div>
         <div>
           <button
           onClick={() => {
-            dispatch(setToolForm('circleBox'))
+            dispatch(setToolForm('circle-shape'))
           }}
-          >Circle O</button>
+          >🟢</button>
+        </div>
+        <div>
+          <button
+          onClick={() => {
+            dispatch(setToolForm('triangle-shape'))
+          }}
+          >🔺</button>
         </div>
 
         <div className="flex justify-around">

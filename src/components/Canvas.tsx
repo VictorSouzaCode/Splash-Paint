@@ -84,7 +84,7 @@ const Canvas = () => {
         }
       }
       setPrevPos({x: e.clientX, y: e.clientY})
-      // Save the current position as prevPos for the next draw step.
+      // Save the current position as prevPos for the next draw step with the rouded pencil.
     }
 
     const handleMouseDown = (e:MouseEvent) => {
@@ -246,6 +246,11 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 bg-transparent pointer-events-none"
     />
+
+    {state.toolForm === 'circle-shape' || state.toolForm === 'square-shape' || state.toolForm === 'triangle-shape' 
+    ? 
+    <div className="absolute left-[-999999px]"/> 
+    : 
     <div
     ref={followerRef}
     className="absolute pointer-events-none z-0"
@@ -258,7 +263,7 @@ const Canvas = () => {
       borderColor: state.tool === 'eraser' ? 'black' : state.pencilColor,
       willChange: 'transform',
     }}
-    />
+    />}
     </>
   )
 }
