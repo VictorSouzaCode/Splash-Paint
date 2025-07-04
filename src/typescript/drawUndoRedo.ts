@@ -47,6 +47,18 @@ function drawUndoRedo (
     }
     ctx.stroke();
   }
+
+  if (state.toolForm === 'square-shape') {
+  const [start, end] = strokes;
+  if (!start || !end) return;
+
+  const width = end.x - start.x;
+  const height = end.y - start.y;
+
+  ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+  ctx.lineWidth = state.size;
+  ctx.strokeRect(start.x, start.y, width, height);
+  }
 }
 
 export function redrawStraightLine (

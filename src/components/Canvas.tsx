@@ -14,11 +14,11 @@ import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
 import drawCircleOnClick from "../typescript/drawCircleOnClick"
 import drawSquare from "../typescript/drawSquare"
+import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescript/drawShapes"
 import drawUndoRedo, {redrawCircleOnClick, redrawStraightLine} from "../typescript/drawUndoRedo"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { usePointerFollower } from "../hooks/usePointerFollower"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
-
 
 
 const Canvas = () => {
@@ -33,7 +33,11 @@ const Canvas = () => {
 
   // useState to draw lines
   const [lineStartPoint, setLineStartPoint] = useState<{x:number, y:number}| null>(null)
-  const [mousePos, setMousePos] = useState<{x:number, y:number}| null>(null)
+  const [mousePosLine, setMousePosLine] = useState<{x:number, y:number}| null>(null)
+
+  //useState to draw Shapes
+  const [shapeStartPoint, setShapeStartPoint] = useState<{x:number, y:number} | null>(null)
+  const [mousePosShape, setMousePosShape] = useState<{x:number, y:number} | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -60,15 +64,15 @@ const Canvas = () => {
     }
   },[])
 
+
   useEffect(() => {
     const canvas = canvasRef.current!;
     if(!canvas) { return }
     const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
-
-      // this is for preview straight lines
-      setMousePos({x: e.clientX, y: e.clientY})
+      setMousePosLine({x: e.clientX, y: e.clientY})
+      setMousePosShape({x: e.clientX, y: e.clientY})
 
       if(state.isDrawing) {
 
@@ -122,6 +126,37 @@ const Canvas = () => {
           setLineStartPoint(null)
         }
         return
+      }
+
+      if(state.toolForm === 'square-shape'){
+        if(!shapeStartPoint) {
+          setShapeStartPoint(point)
+        } else {
+          // drawSquareShape(ctx, state, shapeStartPoint, point)
+
+          setShapeStartPoint(null)
+        }
+        return
+      }
+
+      if(state.toolForm === 'triangle-shape'){
+
+        if(!shapeStartPoint){
+          setShapeStartPoint(point)
+
+        } else {
+
+          setShapeStartPoint(null)
+        }
+      }
+
+      if(state.toolForm === 'circle-shape') {
+
+        if(!shapeStartPoint) {
+          setShapeStartPoint(point)
+        } else {
+          setShapeStartPoint(null)
+        }
       }
 
       if(state.toolForm === 'circle') {
@@ -191,6 +226,7 @@ const Canvas = () => {
     }
   },[state, prevPos])
 
+
   // re-drawing the canvas on mouse realase for undo/redo function
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -206,20 +242,39 @@ const Canvas = () => {
     })
   },[history])
 
-  // draw preview of lines and shapes
+
+  // draw preview of lines
   useEffect(() => {
-    if(!lineStartPoint || !mousePos || state.toolForm !== 'line' || !canvasPreviewRef.current) return;
 
     const canvasPreview = canvasPreviewRef.current
 
-    const ctxPreview = canvasPreviewRef.current.getContext('2d')
-    if(!ctxPreview) return;
+    if(!canvasPreview || (!lineStartPoint && !shapeStartPoint) ) return;
+
+    const ctxPreview = canvasPreview.getContext('2d')
+    
+    if (!ctxPreview) return;
 
     ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
 
-    drawStraightLine(ctxPreview, state, lineStartPoint, mousePos)
+    if(state.toolForm === 'line' && lineStartPoint && mousePosLine) {
+      drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
+    }
 
-  },[mousePos, lineStartPoint, state])
+    if (state.toolForm === "square-shape" && shapeStartPoint && mousePosShape) {
+    drawSquareShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    }
+
+    if(state.toolForm === 'triangle-shape' && shapeStartPoint && mousePosShape){
+      drawTriangleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    }
+
+    if(state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
+      drawCircleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    }
+
+  },[mousePosLine, lineStartPoint, mousePosShape, shapeStartPoint, state])
+
+
 
   // clear canvas on reset button
   useEffect(() => {
