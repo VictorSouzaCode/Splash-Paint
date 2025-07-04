@@ -10,6 +10,7 @@ export function drawStraightLine (
     point: Point
 ) {
 
+    if(state.toolForm === 'line') {
       ctx.beginPath();
       ctx.moveTo(lineStartPoint.x, lineStartPoint.y);
       ctx.lineTo(point.x, point.y);
@@ -17,4 +18,7 @@ export function drawStraightLine (
       ctx.lineWidth = state.size;
       ctx.lineCap = 'round'
       ctx.stroke();
+    } else {
+        return
+    }
 }

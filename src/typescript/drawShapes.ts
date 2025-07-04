@@ -60,18 +60,24 @@ export function drawCircleShape (
     shapeStartPoint: ShapeStartPoint,
     mousePos: MousePos
 ) {
-    if(!shapeStartPoint) { return }
+
+    if (!shapeStartPoint) return;
 
     const start = shapeStartPoint;
     const end = mousePos;
-    const width = end.x - start.x;
-    const height = end.y - start.y;
 
-    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
-    ctx.lineWidth = state.size;
-    const radius = Math.sqrt(width ** 2 + height ** 2) / 2;
+    // Calculate radius using the distance between start and end points
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+
+    // Calculate center of the circle
     const centerX = (start.x + end.x) / 2;
     const centerY = (start.y + end.y) / 2;
+
+    ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+    ctx.lineWidth = state.size;
     ctx.stroke();
 }

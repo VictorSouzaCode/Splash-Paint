@@ -132,7 +132,23 @@ const Canvas = () => {
         if(!shapeStartPoint) {
           setShapeStartPoint(point)
         } else {
-          // drawSquareShape(ctx, state, shapeStartPoint, point)
+
+          drawSquareShape(ctx, state, shapeStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [shapeStartPoint, point]
+          }))
 
           setShapeStartPoint(null)
         }
@@ -146,17 +162,51 @@ const Canvas = () => {
 
         } else {
 
+          drawTriangleShape(ctx, state, shapeStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [shapeStartPoint, point]
+          }))
+
           setShapeStartPoint(null)
         }
+        return
       }
 
       if(state.toolForm === 'circle-shape') {
-
-        if(!shapeStartPoint) {
+        if(!shapeStartPoint){
           setShapeStartPoint(point)
         } else {
+          drawCircleShape(ctx, state, shapeStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [shapeStartPoint, point]
+          }))
           setShapeStartPoint(null)
         }
+        return
       }
 
       if(state.toolForm === 'circle') {
@@ -189,7 +239,9 @@ const Canvas = () => {
     const handleMouseUp = () => {
       
       dispatch(setDrawing(false))
-      dispatch(saveStroke({
+
+      if(state.toolForm !== "line" && state.toolForm !== "square-shape" && state.toolForm !== 'triangle-shape' && state.toolForm !== 'circle-shape'){
+        dispatch(saveStroke({
         tool: state.tool,
         toolForm: state.toolForm,
         pencilColor: state.pencilColor,
@@ -203,6 +255,8 @@ const Canvas = () => {
         },
         storedStrokes: [...currentPosition.current]
       }))
+      }
+      
       currentPosition.current = []
       clearPreviewCanvasOnMouseUp()
       setPrevPos(null)
@@ -268,7 +322,7 @@ const Canvas = () => {
       drawTriangleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
     }
 
-    if(state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
+    if (state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
       drawCircleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
     }
 

@@ -59,6 +59,42 @@ function drawUndoRedo (
   ctx.lineWidth = state.size;
   ctx.strokeRect(start.x, start.y, width, height);
   }
+
+
+  if(state.toolForm === 'triangle-shape') {
+    
+    const [start, end] = strokes;
+    if(!start || !end) return
+
+    const width = end.x - start.x;
+    const height = end.y - start.y;
+
+    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+    ctx.lineWidth = state.size;
+    ctx.beginPath();
+    ctx.moveTo(start.x + width / 2, start.y);
+    ctx.lineTo(start.x, start.y + height);
+    ctx.lineTo(start.x + width, start.y + height);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  if (state.toolForm === 'circle-shape') {
+  const [start, end] = strokes;
+  if (!start || !end) return;
+
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+  const centerX = (start.x + end.x) / 2;
+  const centerY = (start.y + end.y) / 2;
+
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+  ctx.lineWidth = state.size;
+  ctx.stroke();
+}
 }
 
 export function redrawStraightLine (
@@ -66,6 +102,8 @@ export function redrawStraightLine (
     state: ToolState,
     strokes: StoredStrokes[]
 ) {
+
+  if(state.toolForm === 'line') {
   ctx.beginPath();
   const [start, end] = strokes;
   if (!start || !end) return;
@@ -74,6 +112,7 @@ export function redrawStraightLine (
   ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
   ctx.lineWidth = state.size;
   ctx.stroke();
+  }
 }
 
 export function redrawCircleOnClick (
@@ -82,7 +121,8 @@ export function redrawCircleOnClick (
     strokes: StoredStrokes[]
 ) {
 
-    for (let i = 0; i < strokes.length; i++) {
+    if(state.toolForm === 'circle') {
+      for (let i = 0; i < strokes.length; i++) {
       const position = strokes[i];
       const radius = state.size / 2
 
@@ -90,6 +130,7 @@ export function redrawCircleOnClick (
       ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
       ctx.fillStyle = ctx.strokeStyle;
       ctx.fill();
+    }
     }
 }
 
