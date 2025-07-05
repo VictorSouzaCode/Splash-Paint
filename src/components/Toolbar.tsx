@@ -2,9 +2,6 @@
 
 import { useDispatch } from "react-redux"
 import { increasePointerSize, decreasePointerSize, setEraser, setPencil, setPencilColor, setScreenColor, setToolForm} from "../redux/slices/tools"
-// import { useSelector } from "react-redux"
-// import type { RootState } from "../redux/store"
-// import { useEffect, useRef } from "react"
 import { useHoldAction } from "../hooks/useHoldAction"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
@@ -88,6 +85,7 @@ const Toolbar = () => {
           }}
           onClick={() => {
             dispatch(setToolForm('circle'))
+            dispatch(setPencil())
           }}
           ></button>
           <button className="w-8 h-8"
@@ -96,6 +94,7 @@ const Toolbar = () => {
           }}
           onClick={() => {
             dispatch(setToolForm('square'))
+            dispatch(setPencil())
           }}
           ></button>
         </div>
@@ -104,6 +103,7 @@ const Toolbar = () => {
           <button
           onClick={() => {
             dispatch(setToolForm('line'))
+            dispatch(setPencil())
           }}
           >Line /</button>
         </div>
@@ -111,6 +111,7 @@ const Toolbar = () => {
           <button
            onClick={() => {
             dispatch(setToolForm('square-shape'))
+            dispatch(setPencil())
           }}
           >🟥</button>
         </div>
@@ -118,6 +119,7 @@ const Toolbar = () => {
           <button
           onClick={() => {
             dispatch(setToolForm('circle-shape'))
+            dispatch(setPencil())
           }}
           >🟢</button>
         </div>
@@ -125,6 +127,7 @@ const Toolbar = () => {
           <button
           onClick={() => {
             dispatch(setToolForm('triangle-shape'))
+            dispatch(setPencil())
           }}
           >🔺</button>
         </div>

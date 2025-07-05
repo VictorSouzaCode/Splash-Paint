@@ -8,7 +8,6 @@
 // another question how i am going to retrace eraser, square pencil, and circle on a click?
 // because the logic to draw a square a circle and a rounded line are different
 import type { ToolState } from "../redux/slices/tools"
-
 type StoredStrokes = {x:number, y: number}
 
 function drawUndoRedo (

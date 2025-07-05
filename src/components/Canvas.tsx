@@ -17,9 +17,24 @@ import drawSquare from "../typescript/drawSquare"
 import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescript/drawShapes"
 import drawUndoRedo, {redrawCircleOnClick, redrawStraightLine} from "../typescript/drawUndoRedo"
 import { drawStraightLine } from "../typescript/drawStraightLine"
-import { usePointerFollower } from "../hooks/usePointerFollower"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
+import MouseFollower from "./MouseFollower"
 
+
+// Now before adding the final features for the release of this app, i want to refactor this code!
+// refactor is the process of turning my dirty code into clean code
+// Things to Keep in mind when refactoring
+// easy to read, clear and consistent naming
+// This code needs to be ease to understand
+// this code needs to be able to be changed
+
+// useState in react, aways when i have a useState i need to ask myself does this state needs to be here or it can be moved somewhere else, somewhere else being the parent or further down so the main component doesnt re-render when this state changes
+
+// i can put a div in a sigle component to follow the single responsability principal that is a design pattern in react, which means i can have a component the handles a single div and have it encapsulated away from this main component
+
+// use customHooks if i have code that i use in other places
+
+// the fact that i needed to change something is a good indicator that i will need to change that in the future, so i make it easy to make those changes, and then i applied the change
 
 const Canvas = () => {
   const dispatch = useDispatch()
@@ -54,7 +69,6 @@ const Canvas = () => {
         canvasPreviewRef.current.height = window.innerHeight;
       }
     }
-
     resizeCanvas()
 
     window.addEventListener('resize', resizeCanvas)
@@ -94,9 +108,9 @@ const Canvas = () => {
     const handleMouseDown = (e:MouseEvent) => {
       if(e.button === 2) return;
 
-      dispatch(setDrawing(true))
-
       const point = {x: e.clientX, y: e.clientY}
+
+      dispatch(setDrawing(true))
 
       if(state.toolForm === 'line') {
 
@@ -340,8 +354,6 @@ const Canvas = () => {
 
   },[resetCanvas])
 
-  const { followerRef } = usePointerFollower()
-
 
   return (
     <>
@@ -353,26 +365,9 @@ const Canvas = () => {
     }}/>
     <canvas
     ref={canvasPreviewRef}
-    className="absolute top-0 left-0 z-0 bg-transparent pointer-events-none"
+    className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-
-    {state.toolForm === 'circle-shape' || state.toolForm === 'square-shape' || state.toolForm === 'triangle-shape' 
-    ? 
-    <div className="absolute left-[-999999px]"/> 
-    : 
-    <div
-    ref={followerRef}
-    className="absolute pointer-events-none z-0"
-    style={{
-      borderRadius: state.toolForm === 'circle' || state.toolForm === 'line' ? '50%' : '0%',
-      width: state.size,
-      height: state.size,
-      borderWidth: state.tool === 'eraser' ? '2px' : '1px',
-      borderStyle: 'solid',
-      borderColor: state.tool === 'eraser' ? 'black' : state.pencilColor,
-      willChange: 'transform',
-    }}
-    />}
+    <MouseFollower/>
     </>
   )
 }
