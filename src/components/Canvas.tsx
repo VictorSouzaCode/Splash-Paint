@@ -19,7 +19,7 @@ import drawUndoRedo, {redrawCircleOnClick, redrawStraightLine} from "../typescri
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
 import MouseFollower from "./MouseFollower"
-
+import { useResizeCanvas } from "../hooks/useResizeCanvas"
 
 // Now before adding the final features for the release of this app, i want to refactor this code!
 // refactor is the process of turning my dirty code into clean code
@@ -54,29 +54,7 @@ const Canvas = () => {
   const [shapeStartPoint, setShapeStartPoint] = useState<{x:number, y:number} | null>(null)
   const [mousePosShape, setMousePosShape] = useState<{x:number, y:number} | null>(null)
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-
-    if(!canvas) { return }
-
-    const resizeCanvas = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-      }
-      if (canvasPreviewRef.current) {
-        canvasPreviewRef.current.width = window.innerWidth;
-        canvasPreviewRef.current.height = window.innerHeight;
-      }
-    }
-    resizeCanvas()
-
-    window.addEventListener('resize', resizeCanvas)
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas)
-    }
-  },[])
+  useResizeCanvas(canvasRef, canvasPreviewRef)
 
 
   useEffect(() => {
@@ -89,16 +67,15 @@ const Canvas = () => {
       setMousePosShape({x: e.clientX, y: e.clientY})
 
       if(state.isDrawing) {
+        const point = {x: e.clientX, y: e.clientY}
 
         if(prevPos && state.toolForm === 'circle') {
           draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
-          const points = {x: e.clientX, y: e.clientY}
-          currentPosition.current.push(points)
+          currentPosition.current.push(point)
         }
         if(prevPos && state.toolForm === 'square') {
           drawSquare(ctx, state, e.clientX, e.clientY)
-          const points = {x: e.clientX, y: e.clientY}
-          currentPosition.current.push(points)
+          currentPosition.current.push(point)
         }
       }
       setPrevPos({x: e.clientX, y: e.clientY})
@@ -119,23 +96,6 @@ const Canvas = () => {
           setLineStartPoint(point)
 
         } else {
-
-          drawStraightLine(ctx, state, lineStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [lineStartPoint, point]
-          }))
 
           setLineStartPoint(null)
         }
@@ -250,7 +210,7 @@ const Canvas = () => {
       ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
     }
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e:MouseEvent) => {
       
       dispatch(setDrawing(false))
 
@@ -269,6 +229,29 @@ const Canvas = () => {
         },
         storedStrokes: [...currentPosition.current]
       }))
+      }
+
+      if(state.toolForm === 'line' && lineStartPoint) {
+        setLineStartPoint(null)
+
+          const point = {x: e.clientX, y: e.clientY}
+
+          drawStraightLine(ctx, state, lineStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [lineStartPoint, point]
+          }))
       }
       
       currentPosition.current = []
