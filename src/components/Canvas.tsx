@@ -20,6 +20,7 @@ import { drawStraightLine } from "../typescript/drawStraightLine"
 import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
 import MouseFollower from "./MouseFollower"
 import { useResizeCanvas } from "../hooks/useResizeCanvas"
+import { useCanvasEvents } from "../hooks/useCanvasEvents"
 
 // Now before adding the final features for the release of this app, i want to refactor this code!
 // refactor is the process of turning my dirty code into clean code
@@ -56,226 +57,19 @@ const Canvas = () => {
 
   useResizeCanvas(canvasRef, canvasPreviewRef)
 
-
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    if(!canvas) { return }
-    const ctx = canvas.getContext('2d')!
-
-    const handleMouseMove = (e:MouseEvent) => {
-      setMousePosLine({x: e.clientX, y: e.clientY})
-      setMousePosShape({x: e.clientX, y: e.clientY})
-
-      if(state.isDrawing) {
-        const point = {x: e.clientX, y: e.clientY}
-
-        if(prevPos && state.toolForm === 'circle') {
-          draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
-          currentPosition.current.push(point)
-        }
-        if(prevPos && state.toolForm === 'square') {
-          drawSquare(ctx, state, e.clientX, e.clientY)
-          currentPosition.current.push(point)
-        }
-      }
-      setPrevPos({x: e.clientX, y: e.clientY})
-      // Save the current position as prevPos for the next draw step with the rouded pencil.
-    }
-
-    const handleMouseDown = (e:MouseEvent) => {
-      if(e.button === 2) return;
-
-      const point = {x: e.clientX, y: e.clientY}
-
-      dispatch(setDrawing(true))
-
-      if(state.toolForm === 'line') {
-
-        if(!lineStartPoint) {
-
-          setLineStartPoint(point)
-
-        } else {
-
-          setLineStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'square-shape'){
-        if(!shapeStartPoint) {
-          setShapeStartPoint(point)
-        } else {
-
-          drawSquareShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-
-          setShapeStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'triangle-shape'){
-
-        if(!shapeStartPoint){
-          setShapeStartPoint(point)
-
-        } else {
-
-          drawTriangleShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-
-          setShapeStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'circle-shape') {
-        if(!shapeStartPoint){
-          setShapeStartPoint(point)
-        } else {
-          drawCircleShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-          setShapeStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'circle') {
-        drawCircleOnClick(ctx, state, e.clientX, e.clientY)
-        currentPosition.current = [point]
-      }
-
-      if(state.toolForm === 'square') {
-        drawSquare(ctx, state, e.clientX, e.clientY)
-        currentPosition.current = [point]
-      }
-
-      if(state.isDrawing) {
-
-        setPrevPos({x: state.pointer.x, y: state.pointer.y})
-        // Initializes prevPos so i know where to start the line.
-      }
-    }
-
-    const clearPreviewCanvasOnMouseUp = () => {
-      const canvasPreview = canvasPreviewRef.current!
-
-      const ctxPreview = canvasPreviewRef.current?.getContext('2d')
-
-      if (!ctxPreview) return;
-
-      ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
-    }
-
-    const handleMouseUp = (e:MouseEvent) => {
-      
-      dispatch(setDrawing(false))
-
-      if(state.toolForm !== "line" && state.toolForm !== "square-shape" && state.toolForm !== 'triangle-shape' && state.toolForm !== 'circle-shape'){
-        dispatch(saveStroke({
-        tool: state.tool,
-        toolForm: state.toolForm,
-        pencilColor: state.pencilColor,
-        borderColor: state.borderColor,
-        screenColor: state.screenColor,
-        isDrawing: state.isDrawing,
-        size: state.size,
-        pointer: {
-          x: state.pointer.x,
-          y: state.pointer.y
-        },
-        storedStrokes: [...currentPosition.current]
-      }))
-      }
-
-      if(state.toolForm === 'line' && lineStartPoint) {
-        setLineStartPoint(null)
-
-          const point = {x: e.clientX, y: e.clientY}
-
-          drawStraightLine(ctx, state, lineStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [lineStartPoint, point]
-          }))
-      }
-      
-      currentPosition.current = []
-      clearPreviewCanvasOnMouseUp()
-      setPrevPos(null)
-    }
-
-    const handleMouseLeave = () => {
-      dispatch(setDrawing(false))
-      setPrevPos(null)
-    }
-
-    canvas.addEventListener('mousedown', handleMouseDown)
-    canvas.addEventListener('mouseup', handleMouseUp)
-    canvas.addEventListener('mousemove', handleMouseMove)
-    canvas.addEventListener('mouseleave', handleMouseLeave)
-
-    return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown)
-      canvas.removeEventListener('mouseup', handleMouseUp)
-      canvas.removeEventListener('mousemove', handleMouseMove)
-      canvas.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  },[state, prevPos])
+  useCanvasEvents({canvasRef,
+    canvasPreviewRef,
+    prevPos,
+    currentPosition,
+    lineStartPoint,
+    mousePosLine,
+    shapeStartPoint,
+    mousePosShape,
+    setPrevPos,
+    setLineStartPoint,
+    setMousePosLine,
+    setShapeStartPoint,
+    setMousePosShape})
 
 
   // re-drawing the canvas on mouse realase for undo/redo function
