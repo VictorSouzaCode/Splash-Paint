@@ -21,6 +21,7 @@ import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
 import MouseFollower from "./MouseFollower"
 import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
+import { useUndoRedo } from "../hooks/useUndoRedo"
 
 // Now before adding the final features for the release of this app, i want to refactor this code!
 // refactor is the process of turning my dirty code into clean code
@@ -40,7 +41,7 @@ import { useCanvasEvents } from "../hooks/useCanvasEvents"
 const Canvas = () => {
   const dispatch = useDispatch()
   const state = useSelector((state: RootState) => state.tools)
-  const history = useSelector((state: RootState) => state.undoRedo.history)
+  // const history = useSelector((state: RootState) => state.undoRedo.history)
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
@@ -69,23 +70,10 @@ const Canvas = () => {
     setLineStartPoint,
     setMousePosLine,
     setShapeStartPoint,
-    setMousePosShape})
+    setMousePosShape
+  })
 
-
-  // re-drawing the canvas on mouse realase for undo/redo function
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    if(!canvas) { return }
-    const ctx = canvas.getContext('2d')!
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    history.forEach((stroke) => {
-      drawUndoRedo(ctx, stroke, stroke.storedStrokes)
-      redrawCircleOnClick(ctx, stroke, stroke.storedStrokes)
-      redrawStraightLine(ctx, stroke, stroke.storedStrokes)
-    })
-  },[history])
+  useUndoRedo({canvasRef})
 
 
   // draw preview of lines
