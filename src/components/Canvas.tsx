@@ -1,11 +1,4 @@
 
-// This component is responsible for:
-
-// Managing canvas drawing behavior
-
-// Listening to mouse events
-
-// Triggering draw actions
 
 import { useRef, useEffect, useState } from "react"
 import { setDrawing } from "../redux/slices/tools"
@@ -23,7 +16,7 @@ import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { useUndoRedo } from "../hooks/useUndoRedo"
 
-// Now before adding the final features for the release of this app, i want to refactor this code!
+
 // refactor is the process of turning my dirty code into clean code
 // Things to Keep in mind when refactoring
 // easy to read, clear and consistent naming
@@ -41,7 +34,6 @@ import { useUndoRedo } from "../hooks/useUndoRedo"
 const Canvas = () => {
   const dispatch = useDispatch()
   const state = useSelector((state: RootState) => state.tools)
-  // const history = useSelector((state: RootState) => state.undoRedo.history)
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)

@@ -26,5 +26,5 @@ export const useUndoRedo = ({canvasRef}:UndoRedoProps) => {
         redrawCircleOnClick(ctx, stroke, stroke.storedStrokes)
         redrawStraightLine(ctx, stroke, stroke.storedStrokes)
       })
-    },[])
+    },[history])
 }
