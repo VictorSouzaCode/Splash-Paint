@@ -15,6 +15,7 @@ import MouseFollower from "./MouseFollower"
 import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { useUndoRedo } from "../hooks/useUndoRedo"
+import { usePreviewDrawing } from "../hooks/usePreviewDrawing"
 
 
 // refactor is the process of turning my dirty code into clean code
@@ -48,9 +49,13 @@ const Canvas = () => {
   const [shapeStartPoint, setShapeStartPoint] = useState<{x:number, y:number} | null>(null)
   const [mousePosShape, setMousePosShape] = useState<{x:number, y:number} | null>(null)
 
-  useResizeCanvas(canvasRef, canvasPreviewRef)
+  useResizeCanvas(
+    canvasRef, 
+    canvasPreviewRef
+  )
 
-  useCanvasEvents({canvasRef,
+  useCanvasEvents({
+    canvasRef,
     canvasPreviewRef,
     prevPos,
     currentPosition,
@@ -65,43 +70,18 @@ const Canvas = () => {
     setMousePosShape
   })
 
-  useUndoRedo({canvasRef})
+  useUndoRedo({
+    canvasRef
+  })
 
+  usePreviewDrawing({
+    canvasPreviewRef, 
+    mousePosLine, 
+    lineStartPoint, 
+    mousePosShape, 
+    shapeStartPoint
+  })
 
-  // draw preview of lines
-  useEffect(() => {
-
-    const canvasPreview = canvasPreviewRef.current
-
-    if(!canvasPreview || (!lineStartPoint && !shapeStartPoint) ) return;
-
-    const ctxPreview = canvasPreview.getContext('2d')
-    
-    if (!ctxPreview) return;
-
-    ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
-
-    if(state.toolForm === 'line' && lineStartPoint && mousePosLine) {
-      drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
-    }
-
-    if (state.toolForm === "square-shape" && shapeStartPoint && mousePosShape) {
-    drawSquareShape(ctxPreview, state, shapeStartPoint, mousePosShape)
-    }
-
-    if(state.toolForm === 'triangle-shape' && shapeStartPoint && mousePosShape){
-      drawTriangleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
-    }
-
-    if (state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
-      drawCircleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
-    }
-
-  },[mousePosLine, lineStartPoint, mousePosShape, shapeStartPoint, state])
-
-
-
-  // clear canvas on reset button
   useEffect(() => {
     const canvas = canvasRef.current!
     if(!canvas) { return }
