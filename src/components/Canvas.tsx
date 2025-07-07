@@ -1,16 +1,9 @@
 
 
 import { useRef, useEffect, useState } from "react"
-import { setDrawing } from "../redux/slices/tools"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-import draw from "../typescript/draw"
-import drawCircleOnClick from "../typescript/drawCircleOnClick"
-import drawSquare from "../typescript/drawSquare"
-import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescript/drawShapes"
-import drawUndoRedo, {redrawCircleOnClick, redrawStraightLine} from "../typescript/drawUndoRedo"
-import { drawStraightLine } from "../typescript/drawStraightLine"
-import { saveStroke, resetCanvas } from "../redux/slices/undoRedo"
+import { resetCanvas } from "../redux/slices/undoRedo"
 import MouseFollower from "./MouseFollower"
 import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
@@ -33,7 +26,6 @@ import { usePreviewDrawing } from "../hooks/usePreviewDrawing"
 // the fact that i needed to change something is a good indicator that i will need to change that in the future, so i make it easy to make those changes, and then i applied the change
 
 const Canvas = () => {
-  const dispatch = useDispatch()
   const state = useSelector((state: RootState) => state.tools)
   // use ref to not cause re-renders when drawing
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)

@@ -38,16 +38,16 @@ export const usePreviewDrawing = ({
             drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
         }
 
-        if (state.toolForm === "square-shape" && shapeStartPoint && mousePosShape) {
-            drawSquareShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+        if (state.toolForm === "square-shape" && lineStartPoint && mousePosShape) {
+            drawSquareShape(ctxPreview, state, lineStartPoint, mousePosShape)
         }
 
-        if (state.toolForm === 'triangle-shape' && shapeStartPoint && mousePosShape) {
-            drawTriangleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+        if (state.toolForm === 'triangle-shape' && lineStartPoint && mousePosShape) {
+            drawTriangleShape(ctxPreview, state, lineStartPoint, mousePosShape)
         }
 
-        if (state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
-            drawCircleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+        if (state.toolForm === 'circle-shape' && lineStartPoint && mousePosShape) {
+            drawCircleShape(ctxPreview, state, lineStartPoint, mousePosShape)
         }
 
     },[mousePosLine, lineStartPoint, mousePosShape, shapeStartPoint])

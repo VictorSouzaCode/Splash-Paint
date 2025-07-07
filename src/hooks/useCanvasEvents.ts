@@ -9,6 +9,10 @@ import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescri
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { saveStroke } from "../redux/slices/undoRedo"
 
+// Now before breaking this code into smaller parts i want to make it simpler, take out states and functions that are not needed and try to simplify it as much as i can
+
+// fix a bug where the pencil increase indefinitly
+
 
 type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -87,98 +91,15 @@ export const useCanvasEvents = ({
 
       dispatch(setDrawing(true))
 
-      if(state.toolForm === 'line') {
+      if(!lineStartPoint) {
+        setLineStartPoint(point)
 
-        if(!lineStartPoint) {
-
-          setLineStartPoint(point)
-
-        } else {
-
-          setLineStartPoint(null)
-        }
-        return
+      } else {
+        setLineStartPoint(null)
       }
 
-      if(state.toolForm === 'square-shape'){
-        if(!shapeStartPoint) {
-          setShapeStartPoint(point)
-        } else {
-
-          drawSquareShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-
-          setShapeStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'triangle-shape'){
-
-        if(!shapeStartPoint){
-          setShapeStartPoint(point)
-
-        } else {
-
-          drawTriangleShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-
-          setShapeStartPoint(null)
-        }
-        return
-      }
-
-      if(state.toolForm === 'circle-shape') {
-        if(!shapeStartPoint){
-          setShapeStartPoint(point)
-        } else {
-          drawCircleShape(ctx, state, shapeStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [shapeStartPoint, point]
-          }))
-          setShapeStartPoint(null)
-        }
-        return
+      if(state.toolForm === 'circle' || state.toolForm === 'square'){
+        setLineStartPoint(null)
       }
 
       if(state.toolForm === 'circle') {
@@ -212,6 +133,8 @@ export const useCanvasEvents = ({
       
       dispatch(setDrawing(false))
 
+      const point = {x: e.clientX, y: e.clientY}
+
       if(state.toolForm !== "line" && state.toolForm !== "square-shape" && state.toolForm !== 'triangle-shape' && state.toolForm !== 'circle-shape'){
         dispatch(saveStroke({
         tool: state.tool,
@@ -232,9 +155,71 @@ export const useCanvasEvents = ({
       if(state.toolForm === 'line' && lineStartPoint) {
         setLineStartPoint(null)
 
-          const point = {x: e.clientX, y: e.clientY}
-
           drawStraightLine(ctx, state, lineStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [lineStartPoint, point]
+          }))
+          
+      }
+
+      if(state.toolForm === 'square-shape'&& lineStartPoint){
+        setLineStartPoint(null)
+
+        drawSquareShape(ctx, state, lineStartPoint, point)
+
+          dispatch(saveStroke({
+            tool: state.tool,
+            toolForm: state.toolForm,
+            pencilColor: state.pencilColor,
+            borderColor: state.borderColor,
+            screenColor: state.screenColor,
+            isDrawing: state.isDrawing,
+            size: state.size,
+            pointer: {
+              x: state.pointer.x,
+              y: state.pointer.y
+            },
+            storedStrokes: [lineStartPoint, point]
+          }))
+      }
+
+      if(state.toolForm === 'triangle-shape' && lineStartPoint){
+        setLineStartPoint(null)
+
+        drawTriangleShape(ctx, state, lineStartPoint, point)
+
+        dispatch(saveStroke({
+          tool: state.tool,
+          toolForm: state.toolForm,
+          pencilColor: state.pencilColor,
+          borderColor: state.borderColor,
+          screenColor: state.screenColor,
+          isDrawing: state.isDrawing,
+          size: state.size,
+          pointer: {
+            x: state.pointer.x,
+            y: state.pointer.y
+          },
+          storedStrokes: [lineStartPoint, point]
+        }))
+      }
+
+      if(state.toolForm === 'circle-shape' && lineStartPoint) {
+        setLineStartPoint(null)
+          
+          drawCircleShape(ctx, state, lineStartPoint, point)
 
           dispatch(saveStroke({
             tool: state.tool,
