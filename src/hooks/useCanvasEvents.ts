@@ -13,6 +13,8 @@ import { saveStroke } from "../redux/slices/undoRedo"
 
 // fix a bug where the pencil increase indefinitly
 
+// Put a limit how many things i store in the undo redo array because with many storages it starts to affect performance in a negative way
+
 
 type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -94,11 +96,12 @@ export const useCanvasEvents = ({
       if(!lineStartPoint) {
         setLineStartPoint(point)
 
-      } else {
+        if(state.toolForm === 'circle' || state.toolForm === 'square'){
         setLineStartPoint(null)
-      }
+        }
 
-      if(state.toolForm === 'circle' || state.toolForm === 'square'){
+      } else {
+
         setLineStartPoint(null)
       }
 
@@ -174,7 +177,7 @@ export const useCanvasEvents = ({
           
       }
 
-      if(state.toolForm === 'square-shape'&& lineStartPoint){
+      if(state.toolForm === 'square-shape' && lineStartPoint){
         setLineStartPoint(null)
 
         drawSquareShape(ctx, state, lineStartPoint, point)
