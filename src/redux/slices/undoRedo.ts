@@ -20,6 +20,9 @@ const strokeSlice = createSlice({
     reducers: {
         saveStroke: (state, action: PayloadAction<ToolState>) => {
             state.history.push(action.payload);
+            if(state.history.length >= 2) {
+                state.history = []
+            }
             state.redoStack = [] // clear redo when drawing new stroke
         },
         undoStroke: (state) => {
