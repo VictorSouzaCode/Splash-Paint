@@ -11,6 +11,8 @@ import { saveStroke } from "../redux/slices/undoRedo"
 
 // Now before breaking this code into smaller parts i want to make it simpler, take out states and functions that are not needed and try to simplify it as much as i can
 
+// remember to add a function to cancel the shape that i am doing if i am not happy with with its position
+
 
 type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
