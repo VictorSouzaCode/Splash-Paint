@@ -10,31 +10,25 @@ import drawSquare from "../typescript/drawSquare"
 type point = {x:number, y:number} | null;
 
 type PreviewProps = {
+  canvasPreviewRef: React.RefObject<HTMLCanvasElement | null>
   lineStartPoint: point,
-  mousePosLine: point,
-  shapeStartPoint: point,
-  mousePosShape: point
+  mousePosLine: point
 }
 
 const PreviewDrawings = (
   {
+    canvasPreviewRef,
     lineStartPoint, 
-    mousePosLine, 
-    shapeStartPoint, 
-    mousePosShape
+    mousePosLine,
   }: PreviewProps
 ) => {
-   const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
    const state = useSelector((state: RootState) => state.tools)
-   useResizeCanvas(canvasPreviewRef)
-
-   useEffect(() => {},[])
 
    useEffect(() => {
 
     const canvasPreview = canvasPreviewRef.current
 
-    if(!canvasPreview || (!lineStartPoint && !shapeStartPoint) ) return;
+    if(!canvasPreview || !lineStartPoint ) return;
 
     const ctxPreview = canvasPreview.getContext('2d')
     
@@ -46,19 +40,19 @@ const PreviewDrawings = (
       drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
     }
 
-    if (state.toolForm === "square-shape" && shapeStartPoint && mousePosShape) {
-    drawSquareShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    if (state.toolForm === "square-shape" && lineStartPoint && mousePosLine) {
+    drawSquareShape(ctxPreview, state, lineStartPoint, mousePosLine)
     }
 
-    if(state.toolForm === 'triangle-shape' && shapeStartPoint && mousePosShape){
-      drawTriangleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    if(state.toolForm === 'triangle-shape' && lineStartPoint && mousePosLine){
+      drawTriangleShape(ctxPreview, state, lineStartPoint, mousePosLine)
     }
 
-    if (state.toolForm === 'circle-shape' && shapeStartPoint && mousePosShape) {
-      drawCircleShape(ctxPreview, state, shapeStartPoint, mousePosShape)
+    if (state.toolForm === 'circle-shape' && lineStartPoint && mousePosLine) {
+      drawCircleShape(ctxPreview, state, lineStartPoint, mousePosLine)
     }
 
-  },[mousePosLine, lineStartPoint, mousePosShape, shapeStartPoint, state])
+  },[mousePosLine, lineStartPoint, state])
 
   return (
     <canvas

@@ -15,6 +15,8 @@
 
 // well i will start to make this code the way it is set up in chatgpt then i will make changes to better fit it in my app
 
+import type { ToolState } from "../redux/slices/tools"
+
 export type Point = {
     x: number,
     y: number

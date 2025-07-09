@@ -8,17 +8,13 @@ import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescri
 type PreviewDrawingProps = {
     canvasPreviewRef: React.RefObject<HTMLCanvasElement | null>,
     mousePosLine: { x: number; y: number;} | null,
-    lineStartPoint: { x: number; y: number;} | null,
-    mousePosShape: { x: number; y: number;} | null,
-    shapeStartPoint: { x: number; y: number;} | null,
+    lineStartPoint: { x: number; y: number;} | null
 }
 
 export const usePreviewDrawing = ({
     canvasPreviewRef,
     mousePosLine,
-    lineStartPoint,
-    mousePosShape,
-    shapeStartPoint
+    lineStartPoint
 }:PreviewDrawingProps) => {
     const state = useSelector((state: RootState) => state.tools)
 
@@ -26,7 +22,7 @@ export const usePreviewDrawing = ({
 
         const canvasPreview = canvasPreviewRef.current
 
-        if (!canvasPreview || (!lineStartPoint && !shapeStartPoint)) return;
+        if (!canvasPreview || !lineStartPoint) return;
 
         const ctxPreview = canvasPreview.getContext('2d')
 
@@ -38,17 +34,17 @@ export const usePreviewDrawing = ({
             drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
         }
 
-        if (state.toolForm === "square-shape" && lineStartPoint && mousePosShape) {
-            drawSquareShape(ctxPreview, state, lineStartPoint, mousePosShape)
+        if (state.toolForm === "square-shape" && lineStartPoint && mousePosLine) {
+            drawSquareShape(ctxPreview, state, lineStartPoint, mousePosLine)
         }
 
-        if (state.toolForm === 'triangle-shape' && lineStartPoint && mousePosShape) {
-            drawTriangleShape(ctxPreview, state, lineStartPoint, mousePosShape)
+        if (state.toolForm === 'triangle-shape' && lineStartPoint && mousePosLine) {
+            drawTriangleShape(ctxPreview, state, lineStartPoint, mousePosLine)
         }
 
-        if (state.toolForm === 'circle-shape' && lineStartPoint && mousePosShape) {
-            drawCircleShape(ctxPreview, state, lineStartPoint, mousePosShape)
+        if (state.toolForm === 'circle-shape' && lineStartPoint && mousePosLine) {
+            drawCircleShape(ctxPreview, state, lineStartPoint, mousePosLine)
         }
 
-    },[mousePosLine, lineStartPoint, mousePosShape, shapeStartPoint])
+    },[mousePosLine, lineStartPoint, state])
 }

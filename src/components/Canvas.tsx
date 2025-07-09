@@ -37,10 +37,6 @@ const Canvas = () => {
   const [lineStartPoint, setLineStartPoint] = useState<{x:number, y:number}| null>(null)
   const [mousePosLine, setMousePosLine] = useState<{x:number, y:number}| null>(null)
 
-  //useState to draw Shapes
-  const [shapeStartPoint, setShapeStartPoint] = useState<{x:number, y:number} | null>(null)
-  const [mousePosShape, setMousePosShape] = useState<{x:number, y:number} | null>(null)
-
   useResizeCanvas(
     canvasRef, 
     canvasPreviewRef
@@ -52,14 +48,9 @@ const Canvas = () => {
     prevPos,
     currentPosition,
     lineStartPoint,
-    mousePosLine,
-    shapeStartPoint,
-    mousePosShape,
     setPrevPos,
     setLineStartPoint,
     setMousePosLine,
-    setShapeStartPoint,
-    setMousePosShape
   })
 
   useUndoRedo({
@@ -69,9 +60,7 @@ const Canvas = () => {
   usePreviewDrawing({
     canvasPreviewRef, 
     mousePosLine, 
-    lineStartPoint, 
-    mousePosShape, 
-    shapeStartPoint
+    lineStartPoint
   })
 
   useEffect(() => {

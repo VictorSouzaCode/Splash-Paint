@@ -13,6 +13,11 @@ import { saveStroke } from "../redux/slices/undoRedo"
 
 // remember to add a function to cancel the shape that i am doing if i am not happy with with its position
 
+// i really dont know where to start
+// i think i will change my focus a little bit to refactor this code here then i will go back to work on the drawing engine
+// so i will clean it a litte bit to better understand it and later add the drawing engine to it
+// i think i can change the drawing to my second preview canvas instead of drawing directly into my normal canvas where the images will be stored
+
 
 type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -20,9 +25,6 @@ type UseEffectProps = {
     prevPos: {x: number, y: number} | null,
     currentPosition: React.RefObject<{x: number, y: number;}[]>,
     lineStartPoint: {x: number, y: number} | null,
-    mousePosLine: {x: number, y: number} | null,
-    shapeStartPoint: {x: number, y: number} | null,
-    mousePosShape: {x: number, y: number} | null,
     setPrevPos: React.Dispatch<React.SetStateAction<{
     x: number;
     y: number;} | null>>,
@@ -32,12 +34,6 @@ type UseEffectProps = {
     setMousePosLine: React.Dispatch<React.SetStateAction<{
     x: number;
     y: number;} | null>>,
-    setShapeStartPoint: React.Dispatch<React.SetStateAction<{
-    x: number;
-    y: number;} | null>>,
-    setMousePosShape : React.Dispatch<React.SetStateAction<{
-    x: number;
-    y: number;} | null>>
 }
 
 export const useCanvasEvents = ({
@@ -46,14 +42,9 @@ export const useCanvasEvents = ({
     prevPos,
     currentPosition,
     lineStartPoint,
-    mousePosLine,
-    shapeStartPoint,
-    mousePosShape,
     setPrevPos,
     setLineStartPoint,
-    setMousePosLine,
-    setShapeStartPoint,
-    setMousePosShape
+    setMousePosLine
 }:UseEffectProps) => {
 
     const dispatch = useDispatch()
@@ -66,17 +57,16 @@ export const useCanvasEvents = ({
 
     const handleMouseMove = (e:MouseEvent) => {
       setMousePosLine({x: e.clientX, y: e.clientY})
-      setMousePosShape({x: e.clientX, y: e.clientY})
 
       if(state.isDrawing) {
         const point = {x: e.clientX, y: e.clientY}
 
         if(prevPos && state.toolForm === 'circle') {
-          draw(ctx, state, prevPos.x, prevPos.y, e.clientX, e.clientY)
+          draw(ctx, state, prevPos, point)
           currentPosition.current.push(point)
         }
         if(prevPos && state.toolForm === 'square') {
-          drawSquare(ctx, state, e.clientX, e.clientY)
+          drawSquare(ctx, state, point)
           currentPosition.current.push(point)
         }
       }
@@ -104,19 +94,13 @@ export const useCanvasEvents = ({
       }
 
       if(state.toolForm === 'circle') {
-        drawCircleOnClick(ctx, state, e.clientX, e.clientY)
+        drawCircleOnClick(ctx, state, point)
         currentPosition.current = [point]
       }
 
       if(state.toolForm === 'square') {
-        drawSquare(ctx, state, e.clientX, e.clientY)
+        drawSquare(ctx, state, point)
         currentPosition.current = [point]
-      }
-
-      if(state.isDrawing) {
-
-        setPrevPos({x: state.pointer.x, y: state.pointer.y})
-        // Initializes prevPos so i know where to start the line.
       }
     }
 
@@ -136,7 +120,7 @@ export const useCanvasEvents = ({
 
       const point = {x: e.clientX, y: e.clientY}
 
-      if(state.toolForm !== "line" && state.toolForm !== "square-shape" && state.toolForm !== 'triangle-shape' && state.toolForm !== 'circle-shape'){
+      if(state.toolForm === 'circle' || state.toolForm === 'square'){
         dispatch(saveStroke({
         tool: state.tool,
         toolForm: state.toolForm,
@@ -154,7 +138,6 @@ export const useCanvasEvents = ({
       }
 
       if(state.toolForm === 'line' && lineStartPoint) {
-        setLineStartPoint(null)
 
           drawStraightLine(ctx, state, lineStartPoint, point)
 
@@ -176,7 +159,6 @@ export const useCanvasEvents = ({
       }
 
       if(state.toolForm === 'square-shape' && lineStartPoint){
-        setLineStartPoint(null)
 
         drawSquareShape(ctx, state, lineStartPoint, point)
 
@@ -197,7 +179,6 @@ export const useCanvasEvents = ({
       }
 
       if(state.toolForm === 'triangle-shape' && lineStartPoint){
-        setLineStartPoint(null)
 
         drawTriangleShape(ctx, state, lineStartPoint, point)
 
@@ -218,7 +199,6 @@ export const useCanvasEvents = ({
       }
 
       if(state.toolForm === 'circle-shape' && lineStartPoint) {
-        setLineStartPoint(null)
           
           drawCircleShape(ctx, state, lineStartPoint, point)
 
@@ -241,6 +221,7 @@ export const useCanvasEvents = ({
       currentPosition.current = []
       clearPreviewCanvasOnMouseUp()
       setPrevPos(null)
+      setLineStartPoint(null)
     }
 
     const handleMouseLeave = () => {

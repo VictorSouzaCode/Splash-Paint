@@ -1,20 +1,19 @@
 import type { ToolState } from "../redux/slices/tools";
 
 
-type ShapeStartPoint = {x:number, y:number} | null
+type ShapeStartPoint = {x:number, y:number} | null;
 
-type MousePos = {x:number, y:number}
-
+type MousePosLine = {x:number, y:number} | null;
 
 export function drawSquareShape (
     ctx: CanvasRenderingContext2D,
     state: ToolState,
     shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePos
+    mousePos: MousePosLine
 
 ) {
 
-    if(!shapeStartPoint) { return }
+    if(!shapeStartPoint || !mousePos) { return }
 
     const start = shapeStartPoint;
     const end = mousePos;
@@ -32,11 +31,11 @@ export function drawTriangleShape (
     ctx: CanvasRenderingContext2D,
     state: ToolState,
     shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePos
+    mousePos: MousePosLine
 
 ) {
 
-    if(!shapeStartPoint) { return }
+    if(!shapeStartPoint || !mousePos) { return }
 
     const start = shapeStartPoint;
     const end = mousePos;
@@ -58,10 +57,10 @@ export function drawCircleShape (
     ctx: CanvasRenderingContext2D,
     state: ToolState,
     shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePos
+    mousePos: MousePosLine
 ) {
 
-    if (!shapeStartPoint) return;
+    if (!shapeStartPoint || !mousePos) return;
 
     const start = shapeStartPoint;
     const end = mousePos;
