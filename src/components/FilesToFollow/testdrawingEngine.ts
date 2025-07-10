@@ -46,7 +46,11 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement) => {
     let pendingStrokes: Stroke[] = [] // A temporary array holding strokes drawn since the last commit. These strokes are not yet saved to a snapshot. Allows batching multiple strokes before committing.
     let currentStroke: Stroke | null = null // Holds the stroke the user is currently drawing. Becomes null when no active drawing is happening.
 
-    const startStroke = (point: Point, color: string, size: number) => {
+    const startStroke = (point: Point, toolState: ToolState) => {
+        const color = toolState.tool === 'pencil' ? toolState.pencilColor : toolState.screenColor
+
+        const size = toolState.size
+
         currentStroke = {
             points: [point],
             color,

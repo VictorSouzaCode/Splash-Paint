@@ -1,10 +1,11 @@
-//Pure TypeScript drawing logic
+
 
 import type { ToolState } from "../redux/slices/tools";
 
-type PrevPos = { x:number, y:number }
+type PrevPos = { x:number, y:number } | null;
 
 type CurrentPosition = { x:number, y:number }
+
 
 function draw (
     ctx: CanvasRenderingContext2D,

@@ -9,21 +9,8 @@ import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { useUndoRedo } from "../hooks/useUndoRedo"
 import { usePreviewDrawing } from "../hooks/usePreviewDrawing"
+import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 
-
-// refactor is the process of turning my dirty code into clean code
-// Things to Keep in mind when refactoring
-// easy to read, clear and consistent naming
-// This code needs to be ease to understand
-// this code needs to be able to be changed
-
-// useState in react, aways when i have a useState i need to ask myself does this state needs to be here or it can be moved somewhere else, somewhere else being the parent or further down so the main component doesnt re-render when this state changes
-
-// i can put a div in a sigle component to follow the single responsability principal that is a design pattern in react, which means i can have a component the handles a single div and have it encapsulated away from this main component
-
-// use customHooks if i have code that i use in other places
-
-// the fact that i needed to change something is a good indicator that i will need to change that in the future, so i make it easy to make those changes, and then i applied the change
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
@@ -37,6 +24,15 @@ const Canvas = () => {
   const [lineStartPoint, setLineStartPoint] = useState<{x:number, y:number}| null>(null)
   const [mousePosLine, setMousePosLine] = useState<{x:number, y:number}| null>(null)
 
+  const [engine, setEngine] = useState<ReturnType<typeof createDrawingEngine> | null>(null)
+
+  useEffect(() => {
+    if(canvasRef.current) {
+      const drawingEngine = createDrawingEngine(canvasRef.current)
+      setEngine(drawingEngine)
+    }
+  },[canvasRef, state])
+
   useResizeCanvas(
     canvasRef, 
     canvasPreviewRef
@@ -48,6 +44,7 @@ const Canvas = () => {
     prevPos,
     currentPosition,
     lineStartPoint,
+    drawingEngine: engine,
     setPrevPos,
     setLineStartPoint,
     setMousePosLine,

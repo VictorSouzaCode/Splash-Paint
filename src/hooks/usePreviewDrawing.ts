@@ -3,6 +3,9 @@ import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescript/drawShapes"
+import draw from "../typescript/draw"
+import drawSquare from "../typescript/drawSquare"
+import drawCircleOnClick from "../typescript/drawCircleOnClick"
 
 
 type PreviewDrawingProps = {
