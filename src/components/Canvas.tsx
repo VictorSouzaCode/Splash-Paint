@@ -28,7 +28,7 @@ const Canvas = () => {
 
   useEffect(() => {
     if(canvasRef.current) {
-      const drawingEngine = createDrawingEngine(canvasRef.current)
+      const drawingEngine = createDrawingEngine(canvasRef.current, canvasPreviewRef.current)
       setEngine(drawingEngine)
     }
   },[canvasRef, state])

@@ -4,11 +4,12 @@ type LineStartPoint = { x:number, y:number }
 type Point = { x:number, y:number }
 
 export function drawStraightLine (
-    ctx: CanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D | null,
     state: ToolState,
-    lineStartPoint: LineStartPoint,
-    point: Point
+    lineStartPoint: LineStartPoint | null,
+    point: Point | null
 ) {
+    if(!ctx || !lineStartPoint || !point) return
 
     if(state.toolForm === 'line') {
       ctx.beginPath();

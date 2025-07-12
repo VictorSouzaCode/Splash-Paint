@@ -1,6 +1,7 @@
 
 
 import type { ToolState } from "../../redux/slices/tools"
+import { drawStraightLine } from "../drawStraightLine"
 import { store } from "../../redux/store"
 
 export type Point = {
@@ -15,46 +16,104 @@ export type Stroke = {
     toolForm: string
 }
 
-export const createDrawingEngine = (canvas: HTMLCanvasElement) => {
+// i am able to draw a straight line, but i can't commit it to the canvas drawing board
+// what i think i need to do is to create a shapePendingStrokes, and draw from there
+// or i can use the current pendingStrokes to store lines coordinates
+// so lets test out both, i will start by creating a separated array if it works i will try to use pendingStrokes to accomplish the same thing
+
+// i think i know what is going on, when i draw a line i need to clean the canvas to see it moving, the result is that any previous drawing on canvas gets deleted, and when i click again to commit the line gets erased
+
+export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
+    if(!canvas || !canvasPreview ) return
+    const ctxPreview = canvasPreview.getContext('2d')
     const ctx = canvas.getContext('2d')
-    if(!ctx) throw new Error('Canvas 2D context not supported')
+    if(!ctx || !ctxPreview) throw new Error('Canvas 2D context not supported')
 
     const width = canvas.width
     const height = canvas.height
+
+    const previewWidth = canvasPreview.width
+    const previewHeight = canvasPreview.height
 
     let snapshots: ImageBitmap[] = []
     let snapshotIndex = -1
     let pendingStrokes: Stroke[] = []
     let currentStroke: Stroke | null = null
+    let shapeEndingPoint: Point | null = null
+    let shapeStartPoint: Point | null = null
 
-    const startStroke = (point: Point, toolState: ToolState) => {
-        const color = toolState.tool === 'pencil' ? toolState.pencilColor : toolState.screenColor
+    const startStroke = (point: Point, state: ToolState) => {
 
-        const size = toolState.size
+        if (state.toolForm !== 'circle' && state.toolForm !== 'square') {
 
-        const toolForm = toolState.toolForm
+            shapeStartPoint = point
 
-        currentStroke = {
-            points: [point],
-            color,
-            size,
-            toolForm
+        } else {
+            const color = state.tool === 'pencil' ? state.pencilColor : state.screenColor
+
+            const size = state.size
+
+            const toolForm = state.toolForm
+
+            currentStroke = {
+                points: [point],
+                color,
+                size,
+                toolForm
+            }
         }
     }
 
-    const updateStroke = (point:Point) => {
-        if(!currentStroke) return
-        currentStroke.points.push(point)
-        drawStroke(currentStroke, false)
+    const updateStroke = (point:Point, state:ToolState) => {
+
+        if(shapeStartPoint && state.toolForm !== 'circle' && state.toolForm !== 'square') {
+
+            ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
+
+            shapeEndingPoint = point
+
+            drawShape(state)
+
+        } else if (currentStroke) {
+
+            currentStroke.points.push(point)
+            drawStroke(currentStroke, false)
+        }
+        
     }
 
-    const endStroke = async () => {
-        if(!currentStroke) return
+    const drawShape = (
+    state: ToolState ) => {
 
+        drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+    }
+
+    const endStroke = async (state: ToolState) => {
+        if(state.toolForm !== 'circle' && state.toolForm !== 'square' && shapeStartPoint && shapeEndingPoint) {
+
+            const color = state.tool === 'pencil' ? state.pencilColor : state.screenColor
+            const size = state.size
+            const toolForm = state.toolForm
+
+            const straightLineStroke: Stroke = {
+                points: [shapeStartPoint, shapeEndingPoint],
+                color,
+                size,
+                toolForm
+            }
+            pendingStrokes.push(straightLineStroke)
+            await commitToSnapShot()
+
+            shapeStartPoint = null
+            shapeEndingPoint = null
+            ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
+        }
+        if(currentStroke) {
         pendingStrokes.push(currentStroke)
         await commitToSnapShot()
 
         currentStroke = null
+        }
     }
 
     const undo = async () => {
@@ -90,11 +149,30 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement) => {
 
     const restoreSnapShot = async () => {
         ctx.clearRect(0, 0, width, height)
-        const snapshot = snapshots[snapshotIndex]
-        ctx.drawImage(snapshot, 0, 0)
+        ctxPreview.clearRect(0, 0, previewHeight, previewWidth)
+        if(snapshotIndex >= 0 && snapshotIndex < snapshots.length) {
+            const snapshot = snapshots[snapshotIndex]
+            ctx.drawImage(snapshot, 0, 0)
+        }
     }
 
     const drawStroke = (stroke: Stroke, commit: boolean) => {
+
+        if(stroke.toolForm === 'line' && stroke.points.length === 2) {
+            const points = stroke.points
+            const startX = stroke.points[0].x
+            const startY = stroke.points[0].y
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            for(let i = 1; i < points.length; i++){
+            ctx.lineTo(points[i].x, points[i].y);
+            ctx.strokeStyle = stroke.color
+            ctx.lineWidth = stroke.size;
+            ctx.lineCap = 'round'
+            ctx.stroke();
+            }
+        }
 
         if(stroke.toolForm === 'circle') {
 

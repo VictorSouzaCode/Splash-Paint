@@ -3,9 +3,6 @@ import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescript/drawShapes"
-import draw from "../typescript/draw"
-import drawSquare from "../typescript/drawSquare"
-import drawCircleOnClick from "../typescript/drawCircleOnClick"
 
 
 type PreviewDrawingProps = {
@@ -33,9 +30,9 @@ export const usePreviewDrawing = ({
 
         ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
 
-        if (state.toolForm === 'line' && lineStartPoint && mousePosLine) {
-            drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
-        }
+        // if (state.toolForm === 'line' && lineStartPoint && mousePosLine) {
+        //     drawStraightLine(ctxPreview, state, lineStartPoint, mousePosLine)
+        // }
 
         if (state.toolForm === "square-shape" && lineStartPoint && mousePosLine) {
             drawSquareShape(ctxPreview, state, lineStartPoint, mousePosLine)

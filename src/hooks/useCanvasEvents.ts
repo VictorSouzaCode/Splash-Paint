@@ -3,8 +3,6 @@ import { setDrawing } from "../redux/slices/tools"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import draw from "../typescript/draw"
-import drawCircleOnClick from "../typescript/drawCircleOnClick"
-import drawSquare from "../typescript/drawSquare"
 import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescript/drawShapes"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { saveStroke } from "../redux/slices/undoRedo"
@@ -46,20 +44,15 @@ export const useCanvasEvents = ({
 
     useEffect(() => {
     const canvas = canvasRef.current!;
-    if(!canvas) { return }
+    if(!canvas || !drawingEngine) { return }
     const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
 
       setMousePosLine({x: e.clientX, y: e.clientY})
 
-      if(!drawingEngine) return;
-
       const point = { x: e.clientX, y: e.clientY }
-      drawingEngine.updateStroke(point)
-      
-      setPrevPos({x: e.clientX, y: e.clientY})
-      // Save the current position as prevPos for the next draw step with the rouded pencil.
+      drawingEngine.updateStroke(point, state)
     }
 
     const handleMouseDown = async (e:MouseEvent) => {
@@ -81,9 +74,11 @@ export const useCanvasEvents = ({
         setLineStartPoint(null)
       }
 
-      if(state.toolForm === 'circle' || state.toolForm === 'square') {
-        drawingEngine?.startStroke(point, state)
-      }
+      drawingEngine?.startStroke(point, state)
+
+      // if(state.toolForm === 'circle' || state.toolForm === 'square') {
+        
+      // }
     }
 
     const clearPreviewCanvasOnMouseUp = () => {
@@ -98,30 +93,13 @@ export const useCanvasEvents = ({
 
     const handleMouseUp = async (e:MouseEvent) => {
       
-      // dispatch(setDrawing(false))
-
       const point = {x: e.clientX, y: e.clientY}
 
-      await drawingEngine?.endStroke()
+      await drawingEngine?.endStroke(state)
 
-      /* if(state.toolForm === 'circle' || state.toolForm === 'square'){
-        dispatch(saveStroke({
-        tool: state.tool,
-        toolForm: state.toolForm,
-        pencilColor: state.pencilColor,
-        borderColor: state.borderColor,
-        screenColor: state.screenColor,
-        isDrawing: state.isDrawing,
-        size: state.size,
-        pointer: {
-          x: state.pointer.x,
-          y: state.pointer.y
-        },
-        storedStrokes: [...currentPosition.current]
-      }))
-      } */
+      // dispatch(setDrawing(false))
 
-      if(state.toolForm === 'line' && lineStartPoint) {
+      /* if(state.toolForm === 'line' && lineStartPoint) {
 
           drawStraightLine(ctx, state, lineStartPoint, point)
 
@@ -140,7 +118,7 @@ export const useCanvasEvents = ({
             storedStrokes: [lineStartPoint, point]
           }))
           
-      }
+      } */
 
       if(state.toolForm === 'square-shape' && lineStartPoint){
 
@@ -202,15 +180,13 @@ export const useCanvasEvents = ({
           }))
       }
       
-      currentPosition.current = []
       clearPreviewCanvasOnMouseUp()
-      setPrevPos(null)
       setLineStartPoint(null)
     }
 
-    const handleMouseLeave = () => {
+    const handleMouseLeave = async () => {
       dispatch(setDrawing(false))
-      setPrevPos(null)
+      // await drawingEngine?.endStroke()
     }
 
     canvas.addEventListener('mousedown', handleMouseDown)
@@ -224,5 +200,5 @@ export const useCanvasEvents = ({
       canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mouseleave', handleMouseLeave)
     }
-  },[state, prevPos, drawingEngine])
+  },[state, drawingEngine])
 }
