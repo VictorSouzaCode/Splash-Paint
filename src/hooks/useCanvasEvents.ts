@@ -2,11 +2,6 @@ import { useEffect } from "react"
 import { setDrawing } from "../redux/slices/tools"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-import draw from "../typescript/draw"
-import { drawSquareShape, drawTriangleShape, drawCircleShape } from "../typescript/drawShapes"
-import { drawStraightLine } from "../typescript/drawStraightLine"
-import { saveStroke } from "../redux/slices/undoRedo"
-import type { Point } from "../typescript/engine/drawingEngine"
 
 
 type UseEffectProps = {
@@ -48,9 +43,6 @@ export const useCanvasEvents = ({
     const ctx = canvas.getContext('2d')!
 
     const handleMouseMove = (e:MouseEvent) => {
-
-      setMousePosLine({x: e.clientX, y: e.clientY})
-
       const point = { x: e.clientX, y: e.clientY }
       drawingEngine.updateStroke(point, state)
     }
@@ -60,128 +52,23 @@ export const useCanvasEvents = ({
 
       const point = {x: e.clientX, y: e.clientY}
 
-      dispatch(setDrawing(true))
-
-      if(!lineStartPoint) {
-        setLineStartPoint(point)
-
-        if(state.toolForm === 'circle' || state.toolForm === 'square'){
-        setLineStartPoint(null)
-        }
-
-      } else {
-
-        setLineStartPoint(null)
-      }
-
       drawingEngine?.startStroke(point, state)
 
-      // if(state.toolForm === 'circle' || state.toolForm === 'square') {
-        
-      // }
     }
 
-    const clearPreviewCanvasOnMouseUp = () => {
-      const canvasPreview = canvasPreviewRef.current!
+    const handleMouseUp = async () => {
+
+      await drawingEngine?.endStroke(state)
+
+      // dispatch(setDrawing(false))
+      
+      /* const canvasPreview = canvasPreviewRef.current!
 
       const ctxPreview = canvasPreviewRef.current?.getContext('2d')
 
       if (!ctxPreview) return;
 
-      ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
-    }
-
-    const handleMouseUp = async (e:MouseEvent) => {
-      
-      const point = {x: e.clientX, y: e.clientY}
-
-      await drawingEngine?.endStroke(state)
-
-      // dispatch(setDrawing(false))
-
-      /* if(state.toolForm === 'line' && lineStartPoint) {
-
-          drawStraightLine(ctx, state, lineStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [lineStartPoint, point]
-          }))
-          
-      } */
-
-      if(state.toolForm === 'square-shape' && lineStartPoint){
-
-        drawSquareShape(ctx, state, lineStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [lineStartPoint, point]
-          }))
-      }
-
-      if(state.toolForm === 'triangle-shape' && lineStartPoint){
-
-        drawTriangleShape(ctx, state, lineStartPoint, point)
-
-        dispatch(saveStroke({
-          tool: state.tool,
-          toolForm: state.toolForm,
-          pencilColor: state.pencilColor,
-          borderColor: state.borderColor,
-          screenColor: state.screenColor,
-          isDrawing: state.isDrawing,
-          size: state.size,
-          pointer: {
-            x: state.pointer.x,
-            y: state.pointer.y
-          },
-          storedStrokes: [lineStartPoint, point]
-        }))
-      }
-
-      if(state.toolForm === 'circle-shape' && lineStartPoint) {
-          
-          drawCircleShape(ctx, state, lineStartPoint, point)
-
-          dispatch(saveStroke({
-            tool: state.tool,
-            toolForm: state.toolForm,
-            pencilColor: state.pencilColor,
-            borderColor: state.borderColor,
-            screenColor: state.screenColor,
-            isDrawing: state.isDrawing,
-            size: state.size,
-            pointer: {
-              x: state.pointer.x,
-              y: state.pointer.y
-            },
-            storedStrokes: [lineStartPoint, point]
-          }))
-      }
-      
-      clearPreviewCanvasOnMouseUp()
-      setLineStartPoint(null)
+      ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height) */
     }
 
     const handleMouseLeave = async () => {

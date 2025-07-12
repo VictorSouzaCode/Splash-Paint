@@ -13,7 +13,7 @@ export function drawSquareShape (
 
 ) {
 
-    if(!shapeStartPoint || !mousePos) { return }
+    if(!ctx || !shapeStartPoint || !mousePos) { return }
 
     const start = shapeStartPoint;
     const end = mousePos;

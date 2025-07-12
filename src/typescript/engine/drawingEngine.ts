@@ -2,6 +2,7 @@
 
 import type { ToolState } from "../../redux/slices/tools"
 import { drawStraightLine } from "../drawStraightLine"
+import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../drawShapes"
 import { store } from "../../redux/store"
 
 export type Point = {
@@ -15,13 +16,6 @@ export type Stroke = {
     size: number,
     toolForm: string
 }
-
-// i am able to draw a straight line, but i can't commit it to the canvas drawing board
-// what i think i need to do is to create a shapePendingStrokes, and draw from there
-// or i can use the current pendingStrokes to store lines coordinates
-// so lets test out both, i will start by creating a separated array if it works i will try to use pendingStrokes to accomplish the same thing
-
-// i think i know what is going on, when i draw a line i need to clean the canvas to see it moving, the result is that any previous drawing on canvas gets deleted, and when i click again to commit the line gets erased
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
     if(!canvas || !canvasPreview ) return
@@ -72,7 +66,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             shapeEndingPoint = point
 
-            drawShape(state)
+            drawShapePreview(state)
 
         } else if (currentStroke) {
 
@@ -82,10 +76,24 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         
     }
 
-    const drawShape = (
+    const drawShapePreview = (
     state: ToolState ) => {
 
-        drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+        if(state.toolForm === 'line') {
+            drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+        }
+
+        if(state.toolForm === 'square-shape') {
+            drawSquareShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+        }
+
+        if(state.toolForm === 'triangle-shape'){
+            drawTriangleShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+        }
+
+        if(state.toolForm === 'circle-shape'){
+            drawCircleShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
+        }
     }
 
     const endStroke = async (state: ToolState) => {
@@ -172,6 +180,57 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             ctx.lineCap = 'round'
             ctx.stroke();
             }
+        }
+
+        if(stroke.toolForm === 'square-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+            const start = shapeStartPoint;
+            const end = shapeEndingPoint;
+            const width = end.x - start.x;
+            const height = end.y - start.y;
+
+            ctx.strokeStyle = stroke.color
+            ctx.lineWidth = stroke.size;
+            ctx.beginPath()
+            ctx.strokeRect(start.x, start.y, width, height);
+        }
+
+        if(stroke.toolForm === 'triangle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+            const start = shapeStartPoint;
+            const end = shapeEndingPoint;
+            const triangleWidth = end.x - start.x;
+            const triangleHeight = end.y - start.y;
+            
+            ctx.strokeStyle = stroke.color
+            ctx.lineWidth = stroke.size;
+            ctx.beginPath();
+            ctx.moveTo(start.x + triangleWidth / 2, start.y);
+            ctx.lineTo(start.x, start.y + triangleHeight);
+            ctx.lineTo(start.x + triangleWidth, start.y + triangleHeight);
+            ctx.closePath();
+            ctx.stroke();
+
+        }
+
+        if(stroke.toolForm === 'circle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+            const start = shapeStartPoint;
+            const end = shapeEndingPoint;
+
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+
+            const centerX = (start.x + end.x) / 2;
+            const centerY = (start.y + end.y) / 2;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = stroke.color
+            ctx.lineWidth = stroke.size;
+            ctx.stroke();
+
         }
 
         if(stroke.toolForm === 'circle') {
