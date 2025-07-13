@@ -285,16 +285,25 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         ctx.fillStyle = stroke.color
         ctx.fill()
         ctx.closePath()
+        
+        const points = stroke.points
 
         ctx.beginPath()
-        const points = stroke.points
-        if(points.length > 0) {
-            ctx.moveTo(points[0].x, points[0].y)
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y)
-            }
+        if (points.length > 0) {
+        ctx.moveTo(points[0].x, points[0].y);
+
+        // Loop until the second-to-last point to avoid points[i+1] being undefined
+        for (let i = 1; i < points.length - 1; i++) {
+            const midPointX = (points[i].x + points[i + 1].x) / 2;
+            const midPointY = (points[i].y + points[i + 1].y) / 2;
+            ctx.quadraticCurveTo(points[i].x, points[i].y, midPointX, midPointY);
         }
-        ctx.stroke()
+
+        // Draw a straight line to the last point to close the path
+        ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+    }
+
+    ctx.stroke();
         if(commit) {
             ctx.closePath()
         }
