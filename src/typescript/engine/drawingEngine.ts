@@ -73,6 +73,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             }
         }
     }
+    
 
     const updateStroke = (point:Point, state:ToolState) => {
 
@@ -87,10 +88,14 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         } else if (currentStroke) {
 
             const lastPoint = currentStroke.points[currentStroke.points.length - 1];
-            const interpolated = interpolatePoints(lastPoint, point, 2) // 2px step
+
+            const interpolated = interpolatePoints(lastPoint, point, 2)
 
             currentStroke.points.push(...interpolated, point)
-            drawStroke(currentStroke, false)
+
+            const smoothPoints = chaikin([...currentStroke.points], 2);
+
+            drawPreviewStroke(smoothPoints, currentStroke)
         }
         
     }
@@ -110,6 +115,21 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             });
         }
         return result
+    }
+
+    const drawPreviewStroke = (smoothPoints: Point[], currentStroke:Stroke) => {
+
+        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+            ctxPreview.strokeStyle = currentStroke.color;
+            ctxPreview.lineWidth = currentStroke.size;
+            ctxPreview.lineJoin = 'round'
+            ctxPreview.lineCap = 'round';
+            ctxPreview.beginPath();
+            ctxPreview.moveTo(smoothPoints[0].x, smoothPoints[0].y);
+            for (let i = 1; i < smoothPoints.length; i++) {
+                ctxPreview.lineTo(smoothPoints[i].x, smoothPoints[i].y);
+            }
+            ctxPreview.stroke();
     }
 
     const drawShapePreview = (
@@ -153,6 +173,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
         }
         if(currentStroke) {
+        ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
         pendingStrokes.push(currentStroke)
         await commitToSnapShot()
 
@@ -198,6 +219,28 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const snapshot = snapshots[snapshotIndex]
             ctx.drawImage(snapshot, 0, 0)
         }
+    }
+
+    // algorithm for smoother pencil lines
+    function chaikin(points: Point[], iterations = 2): Point[] {
+        for (let iter = 0; iter < iterations; iter++) {
+            const newPoints: Point[] = [];
+            for (let i = 0; i < points.length - 1; i++) {
+                const p0 = points[i];
+                const p1 = points[i + 1];
+                const Q: Point = {
+                    x: 0.75 * p0.x + 0.25 * p1.x,
+                    y: 0.75 * p0.y + 0.25 * p1.y,
+                };
+                const R: Point = {
+                    x: 0.25 * p0.x + 0.75 * p1.x,
+                    y: 0.25 * p0.y + 0.75 * p1.y,
+                };
+                newPoints.push(Q, R);
+            }
+            points = newPoints;
+        }
+        return points;
     }
 
     const drawStroke = (stroke: Stroke, commit: boolean) => {
@@ -271,43 +314,36 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         if(stroke.toolForm === 'circle') {
 
-        const radius = stroke.size / 2
-        const circleX = stroke.points[0].x
-        const circleY = stroke.points[0].y
+        // const radius = stroke.size / 2
+        // const circleX = stroke.points[0].x
+        // const circleY = stroke.points[0].y
+
+        // ctx.beginPath()
+        // ctx.arc(circleX, circleY, radius, 0, Math.PI * 100)
+        // ctx.fillStyle = stroke.color
+        // ctx.fill()
+        // ctx.closePath()
+        // making the circle here was causing the beggining of the line aways grow bigger that the preview drawing line
 
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size
         ctx.lineJoin = 'round'
         ctx.lineCap = 'round'
 
-        ctx.beginPath()
-        ctx.arc(circleX, circleY, radius, 0, Math.PI * 2)
-        ctx.fillStyle = stroke.color
-        ctx.fill()
-        ctx.closePath()
-        
-        const points = stroke.points
+        const points = chaikin(stroke.points, 2)
 
         ctx.beginPath()
-        if (points.length > 0) {
-        ctx.moveTo(points[0].x, points[0].y);
-
-        // Loop until the second-to-last point to avoid points[i+1] being undefined
-        for (let i = 1; i < points.length - 1; i++) {
-            const midPointX = (points[i].x + points[i + 1].x) / 2;
-            const midPointY = (points[i].y + points[i + 1].y) / 2;
-            ctx.quadraticCurveTo(points[i].x, points[i].y, midPointX, midPointY);
-        }
-
-        // Draw a straight line to the last point to close the path
-        ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
-    }
-
-    ctx.stroke();
-        if(commit) {
-            ctx.closePath()
-        }
-        }
+            if (points.length > 0) {
+                ctx.moveTo(points[0].x , points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+            }
+            ctx.stroke();
+            if(commit) {
+                ctx.closePath()
+            }
+            }
 
         if(stroke.toolForm === 'square') {
 
