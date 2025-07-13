@@ -3,7 +3,6 @@
 import type { ToolState } from "../../redux/slices/tools"
 import { drawStraightLine } from "../drawStraightLine"
 import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../drawShapes"
-import { store } from "../../redux/store"
 
 export type Point = {
     x: number,
@@ -16,6 +15,23 @@ export type Stroke = {
     size: number,
     toolForm: string
 }
+
+// fix a bug when i draw a square or triangle the borders get rounded
+// improve pencil smootheness, i think the traice is to pixeled
+// add undo redo to my buttons
+// refactor this code and break it down into small pieces
+// move ctx drawing to another file
+// move undo redo to a separated file
+
+// so i will make the drawing with freehand smoother
+// the way i will do that is adding quadratic Bezier curves for smoothing but it needs to have way more points in the points array for it to work properly so...
+// i will add Interpolate points as you draw (live smoothing)
+/* Right now, your updateStroke pushes raw mouse points as fast as the browser gives them. If the mouse moves too fast, the points get too sparse.
+
+You can fix this by adding interpolated points between two distant mouse events:
+*/
+// i will do that with the circle freehand then i will do that with squares as well
+// it will cost a little bit of performance this method but the drawing will be prettier 
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
     if(!canvas || !canvasPreview ) return
@@ -70,10 +86,30 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         } else if (currentStroke) {
 
-            currentStroke.points.push(point)
+            const lastPoint = currentStroke.points[currentStroke.points.length - 1];
+            const interpolated = interpolatePoints(lastPoint, point, 2) // 2px step
+
+            currentStroke.points.push(...interpolated, point)
             drawStroke(currentStroke, false)
         }
         
+    }
+
+    const interpolatePoints = (from: Point, to: Point, step = 1): Point[] => {
+        const dx = to.x - from.x
+        const dy = to.y - from.y;
+
+        const distance = Math.hypot(dx, dy);
+        const steps = Math.ceil(distance / step);
+        const result: Point[] = [];
+        for (let i = 1; i < steps; i++) {
+            const t = i / steps;
+            result.push({
+                x: from.x + dx * t,
+                y: from.y + dy * t
+            });
+        }
+        return result
     }
 
     const drawShapePreview = (

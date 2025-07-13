@@ -4,7 +4,7 @@ import type { RootState } from "../redux/store"
 import { drawStraightLine } from "../typescript/drawStraightLine"
 import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescript/drawShapes"
 
-
+// HOOK UN-USED
 type PreviewDrawingProps = {
     canvasPreviewRef: React.RefObject<HTMLCanvasElement | null>,
     mousePosLine: { x: number; y: number;} | null,
