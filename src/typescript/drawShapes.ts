@@ -41,7 +41,7 @@ export function drawTriangleShape (
     const end = mousePos;
     const width = end.x - start.x;
     const height = end.y - start.y;
-
+    
     ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
     ctx.lineWidth = state.size;
     ctx.beginPath();

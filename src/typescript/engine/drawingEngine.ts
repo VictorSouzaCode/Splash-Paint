@@ -22,17 +22,6 @@ export type Stroke = {
 // move ctx drawing to another file
 // move undo redo to a separated file
 
-// improve pencil smootheness, *
-// now i need to work on some problems caused by this new feature
-// square pencil needs interpolation to work properly *
-// square pencil doens't have preview line
-// preview pencil square forms are rounded now
-// preview and final shapes have rounded corners
-
-// Now i dont know what to choose, interporlation is better for perfomance but it gets a little weird on slow strokes
-// i need to use interpolation on square, but i dont want to use it on circle pincil, so when the user change tools he is gonna se the difference, or a let everything fast but with a little bit of weirdness on slow drawing, or i make everything slow and the drawing slow a little bit better
-
-// i think i will use interpolation for everything, i think i can tolarate some weird traces better than a slow app
 
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
@@ -78,6 +67,10 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             drawPreviewCircle(currentStroke)
             }
 
+            if(state.toolForm === 'square') {
+                drawPreviewSquare(currentStroke)
+            }
+
         }
     }
     
@@ -102,7 +95,13 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             const interpolated = interpolatePoints(lastPoint, point, 2)
 
-            currentStroke.points.push(...interpolated, point)
+            if(currentStroke.points.length === 1) {
+
+                currentStroke.points.push(...interpolated, point)
+            } else {
+
+                currentStroke.points.push(...interpolated)
+            }
 
             drawPreviewStroke(currentStroke, currentStroke.points)
         }
@@ -115,7 +114,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             const interpolated = interpolatePoints(lastPoint, point, 2)
 
-            currentStroke.points.push(...interpolated, point)
+            currentStroke.points.push(...interpolated)
 
             drawPreviewSquareStroke(currentStroke, currentStroke.points)
             
@@ -155,9 +154,24 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         ctxPreview.closePath()
     }
 
+    const drawPreviewSquare = (stroke:Stroke) => {
+
+        const points = stroke.points
+
+        const positionX = points[0].x - stroke.size / 2
+        const positionY = points[0].y - stroke.size / 2
+        if (points.length === 1) {
+            ctx.beginPath()
+            ctx.fillStyle = stroke.color
+            ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
+        }
+
+    }
+
     const drawPreviewSquareStroke = (stroke:Stroke, points:Point[]) => {
 
         ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+        ctxPreview.fillStyle = stroke.color
         for (let i = 1; i < points.length; i++) {
             const positionX = points[i].x - stroke.size / 2
             const positionY = points[i].y - stroke.size / 2
@@ -188,6 +202,9 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     const drawShapePreview = (
     state: ToolState ) => {
+
+        ctxPreview.lineCap = 'butt'
+        ctxPreview.lineJoin = 'miter'
 
         if(state.toolForm === 'line') {
             drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
@@ -300,6 +317,8 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const width = end.x - start.x;
             const height = end.y - start.y;
 
+            ctx.lineCap = 'square'
+            ctx.lineJoin = 'miter'
             ctx.strokeStyle = stroke.color
             ctx.lineWidth = stroke.size;
             ctx.beginPath()
@@ -312,7 +331,9 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const end = shapeEndingPoint;
             const triangleWidth = end.x - start.x;
             const triangleHeight = end.y - start.y;
-            
+
+            ctx.lineCap = 'butt'
+            ctx.lineJoin = 'miter'
             ctx.strokeStyle = stroke.color
             ctx.lineWidth = stroke.size;
             ctx.beginPath();
@@ -336,6 +357,8 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const centerX = (start.x + end.x) / 2;
             const centerY = (start.y + end.y) / 2;
 
+            ctx.lineCap = 'round'
+            ctx.lineJoin = 'round'
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.strokeStyle = stroke.color
@@ -385,14 +408,17 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             const positionX = points[0].x - stroke.size / 2
             const positionY = points[0].y - stroke.size / 2
+
+            ctx.lineCap = 'butt'
+            ctx.lineJoin = 'miter'
             if(points.length === 1) {
                 ctx.beginPath()
                 ctx.fillStyle = stroke.color
                 ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
             }
             
-            if(points.length > 0) {
-
+            if(points.length > 1) {
+                ctx.fillStyle = stroke.color
                 for(let i = 1; i < points.length; i++){
                     const positionX = points[i].x - stroke.size / 2
                     const positionY = points[i].y - stroke.size / 2
