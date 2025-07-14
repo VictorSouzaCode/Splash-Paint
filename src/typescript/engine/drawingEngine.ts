@@ -23,9 +23,16 @@ export type Stroke = {
 // move undo redo to a separated file
 
 // improve pencil smootheness, *
-// now i need to work on some caused by this new feature
+// now i need to work on some problems caused by this new feature
+// square pencil needs interpolation to work properly *
+// square pencil doens't have preview line
 // preview pencil square forms are rounded now
 // preview and final shapes have rounded corners
+
+// Now i dont know what to choose, interporlation is better for perfomance but it gets a little weird on slow strokes
+// i need to use interpolation on square, but i dont want to use it on circle pincil, so when the user change tools he is gonna se the difference, or a let everything fast but with a little bit of weirdness on slow drawing, or i make everything slow and the drawing slow a little bit better
+
+// i think i will use interpolation for everything, i think i can tolarate some weird traces better than a slow app
 
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
@@ -91,24 +98,29 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             if (!currentStroke) {return}
 
-            // const lastPoint = currentStroke.points[currentStroke.points.length - 1];
+            const lastPoint = currentStroke.points[currentStroke.points.length - 1];
 
-            // const interpolated = interpolatePoints(lastPoint, point, 2)
+            const interpolated = interpolatePoints(lastPoint, point, 2)
 
-            // currentStroke.points.push(...interpolated, point)
+            currentStroke.points.push(...interpolated, point)
 
-            currentStroke.points.push(point)
-
-            const smoothPoints = chaikin([...currentStroke.points], 2);
-
-            drawPreviewStroke(currentStroke, smoothPoints)
+            drawPreviewStroke(currentStroke, currentStroke.points)
         }
 
         if(state.toolForm === 'square') {
             
             if (!currentStroke) {return}
+            
+            const lastPoint = currentStroke.points[currentStroke.points.length - 1];
 
-            currentStroke.points.push(point)
+            const interpolated = interpolatePoints(lastPoint, point, 2)
+
+            currentStroke.points.push(...interpolated, point)
+
+            drawPreviewSquareStroke(currentStroke, currentStroke.points)
+            
+        } else {
+            return
         }
         
     }
@@ -143,21 +155,35 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         ctxPreview.closePath()
     }
 
+    const drawPreviewSquareStroke = (stroke:Stroke, points:Point[]) => {
+
+        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+        for (let i = 1; i < points.length; i++) {
+            const positionX = points[i].x - stroke.size / 2
+            const positionY = points[i].y - stroke.size / 2
+
+            ctxPreview.fillRect(positionX, positionY, stroke.size, stroke.size)
+        }
+        ctxPreview.closePath()
+    }
+
     const drawPreviewStroke = (stroke:Stroke, points:Point[]) => {
         const color = stroke.color;
         const size  = stroke.size
 
-        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
-        ctxPreview.strokeStyle = color;
-        ctxPreview.lineWidth = size;
-        ctxPreview.lineJoin = 'round';
-        ctxPreview.lineCap = 'round';
-        ctxPreview.beginPath();
-        ctxPreview.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-            ctxPreview.lineTo(points[i].x, points[i].y);
+        if(stroke.toolForm === 'circle') {
+            ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+            ctxPreview.strokeStyle = color;
+            ctxPreview.lineWidth = size;
+            ctxPreview.lineJoin = 'round';
+            ctxPreview.lineCap = 'round';
+            ctxPreview.beginPath();
+            ctxPreview.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctxPreview.lineTo(points[i].x, points[i].y);
+            }
+            ctxPreview.stroke();
         }
-        ctxPreview.stroke();
     }
 
     const drawShapePreview = (
@@ -249,28 +275,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         }
     }
 
-    // algorithm for smoother pencil lines
-    function chaikin(points: Point[], iterations = 2): Point[] {
-        for (let iter = 0; iter < iterations; iter++) {
-            const newPoints: Point[] = [];
-            for (let i = 0; i < points.length - 1; i++) {
-                const p0 = points[i];
-                const p1 = points[i + 1];
-                const Q: Point = {
-                    x: 0.75 * p0.x + 0.25 * p1.x,
-                    y: 0.75 * p0.y + 0.25 * p1.y,
-                };
-                const R: Point = {
-                    x: 0.25 * p0.x + 0.75 * p1.x,
-                    y: 0.25 * p0.y + 0.75 * p1.y,
-                };
-                newPoints.push(Q, R);
-            }
-            points = newPoints;
-        }
-        return points;
-    }
-
     const drawStroke = (stroke: Stroke, commit: boolean) => {
 
         if(stroke.toolForm === 'line' && stroke.points.length === 2) {
@@ -352,18 +356,19 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
                 ctx.fillStyle = stroke.color
                 ctx.fill()
                 ctx.closePath()
-            }
+            } // surprisingly doing this if statement improves performance
 
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size
         ctx.lineJoin = 'round'
         ctx.lineCap = 'round'
 
-        const points = chaikin(stroke.points, 2)
+        const points = stroke.points
 
             ctx.beginPath()
             if (points.length > 0) {
-                ctx.moveTo(points[0].x , points[0].y);
+                // Not enough points for smoothing
+                ctx.moveTo(points[0].x, points[0].y);
                 for (let i = 1; i < points.length; i++) {
                     ctx.lineTo(points[i].x, points[i].y);
                 }
@@ -376,13 +381,16 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         if(stroke.toolForm === 'square') {
 
-            const points = chaikin(stroke.points, 2)
+            const points = stroke.points // normal points here for visual fidelity
 
             const positionX = points[0].x - stroke.size / 2
             const positionY = points[0].y - stroke.size / 2
-            ctx.beginPath()
-            ctx.fillStyle = stroke.color
-            ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
+            if(points.length === 1) {
+                ctx.beginPath()
+                ctx.fillStyle = stroke.color
+                ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
+            }
+            
             if(points.length > 0) {
 
                 for(let i = 1; i < points.length; i++){
