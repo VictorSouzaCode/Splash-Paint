@@ -1,8 +1,8 @@
 import type { ToolState } from "../redux/slices/tools"
 import type { Point } from "../utils/types"
-import { drawSquareShape, drawCircleShape, drawTriangleShape, drawStraightLine } from "../typescript/drawShapes"
+import { drawSquareShape, drawCircleShape, drawTriangleShape, drawStraightLine } from "./previewShapesDrawings.ts"
 
-type functionProps = {
+type drawingProps = {
     state: ToolState
     ctxPreview: CanvasRenderingContext2D,
     shapeStartPoint: Point | null,
@@ -10,16 +10,13 @@ type functionProps = {
 }
 
 
-const drawShapesPreview = ({
+const previewShapesHandler = ({
     state, 
     ctxPreview, 
     shapeStartPoint,
     shapeEndingPoint,
-}:functionProps
+}:drawingProps
 ) => {
-
-    ctxPreview.lineCap = 'butt'
-    ctxPreview.lineJoin = 'miter'
 
     if (state.toolForm === 'line') {
         drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
@@ -38,4 +35,4 @@ const drawShapesPreview = ({
     }
 }
 
-export default drawShapesPreview
+export default previewShapesHandler

@@ -2,13 +2,18 @@
 
 import type { ToolState } from "../../redux/slices/tools"
 import type { Point, Stroke } from "../../utils/types"
-import drawShapesPreview from "../drawShapesPreview"
+import previewShapesHandler from "../previewShapesHandler"
+import previewStrokeHandler from "../previewStrokeHandler"
+import drawstrokes from "../drawstrokes"
+import drawShapes from "../drawShapes"
 
 
 // add undo redo to my buttons
 // refactor this code and break it down into small pieces
 // move ctx drawing to another file
 // move undo redo to a separated file
+
+// make the hook dealing with canvas height and width return the height and width of the canvas so i can use it on my files
 
 
 
@@ -51,13 +56,10 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
                 toolForm
             }
 
-            if(state.toolForm === 'circle') {
-                drawPreviewCircle(currentStroke)
-            }
+            const stroke = currentStroke
+            const points = currentStroke.points
 
-            if(state.toolForm === 'square') {
-                drawPreviewSquare(currentStroke)
-            }
+            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
 
         }
     }
@@ -71,7 +73,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             shapeEndingPoint = point
 
-            drawShapesPreview({state, ctxPreview, shapeStartPoint, shapeEndingPoint})
+            previewShapesHandler({state, ctxPreview, shapeStartPoint, shapeEndingPoint})
 
         }
 
@@ -91,7 +93,11 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
                 currentStroke.points.push(...interpolated)
             }
 
-            drawPreviewStroke(currentStroke, currentStroke.points)
+            const points = currentStroke.points
+            const stroke = currentStroke
+
+            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
+
         }
 
         if(state.toolForm === 'square') {
@@ -104,7 +110,10 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             currentStroke.points.push(...interpolated)
 
-            drawPreviewSquareStroke(currentStroke, currentStroke.points)
+            const points = currentStroke.points
+            const stroke = currentStroke
+
+            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
             
         } else {
             return
@@ -127,64 +136,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             });
         }
         return result
-    }
-
-    const drawPreviewCircle = (currentStroke:Stroke) => {
-        const radius = currentStroke.size / 2
-        const circleX = currentStroke.points[0].x
-        const circleY = currentStroke.points[0].y
-
-        ctxPreview.beginPath()
-        ctxPreview.arc(circleX, circleY, radius, 0, Math.PI * 100)
-        ctxPreview.fillStyle = currentStroke.color
-        ctxPreview.fill()
-        ctxPreview.restore()
-    }
-
-    const drawPreviewSquare = (stroke:Stroke) => {
-
-        const points = stroke.points
-
-        const positionX = points[0].x - stroke.size / 2
-        const positionY = points[0].y - stroke.size / 2
-        if (points.length === 1) {
-            ctx.beginPath()
-            ctx.fillStyle = stroke.color
-            ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
-        }
-
-    }
-
-    const drawPreviewSquareStroke = (stroke:Stroke, points:Point[]) => {
-
-        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
-        ctxPreview.fillStyle = stroke.color
-        for (let i = 1; i < points.length; i++) {
-            const positionX = points[i].x - stroke.size / 2
-            const positionY = points[i].y - stroke.size / 2
-
-            ctxPreview.fillRect(positionX, positionY, stroke.size, stroke.size)
-        }
-        ctxPreview.closePath()
-    }
-
-    const drawPreviewStroke = (stroke:Stroke, points:Point[]) => {
-        const color = stroke.color;
-        const size  = stroke.size
-
-        if(stroke.toolForm === 'circle') {
-            ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
-            ctxPreview.strokeStyle = color;
-            ctxPreview.lineWidth = size;
-            ctxPreview.lineJoin = 'round';
-            ctxPreview.lineCap = 'round';
-            ctxPreview.beginPath();
-            ctxPreview.moveTo(points[0].x, points[0].y);
-            for (let i = 1; i < points.length; i++) {
-                ctxPreview.lineTo(points[i].x, points[i].y);
-            }
-            ctxPreview.stroke();
-        }
     }
 
     const endStroke = async (state: ToolState) => {
@@ -237,7 +188,8 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     const commitToSnapShot = async () => {
         pendingStrokes.forEach((stroke) => {
-            drawStroke(stroke, true)
+            drawstrokes({ctx, stroke})
+            drawShapes({ctx, stroke, shapeStartPoint, shapeEndingPoint})
         })
         pendingStrokes = []
 
@@ -253,136 +205,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         if(snapshotIndex >= 0 && snapshotIndex < snapshots.length) {
             const snapshot = snapshots[snapshotIndex]
             ctx.drawImage(snapshot, 0, 0)
-        }
-    }
-
-    const drawStroke = (stroke: Stroke, commit: boolean) => {
-
-        if(stroke.toolForm === 'line' && stroke.points.length === 2) {
-            const points = stroke.points
-            const startX = stroke.points[0].x
-            const startY = stroke.points[0].y
-
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            for(let i = 1; i < points.length; i++){
-            ctx.lineTo(points[i].x, points[i].y);
-            ctx.strokeStyle = stroke.color
-            ctx.lineWidth = stroke.size;
-            ctx.lineCap = 'round'
-            ctx.stroke();
-            }
-        }
-
-        if(stroke.toolForm === 'square-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
-
-            const start = shapeStartPoint;
-            const end = shapeEndingPoint;
-            const width = end.x - start.x;
-            const height = end.y - start.y;
-
-            ctx.lineCap = 'square'
-            ctx.lineJoin = 'miter'
-            ctx.strokeStyle = stroke.color
-            ctx.lineWidth = stroke.size;
-            ctx.beginPath()
-            ctx.strokeRect(start.x, start.y, width, height);
-        }
-
-        if(stroke.toolForm === 'triangle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
-
-            const start = shapeStartPoint;
-            const end = shapeEndingPoint;
-            const triangleWidth = end.x - start.x;
-            const triangleHeight = end.y - start.y;
-
-            ctx.lineCap = 'butt'
-            ctx.lineJoin = 'miter'
-            ctx.strokeStyle = stroke.color
-            ctx.lineWidth = stroke.size;
-            ctx.beginPath();
-            ctx.moveTo(start.x + triangleWidth / 2, start.y);
-            ctx.lineTo(start.x, start.y + triangleHeight);
-            ctx.lineTo(start.x + triangleWidth, start.y + triangleHeight);
-            ctx.closePath();
-            ctx.stroke();
-
-        }
-
-        if(stroke.toolForm === 'circle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
-
-            const start = shapeStartPoint;
-            const end = shapeEndingPoint;
-
-            const dx = end.x - start.x;
-            const dy = end.y - start.y;
-            const radius = Math.sqrt(dx * dx + dy * dy) / 2;
-
-            const centerX = (start.x + end.x) / 2;
-            const centerY = (start.y + end.y) / 2;
-
-            ctx.lineCap = 'round'
-            ctx.lineJoin = 'round'
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.strokeStyle = stroke.color
-            ctx.lineWidth = stroke.size;
-            ctx.stroke();
-
-        }
-
-        if(stroke.toolForm === 'circle') {
-
-            if(stroke.points.length === 1) {
-                const radius = stroke.size / 2
-                const circleX = stroke.points[0].x
-                const circleY = stroke.points[0].y
-
-                ctx.beginPath()
-                ctx.arc(circleX, circleY, radius, 0, Math.PI * 100)
-                ctx.fillStyle = stroke.color
-                ctx.fill()
-                ctx.closePath()
-            }
-            
-
-        ctx.strokeStyle = stroke.color
-        ctx.lineWidth = stroke.size
-        ctx.lineJoin = 'round'
-        ctx.lineCap = 'round'
-
-        const points = stroke.points
-
-            ctx.beginPath()
-            if (points.length > 1) {
-                ctx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    ctx.lineTo(points[i].x, points[i].y);
-                }
-            }
-            ctx.stroke();
-            if(commit) {
-                ctx.closePath()
-            }
-        }
-
-        if(stroke.toolForm === 'square') {
-
-            const points = stroke.points
-
-            ctx.lineCap = 'butt'
-            ctx.lineJoin = 'miter'
-            
-            if(points.length > 0) {
-                ctx.fillStyle = stroke.color
-                for(let i = 1; i < points.length; i++){
-                    const positionX = points[i].x - stroke.size / 2
-                    const positionY = points[i].y - stroke.size / 2
-
-                    ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
-                }
-                ctx.closePath()
-            }
         }
     }
 

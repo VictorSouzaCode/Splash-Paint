@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { drawStraightLine } from "../typescript/drawStraightLine"
-import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescript/drawShapes"
+import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../typescript/previewShapesDrawings.ts"
 
 // HOOK UN-USED
 type PreviewDrawingProps = {

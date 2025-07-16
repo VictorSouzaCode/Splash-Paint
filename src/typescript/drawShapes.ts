@@ -1,103 +1,91 @@
-import type { ToolState } from "../redux/slices/tools";
+import type { Stroke, Point } from "../utils/types"
+
+type StrokesProps = {
+    ctx: CanvasRenderingContext2D,
+    stroke: Stroke
+    shapeStartPoint: Point | null,
+    shapeEndingPoint: Point | null
+}
 
 
-type ShapeStartPoint = {x:number, y:number} | null;
+const drawShapes = ({
+    ctx,
+    stroke,
+    shapeStartPoint,
+    shapeEndingPoint
+}:StrokesProps) => {
 
-type MousePosLine = {x:number, y:number} | null;
+    if(stroke.toolForm === 'line' && stroke.points.length === 2) {
+        const points = stroke.points
+        const startX = stroke.points[0].x
+        const startY = stroke.points[0].y
 
-export function drawStraightLine (
-    ctx: CanvasRenderingContext2D | null,
-    state: ToolState,
-    lineStartPoint: ShapeStartPoint | null,
-    point: MousePosLine | null
-) {
-    if(!ctx || !lineStartPoint || !point) return
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+            ctx.strokeStyle = stroke.color
+            ctx.lineWidth = stroke.size;
+            ctx.lineCap = 'round'
+            ctx.stroke();
+        }
+    }
 
-    if(state.toolForm === 'line') {
-      ctx.beginPath();
-      ctx.moveTo(lineStartPoint.x, lineStartPoint.y);
-      ctx.lineTo(point.x, point.y);
-      ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
-      ctx.lineWidth = state.size;
-      ctx.lineCap = 'round'
-      ctx.stroke();
-    } else {
-        return
+    if(stroke.toolForm === 'square-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+        const start = shapeStartPoint;
+        const end = shapeEndingPoint;
+        const width = end.x - start.x;
+        const height = end.y - start.y;
+
+        ctx.lineCap = 'square'
+        ctx.lineJoin = 'miter'
+        ctx.strokeStyle = stroke.color
+        ctx.lineWidth = stroke.size;
+        ctx.beginPath()
+        ctx.strokeRect(start.x, start.y, width, height);
+    }
+
+    if(stroke.toolForm === 'triangle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+        const start = shapeStartPoint;
+        const end = shapeEndingPoint;
+        const triangleWidth = end.x - start.x;
+        const triangleHeight = end.y - start.y;
+
+        ctx.lineCap = 'butt'
+        ctx.lineJoin = 'miter'
+        ctx.strokeStyle = stroke.color
+        ctx.lineWidth = stroke.size;
+        ctx.beginPath();
+        ctx.moveTo(start.x + triangleWidth / 2, start.y);
+        ctx.lineTo(start.x, start.y + triangleHeight);
+        ctx.lineTo(start.x + triangleWidth, start.y + triangleHeight);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+
+    if(stroke.toolForm === 'circle-shape' && stroke.points.length === 2 && shapeStartPoint && shapeEndingPoint){
+
+        const start = shapeStartPoint;
+        const end = shapeEndingPoint;
+
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+
+        const centerX = (start.x + end.x) / 2;
+        const centerY = (start.y + end.y) / 2;
+
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = stroke.color
+        ctx.lineWidth = stroke.size;
+        ctx.stroke();
     }
 }
 
-export function drawSquareShape (
-    ctx: CanvasRenderingContext2D,
-    state: ToolState,
-    shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePosLine
-
-) {
-
-    if(!ctx || !shapeStartPoint || !mousePos) { return }
-
-    const start = shapeStartPoint;
-    const end = mousePos;
-    const width = end.x - start.x;
-    const height = end.y - start.y;
-
-    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
-    ctx.lineWidth = state.size;
-    ctx.beginPath()
-    ctx.strokeRect(start.x, start.y, width, height);
-}
-
-
-export function drawTriangleShape (
-    ctx: CanvasRenderingContext2D,
-    state: ToolState,
-    shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePosLine
-
-) {
-
-    if(!shapeStartPoint || !mousePos) { return }
-
-    const start = shapeStartPoint;
-    const end = mousePos;
-    const width = end.x - start.x;
-    const height = end.y - start.y;
-    
-    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
-    ctx.lineWidth = state.size;
-    ctx.beginPath();
-    ctx.moveTo(start.x + width / 2, start.y);
-    ctx.lineTo(start.x, start.y + height);
-    ctx.lineTo(start.x + width, start.y + height);
-    ctx.closePath();
-    ctx.stroke();
-}
-
-
-export function drawCircleShape (
-    ctx: CanvasRenderingContext2D,
-    state: ToolState,
-    shapeStartPoint: ShapeStartPoint,
-    mousePos: MousePosLine
-) {
-
-    if (!shapeStartPoint || !mousePos) return;
-
-    const start = shapeStartPoint;
-    const end = mousePos;
-
-    // Calculate radius using the distance between start and end points
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
-    const radius = Math.sqrt(dx * dx + dy * dy) / 2;
-
-    // Calculate center of the circle
-    const centerX = (start.x + end.x) / 2;
-    const centerY = (start.y + end.y) / 2;
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
-    ctx.lineWidth = state.size;
-    ctx.stroke();
-}
+export default drawShapes
