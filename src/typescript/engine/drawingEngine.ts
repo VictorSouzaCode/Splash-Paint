@@ -1,8 +1,8 @@
 
 
 import type { ToolState } from "../../redux/slices/tools"
-import { drawSquareShape, drawCircleShape, drawTriangleShape, drawStraightLine } from "../drawShapes"
 import type { Point, Stroke } from "../../utils/types"
+import drawShapesPreview from "../drawShapesPreview"
 
 
 // add undo redo to my buttons
@@ -71,7 +71,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             shapeEndingPoint = point
 
-            drawShapePreview(state)
+            drawShapesPreview({state, ctxPreview, shapeStartPoint, shapeEndingPoint})
 
         }
 
@@ -184,29 +184,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
                 ctxPreview.lineTo(points[i].x, points[i].y);
             }
             ctxPreview.stroke();
-        }
-    }
-
-    const drawShapePreview = (
-    state: ToolState ) => {
-
-        ctxPreview.lineCap = 'butt'
-        ctxPreview.lineJoin = 'miter'
-
-        if(state.toolForm === 'line') {
-            drawStraightLine(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
-        }
-
-        if(state.toolForm === 'square-shape') {
-            drawSquareShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
-        }
-
-        if(state.toolForm === 'triangle-shape'){
-            drawTriangleShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
-        }
-
-        if(state.toolForm === 'circle-shape'){
-            drawCircleShape(ctxPreview, state, shapeStartPoint, shapeEndingPoint)
         }
     }
 
