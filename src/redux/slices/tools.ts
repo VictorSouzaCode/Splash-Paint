@@ -30,7 +30,7 @@ const initialState: ToolState = {
     borderColor: '#000000',
     screenColor: "#ffffff",
     isDrawing: false,
-    size: 20,
+    size: 15,
     pointer: {
         x: 0,
         y: 0

@@ -3,20 +3,9 @@
 import type { ToolState } from "../../redux/slices/tools"
 import { drawStraightLine } from "../drawStraightLine"
 import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../drawShapes"
+import type { Point, Stroke } from "../../utils/types"
 
-export type Point = {
-    x: number,
-    y: number
-}
 
-export type Stroke = {
-    points: Point[],
-    color: string,
-    size: number,
-    toolForm: string
-}
-
-// fix a bug when i draw a square or triangle the borders get rounded
 // add undo redo to my buttons
 // refactor this code and break it down into small pieces
 // move ctx drawing to another file
@@ -64,7 +53,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             }
 
             if(state.toolForm === 'circle') {
-            drawPreviewCircle(currentStroke)
+                drawPreviewCircle(currentStroke)
             }
 
             if(state.toolForm === 'square') {
@@ -146,12 +135,11 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         const circleX = currentStroke.points[0].x
         const circleY = currentStroke.points[0].y
 
-        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
         ctxPreview.beginPath()
         ctxPreview.arc(circleX, circleY, radius, 0, Math.PI * 100)
         ctxPreview.fillStyle = currentStroke.color
         ctxPreview.fill()
-        ctxPreview.closePath()
+        ctxPreview.restore()
     }
 
     const drawPreviewSquare = (stroke:Stroke) => {
@@ -379,7 +367,8 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
                 ctx.fillStyle = stroke.color
                 ctx.fill()
                 ctx.closePath()
-            } // surprisingly doing this if statement improves performance
+            }
+            
 
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size
@@ -389,8 +378,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         const points = stroke.points
 
             ctx.beginPath()
-            if (points.length > 0) {
-                // Not enough points for smoothing
+            if (points.length > 1) {
                 ctx.moveTo(points[0].x, points[0].y);
                 for (let i = 1; i < points.length; i++) {
                     ctx.lineTo(points[i].x, points[i].y);
@@ -404,20 +392,12 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         if(stroke.toolForm === 'square') {
 
-            const points = stroke.points // normal points here for visual fidelity
-
-            const positionX = points[0].x - stroke.size / 2
-            const positionY = points[0].y - stroke.size / 2
+            const points = stroke.points
 
             ctx.lineCap = 'butt'
             ctx.lineJoin = 'miter'
-            if(points.length === 1) {
-                ctx.beginPath()
-                ctx.fillStyle = stroke.color
-                ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
-            }
             
-            if(points.length > 1) {
+            if(points.length > 0) {
                 ctx.fillStyle = stroke.color
                 for(let i = 1; i < points.length; i++){
                     const positionX = points[i].x - stroke.size / 2
