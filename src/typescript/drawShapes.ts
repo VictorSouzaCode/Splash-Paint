@@ -5,6 +5,27 @@ type ShapeStartPoint = {x:number, y:number} | null;
 
 type MousePosLine = {x:number, y:number} | null;
 
+export function drawStraightLine (
+    ctx: CanvasRenderingContext2D | null,
+    state: ToolState,
+    lineStartPoint: ShapeStartPoint | null,
+    point: MousePosLine | null
+) {
+    if(!ctx || !lineStartPoint || !point) return
+
+    if(state.toolForm === 'line') {
+      ctx.beginPath();
+      ctx.moveTo(lineStartPoint.x, lineStartPoint.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
+      ctx.lineWidth = state.size;
+      ctx.lineCap = 'round'
+      ctx.stroke();
+    } else {
+        return
+    }
+}
+
 export function drawSquareShape (
     ctx: CanvasRenderingContext2D,
     state: ToolState,

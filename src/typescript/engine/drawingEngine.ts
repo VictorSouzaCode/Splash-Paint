@@ -1,8 +1,7 @@
 
 
 import type { ToolState } from "../../redux/slices/tools"
-import { drawStraightLine } from "../drawStraightLine"
-import { drawSquareShape, drawCircleShape, drawTriangleShape } from "../drawShapes"
+import { drawSquareShape, drawCircleShape, drawTriangleShape, drawStraightLine } from "../drawShapes"
 import type { Point, Stroke } from "../../utils/types"
 
 
