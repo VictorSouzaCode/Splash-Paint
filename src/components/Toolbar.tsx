@@ -5,14 +5,16 @@ import {  setEraser, setPencil, setPencilColor, setScreenColor, setToolForm} fro
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import SizeControl from "./buttonsToolbar/SizeControl"
+import Download from "./buttonsToolbar/Download"
 // import UndoRedoReset from "./buttonsToolbar/UndoRedoReset"
 
 type ToolbarProp = {
   drawingEngine: ReturnType<typeof import("../typescript/engine/drawingEngine").createDrawingEngine> | null,
+  download: () => void
 }
 
 const Toolbar = ({
-  drawingEngine
+  drawingEngine,
 }:ToolbarProp) => {
     const dispatch = useDispatch()
 
@@ -140,6 +142,8 @@ const Toolbar = ({
             }}
           >Reset</button>
         </div>
+
+        <Download/>
 
         {/* <UndoRedoReset/> */}
 

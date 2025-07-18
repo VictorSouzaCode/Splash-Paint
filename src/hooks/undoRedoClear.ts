@@ -11,6 +11,7 @@ let snapshots: ImageBitmap[] = []
 let snapshotIndex = -1
 
 // UN-USED COMPONENT !!!
+// left in case i need guidance on something
 
 export const createUndoRedoManager = {
     registerCanvas: (

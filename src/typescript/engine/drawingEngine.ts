@@ -78,10 +78,10 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const interpolated = interpolatePoints(lastPoint, point, 2)
 
             if(currentStroke.points.length === 1) {
-
+                // draw circle on click
                 currentStroke.points.push(...interpolated, point)
             } else {
-
+                // remove too much interpolation from circle pencil
                 currentStroke.points.push(...interpolated)
             }
 
@@ -172,7 +172,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
 
     const clear = async () => {
-        if(snapshotIndex <= 0) { return };
+        if(snapshotIndex < 0) { return };
         ctx.clearRect(0, 0, width, height)
         snapshots = []
         snapshotIndex = -1
@@ -187,7 +187,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         pendingStrokes = []
 
         const bitmap = await createImageBitmap(ctx.canvas)
-        console.log(snapshots)
         snapshots = snapshots.slice(0, snapshotIndex + 1)
         snapshots.push(bitmap)
         snapshotIndex++

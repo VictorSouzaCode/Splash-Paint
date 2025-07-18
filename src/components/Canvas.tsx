@@ -17,6 +17,14 @@ const Canvas = () => {
 
   const [engine, setEngine] = useState<ReturnType<typeof createDrawingEngine> | null>(null)
 
+  const download = () => {
+    if (!canvasRef.current) return
+    const link = document.createElement("a")
+    link.download = "drawing.png"
+    link.href = canvasRef.current.toDataURL()
+    link.click()
+  }
+
   useEffect(() => {
     if(canvasRef.current) {
       const drawingEngine = createDrawingEngine(canvasRef.current, canvasPreviewRef.current)
@@ -47,7 +55,7 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-    <Toolbar drawingEngine={engine}/>
+    <Toolbar drawingEngine={engine} download={download} />
     <MouseFollower/>
     </>
   )
