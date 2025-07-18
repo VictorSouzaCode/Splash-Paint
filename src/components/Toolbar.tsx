@@ -4,17 +4,23 @@ import { useDispatch } from "react-redux"
 import {  setEraser, setPencil, setPencilColor, setScreenColor, setToolForm} from "../redux/slices/tools"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-import { redoStroke, undoStroke, resetCanvas } from "../redux/slices/undoRedo"
 import SizeControl from "./buttonsToolbar/SizeControl"
+// import UndoRedoReset from "./buttonsToolbar/UndoRedoReset"
 
-const Toolbar = () => {
+type ToolbarProp = {
+  drawingEngine: ReturnType<typeof import("../typescript/engine/drawingEngine").createDrawingEngine> | null,
+}
+
+const Toolbar = ({
+  drawingEngine
+}:ToolbarProp) => {
     const dispatch = useDispatch()
 
     const {pencilColor, tool, screenColor} = useSelector((state:RootState) => state.tools)
 
   return (
     <>
-    <div className="border1 z-10 w-32 min-h-[300px] h-fit absolute top-[50%] translate-y-[-50%] left-2 rounded-xl px-2 flex flex-col gap-4">
+    <div className="border1 z-50 w-32 min-h-[300px] h-fit absolute top-[50%] translate-y-[-50%] left-2 rounded-xl px-2 flex flex-col gap-4">
         
         <SizeControl/>
 
@@ -23,12 +29,14 @@ const Toolbar = () => {
           className="bg-green-300 rounded-md"
           onClick={() => {
             dispatch(setPencil())
+            dispatch(setToolForm('circle'))
           }}
           >Pencil</button>
           <button 
           className="bg-green-300 rounded-md"
           onClick={() => {
             dispatch(setEraser())
+            dispatch(setToolForm('circle'))
           }}
           >Eraser</button>
         </div>
@@ -112,26 +120,28 @@ const Toolbar = () => {
         </div>
 
         <div className="flex justify-around">
-          <button 
-          className="rounded-md bg-green-300"
-          onClick={() => {
-            dispatch(undoStroke())
-          }}
+          <button
+            className="rounded-md bg-green-300"
+            onClick={() => {
+              drawingEngine && drawingEngine.undo()
+            }}
           >Undo</button>
-          <button 
-          className="rounded-md bg-green-300"
-          onClick={() => {
-            dispatch(redoStroke())
-          }}
+          <button
+            className="rounded-md bg-green-300"
+            onClick={() => {
+              drawingEngine && drawingEngine.redo()
+            }}
           >Redo</button>
         </div>
-
         <div>
           <button
-          onClick={() => {
-            dispatch(resetCanvas())
-          }}>Reset</button>
+            onClick={() => {
+              drawingEngine && drawingEngine.clear()
+            }}
+          >Reset</button>
         </div>
+
+        {/* <UndoRedoReset/> */}
 
       </div>
     </>

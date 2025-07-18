@@ -1,6 +1,5 @@
 import { useEffect } from "react"
-import { setDrawing } from "../redux/slices/tools"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 
 
@@ -14,7 +13,6 @@ export const useCanvasEvents = ({
     drawingEngine,
 }:UseEffectProps) => {
 
-    const dispatch = useDispatch()
     const state = useSelector((state: RootState) => state.tools)
 
     useEffect(() => {
@@ -33,6 +31,7 @@ export const useCanvasEvents = ({
         const point = { x: e.clientX, y: e.clientY }
 
         drawingEngine.startStroke(point, state)
+
 
       }
 

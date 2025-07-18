@@ -7,17 +7,11 @@ import previewStrokeHandler from "../previewStrokeHandler"
 import drawstrokes from "../drawstrokes"
 import drawShapes from "../drawShapes"
 
-
-// add undo redo to my buttons
-// refactor this code and break it down into small pieces
-// move ctx drawing to another file
-// move undo redo to a separated file
-
-// make the hook dealing with canvas height and width return the height and width of the canvas so i can use it on my files
-
-
+let snapshots: ImageBitmap[] = []
+let snapshotIndex = -1
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
+
     if(!canvas || !canvasPreview ) return
     const ctxPreview = canvasPreview.getContext('2d')
     const ctx = canvas.getContext('2d')
@@ -29,8 +23,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     const previewWidth = canvasPreview.width
     const previewHeight = canvasPreview.height
 
-    let snapshots: ImageBitmap[] = []
-    let snapshotIndex = -1
     let pendingStrokes: Stroke[] = []
     let currentStroke: Stroke | null = null
     let shapeEndingPoint: Point | null = null
@@ -162,13 +154,13 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
         pendingStrokes.push(currentStroke)
         await commitToSnapShot()
-
+ 
         currentStroke = null
         }
     }
-
+    
     const undo = async () => {
-        if(snapshotIndex <= 0) return
+        if (snapshotIndex < 0) return
         snapshotIndex--
         await restoreSnapShot()
     }
@@ -180,6 +172,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
 
     const clear = async () => {
+        if(snapshotIndex <= 0) { return };
         ctx.clearRect(0, 0, width, height)
         snapshots = []
         snapshotIndex = -1
@@ -194,6 +187,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         pendingStrokes = []
 
         const bitmap = await createImageBitmap(ctx.canvas)
+        console.log(snapshots)
         snapshots = snapshots.slice(0, snapshotIndex + 1)
         snapshots.push(bitmap)
         snapshotIndex++

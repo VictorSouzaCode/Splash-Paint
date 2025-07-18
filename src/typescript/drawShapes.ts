@@ -1,7 +1,7 @@
 import type { Stroke, Point } from "../utils/types"
 
 type StrokesProps = {
-    ctx: CanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D | null,
     stroke: Stroke
     shapeStartPoint: Point | null,
     shapeEndingPoint: Point | null
@@ -14,6 +14,8 @@ const drawShapes = ({
     shapeStartPoint,
     shapeEndingPoint
 }:StrokesProps) => {
+
+    if(!ctx) return
 
     if(stroke.toolForm === 'line' && stroke.points.length === 2) {
         const points = stroke.points

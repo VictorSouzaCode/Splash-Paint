@@ -3,12 +3,11 @@
 import { useRef, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
-import { resetCanvas } from "../redux/slices/undoRedo"
 import MouseFollower from "./MouseFollower"
 import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
-import { useUndoRedo } from "../hooks/useUndoRedo"
 import { createDrawingEngine } from "../typescript/engine/drawingEngine"
+import Toolbar from "./Toolbar"
 
 
 const Canvas = () => {
@@ -35,19 +34,6 @@ const Canvas = () => {
     drawingEngine: engine
   })
 
-  useUndoRedo({
-    canvasRef
-  })
-
-  useEffect(() => {
-    const canvas = canvasRef.current!
-    if(!canvas) { return }
-    const ctx = canvas.getContext('2d')!
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-  },[resetCanvas])
-
 
   return (
     <>
@@ -61,6 +47,7 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
+    <Toolbar drawingEngine={engine}/>
     <MouseFollower/>
     </>
   )

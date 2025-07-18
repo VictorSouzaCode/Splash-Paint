@@ -2,7 +2,7 @@ import type { Stroke } from "../utils/types"
 
 
 type StrokesProps = {
-    ctx: CanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D | null,
     stroke: Stroke
 }
 
@@ -10,6 +10,8 @@ const drawstrokes = ({
     ctx,
     stroke
 }:StrokesProps) => {
+
+    if(!ctx) return
 
     if(stroke.toolForm === 'circle') {
 

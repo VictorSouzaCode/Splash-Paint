@@ -10,6 +10,7 @@ export const useResizeCanvas = (
 ) => {
 
     useEffect(() => {
+
     const canvas = canvasProp.current;
     const canvasPreview = canvasProp2.current;
 
