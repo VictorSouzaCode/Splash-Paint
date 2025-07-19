@@ -2,6 +2,12 @@ import { useDispatch } from "react-redux"
 import { useRef } from "react"
 import { increasePointerSize, decreasePointerSize} from "../../redux/slices/tools"
 
+
+import { FiPlus } from "react-icons/fi";
+import { HiMiniMinusSmall } from "react-icons/hi2";
+
+
+
 const SizeControl = () => {
     const dispatch = useDispatch()
     const intervalRef = useRef<number | null>(null);
@@ -56,12 +62,12 @@ const SizeControl = () => {
               }}
               onMouseUp={handleMouseUp}
           >
-              +
+              <FiPlus />
           </button>
 
-          <h1 className="text-lg font-semibold">
+          {/* <h1 className="text-lg font-semibold">
               size
-          </h1>
+          </h1> */}
 
           <button
               className="text-5xl bg- h-full w-8 rounded-md bg-green-400 grid place-content-center"
@@ -73,7 +79,7 @@ const SizeControl = () => {
               }}
               onMouseUp={handleMouseUp}
           >
-              -
+              <HiMiniMinusSmall />
           </button>
       </div>
   )

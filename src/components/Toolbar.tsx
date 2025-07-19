@@ -6,7 +6,30 @@ import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import SizeControl from "./buttonsToolbar/SizeControl"
 import Download from "./buttonsToolbar/Download"
+import Shapes from "./buttonsToolbar/Shapes"
 // import UndoRedoReset from "./buttonsToolbar/UndoRedoReset"
+
+// undo redo reset
+import { PiArrowUUpRightFill } from "react-icons/pi";
+import { PiArrowUUpLeftFill } from "react-icons/pi";
+
+// reset
+import { BiReset } from "react-icons/bi";
+import { MdResetTv } from "react-icons/md";
+
+
+// pencil eraser
+import { PiEraserFill } from "react-icons/pi";
+import { RiPencilFill } from "react-icons/ri";
+
+
+
+
+
+
+
+
+// Next step will be make the ui good looking and intuitive
 
 type ToolbarProp = {
   drawingEngine: ReturnType<typeof import("../typescript/engine/drawingEngine").createDrawingEngine> | null,
@@ -33,14 +56,14 @@ const Toolbar = ({
             dispatch(setPencil())
             dispatch(setToolForm('circle'))
           }}
-          >Pencil</button>
+          ><RiPencilFill/></button>
           <button 
           className="bg-green-300 rounded-md"
           onClick={() => {
             dispatch(setEraser())
             dispatch(setToolForm('circle'))
           }}
-          >Eraser</button>
+          ><PiEraserFill/></button>
         </div>
 
         <div className="border1">
@@ -88,38 +111,7 @@ const Toolbar = ({
           ></button>
         </div>
 
-        <div>
-          <button
-          onClick={() => {
-            dispatch(setToolForm('line'))
-            dispatch(setPencil())
-          }}
-          >Line /</button>
-        </div>
-        <div>
-          <button
-           onClick={() => {
-            dispatch(setToolForm('square-shape'))
-            dispatch(setPencil())
-          }}
-          >🟥</button>
-        </div>
-        <div>
-          <button
-          onClick={() => {
-            dispatch(setToolForm('circle-shape'))
-            dispatch(setPencil())
-          }}
-          >🟢</button>
-        </div>
-        <div>
-          <button
-          onClick={() => {
-            dispatch(setToolForm('triangle-shape'))
-            dispatch(setPencil())
-          }}
-          >🔺</button>
-        </div>
+        <Shapes/>
 
         <div className="flex justify-around">
           <button
@@ -127,20 +119,20 @@ const Toolbar = ({
             onClick={() => {
               drawingEngine && drawingEngine.undo()
             }}
-          >Undo</button>
+          ><PiArrowUUpLeftFill/></button>
           <button
             className="rounded-md bg-green-300"
             onClick={() => {
               drawingEngine && drawingEngine.redo()
             }}
-          >Redo</button>
+          ><PiArrowUUpRightFill/></button>
         </div>
         <div>
           <button
             onClick={() => {
               drawingEngine && drawingEngine.clear()
             }}
-          >Reset</button>
+          ><MdResetTv /></button>
         </div>
 
         <Download/>
