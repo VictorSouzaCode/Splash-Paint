@@ -1,5 +1,6 @@
 import type { RootState } from "../../redux/store"
 import { useSelector } from "react-redux"
+import { IoMdDownload } from "react-icons/io";
 
 type imageFormat = 'png' | 'jpeg'
 
@@ -52,8 +53,8 @@ const Download = () => {
   return (
       <button onClick={() => {
           download()
-      }} className="bg-green-500 text-white px-3 py-1 rounded">
-          Download
+      }} className="border1 w-8 rounded-md">
+          <IoMdDownload />
       </button>
   )
 }

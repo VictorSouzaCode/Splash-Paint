@@ -7,6 +7,12 @@ import { FaRegCircle } from "react-icons/fa";
 import { TbTriangle } from "react-icons/tb";
 import { HiOutlineArrowLongUp } from "react-icons/hi2";
 import { TbLine } from "react-icons/tb";
+import { HiOutlineSlash } from "react-icons/hi2";
+import { PiLineSegmentThin } from "react-icons/pi";
+import { PiLineSegment } from "react-icons/pi";
+
+
+
 
 
 
@@ -15,8 +21,8 @@ import { TbLine } from "react-icons/tb";
 const Shapes = () => {
     const dispatch = useDispatch()
   return (
-      <>
-          <div>
+      <div className="flex justify-around">
+          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('line'))
@@ -24,7 +30,7 @@ const Shapes = () => {
                   }}
               ><TbLine/></button>
           </div>
-          <div>
+          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('square-shape'))
@@ -32,7 +38,7 @@ const Shapes = () => {
                   }}
               ><FaRegSquare/></button>
           </div>
-          <div>
+          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('circle-shape'))
@@ -40,7 +46,7 @@ const Shapes = () => {
                   }}
               ><FaRegCircle/></button>
           </div>
-          <div>
+          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('triangle-shape'))
@@ -48,7 +54,7 @@ const Shapes = () => {
                   }}
               ><TbTriangle/></button>
           </div>
-      </>
+       </div>
   )
 }
 

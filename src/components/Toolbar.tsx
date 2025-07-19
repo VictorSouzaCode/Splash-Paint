@@ -16,11 +16,17 @@ import { PiArrowUUpLeftFill } from "react-icons/pi";
 // reset
 import { BiReset } from "react-icons/bi";
 import { MdResetTv } from "react-icons/md";
+import { TfiTrash } from "react-icons/tfi";
+import { BiTrash } from "react-icons/bi";
+
+
 
 
 // pencil eraser
 import { PiEraserFill } from "react-icons/pi";
 import { RiPencilFill } from "react-icons/ri";
+
+
 
 
 
@@ -56,7 +62,8 @@ const Toolbar = ({
             dispatch(setPencil())
             dispatch(setToolForm('circle'))
           }}
-          ><RiPencilFill/></button>
+          ><RiPencilFill/>
+          </button>
           <button 
           className="bg-green-300 rounded-md"
           onClick={() => {
@@ -64,6 +71,27 @@ const Toolbar = ({
             dispatch(setToolForm('circle'))
           }}
           ><PiEraserFill/></button>
+
+          <div className="border1 flex flex-col justify-around">
+          <button className="w-4 h-4 rounded-full"
+          style={{
+            backgroundColor: pencilColor
+          }}
+          onClick={() => {
+            dispatch(setToolForm('circle'))
+            dispatch(setPencil())
+          }}
+          ></button>
+          <button className="w-4 h-4"
+          style={{
+            backgroundColor: pencilColor
+          }}
+          onClick={() => {
+            dispatch(setToolForm('square'))
+            dispatch(setPencil())
+          }}
+          ></button>
+        </div>
         </div>
 
         <div className="border1">
@@ -71,6 +99,7 @@ const Toolbar = ({
           <input 
           type="color" 
           value={pencilColor}
+          className="rounded-full w-8"
           onChange={(e) => {
             dispatch(setPencilColor(e.target.value))
           }}
@@ -90,27 +119,6 @@ const Toolbar = ({
           />
         </div>
 
-        <div className="border1 flex justify-around">
-          <button className="w-8 h-8 rounded-full"
-          style={{
-            backgroundColor: pencilColor
-          }}
-          onClick={() => {
-            dispatch(setToolForm('circle'))
-            dispatch(setPencil())
-          }}
-          ></button>
-          <button className="w-8 h-8"
-          style={{
-            backgroundColor: pencilColor
-          }}
-          onClick={() => {
-            dispatch(setToolForm('square'))
-            dispatch(setPencil())
-          }}
-          ></button>
-        </div>
-
         <Shapes/>
 
         <div className="flex justify-around">
@@ -127,15 +135,18 @@ const Toolbar = ({
             }}
           ><PiArrowUUpRightFill/></button>
         </div>
+
+        <div className="flex justify-around">
         <div>
           <button
             onClick={() => {
               drawingEngine && drawingEngine.clear()
             }}
-          ><MdResetTv /></button>
+          ><TfiTrash /></button>
         </div>
 
         <Download/>
+        </div>
 
         {/* <UndoRedoReset/> */}
 
