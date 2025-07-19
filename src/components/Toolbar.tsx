@@ -54,9 +54,9 @@ const Toolbar = ({
 
   return (
     <>
-    <div className="z-50 min-w-32 w-full h-[100px] absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] rounded-xl flex px-2 justify-center gap-4 border1">
+    <div className="z-50 min-w-32 w-full h-[100px] absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] rounded-xl flex px-2 justify-center gap-4 border1 items-center">
         
-        <div className="border1 h-fit text-2xl flex gap-4">
+        <div className="border1 h-fit text-2xl flex gap-4 items-center">
         <SizeControl/>
 
         <div className="flex justify-center h-fit">
@@ -76,8 +76,8 @@ const Toolbar = ({
               }}
             ><PiEraserFill /></button>
 
-            <div className="flex flex-col justify-around rounded-md">
-              <button className="w-8 h-8 rounded-full"
+            <div className="flex justify-around rounded-md">
+              <button
                 style={{
                   color: '#000000'
                 }}
@@ -86,7 +86,7 @@ const Toolbar = ({
                   dispatch(setPencil())
                 }}
               ><TbCircleDashed /></button>
-              <button className="w-4 h-4"
+              <button
                 style={{
                   color: '#000000'
                 }}

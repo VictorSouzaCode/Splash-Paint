@@ -22,38 +22,30 @@ const Shapes = () => {
     const dispatch = useDispatch()
   return (
       <div className="flex justify-around">
-          <div className="">
-              <button
+        <button
                   onClick={() => {
                       dispatch(setToolForm('line'))
                       dispatch(setPencil())
                   }}
               ><TbLine/></button>
-          </div>
-          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('square-shape'))
                       dispatch(setPencil())
                   }}
               ><FaRegSquare/></button>
-          </div>
-          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('circle-shape'))
                       dispatch(setPencil())
                   }}
               ><FaRegCircle/></button>
-          </div>
-          <div className="">
               <button
                   onClick={() => {
                       dispatch(setToolForm('triangle-shape'))
                       dispatch(setPencil())
                   }}
               ><TbTriangle/></button>
-          </div>
        </div>
   )
 }
