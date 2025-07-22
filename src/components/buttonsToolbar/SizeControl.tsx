@@ -65,10 +65,6 @@ const SizeControl = () => {
               <FiPlus />
           </button>
 
-          {/* <h1 className="text-lg font-semibold">
-              size
-          </h1> */}
-
           <button
               className="rounded-md border1 grid place-content-center"
               onMouseDown={(e) => {

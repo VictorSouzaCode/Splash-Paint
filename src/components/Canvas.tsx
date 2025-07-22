@@ -9,6 +9,17 @@ import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 import Toolbar from "./Toolbar"
 
+// instructions to what to do with my ui
+// pencil, inside the pencil i want to show the opstions for circle or square
+// eraser is the same as the pencil
+
+// in shapes i only want to display one, when i click or hover over to choose i want to show the shapes options that i have
+// i think i will start with the shapes
+
+
+// i need a button to make the toolbar desapper, and another button to make it appear again
+
+// after all that i will add a fill bucket tool, i can look at some git hub repos that has a flash app in javascript and see how they handle the fill option
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)

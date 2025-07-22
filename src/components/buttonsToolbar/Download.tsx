@@ -53,7 +53,7 @@ const Download = () => {
   return (
       <button onClick={() => {
           download()
-      }} className="border1 w-8 rounded-md">
+      }} className="border1 flex items-center justify-center w-8 rounded-md hover:bg-green-400 hover:text-white">
           <IoMdDownload />
       </button>
   )
