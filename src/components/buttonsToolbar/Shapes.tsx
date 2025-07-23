@@ -1,19 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import {  setPencil, setToolForm} from "../../redux/slices/tools"
-import type { ComponentType, ElementType } from "react";
+import type { ElementType } from "react";
 import type { RootState } from "../../redux/store";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
-
-// shapes
-import { FaRegSquare } from "react-icons/fa";
-import { FaRegCircle } from "react-icons/fa";
-import { TbTriangle } from "react-icons/tb";
-import { TbLine } from "react-icons/tb";
-import type { IconType } from "react-icons";
-
-
 
 
 
@@ -21,7 +12,7 @@ import type { IconType } from "react-icons";
 
 const Shapes = () => {
     const dispatch = useDispatch()
-    const { pencilColor, toolForm} = useSelector((state:RootState) => state.tools)
+    // const { pencilColor, toolForm} = useSelector((state:RootState) => state.tools)
 
     const [showShapes, setShowShapes] = useState<boolean>(false)
 
@@ -145,136 +136,6 @@ const Shapes = () => {
                 }
             }
         })}
-        {/* {toolForm === 'square-shape' ? <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('square-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-              onMouseEnter={() => {
-                  setShowShapes(true)
-              }}
-              onMouseLeave={() => {
-                  setShowShapes(false)
-              }}
-              ><FaRegSquare/></button> : toolForm === 'circle-shape' ? <button
-                className={`hover:bg-gray-100 active:text-teal-300 hover:text-teal-400`}
-                  onClick={() => {
-                      dispatch(setToolForm('circle-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-                  onMouseEnter={() => {
-                    setShowShapes(true)
-                  }}
-                  onMouseLeave={() => {
-                    setShowShapes(false)
-                  }}
-              ><FaRegCircle/></button> : toolForm === 'triangle-shape' ? <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('triangle-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-                  onMouseEnter={() => {
-                    setShowShapes(true)
-                  }}
-                  onMouseLeave={() => {
-                    setShowShapes(false)
-                  }}
-              ><TbTriangle/></button> : <button
-                className={`hover:bg-gray-100 active:text-teal-300 hover:text-teal-400`}
-                  onClick={() => {
-                      dispatch(setToolForm('line'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-                  onMouseEnter={() => {
-                    setShowShapes(true)
-                  }}
-                  onMouseLeave={() => {
-                    setShowShapes(false)
-                  }}
-              ><TbLine/></button>}
-        {showShapes && <div 
-        onMouseEnter={() => {
-            setShowShapes((show) => !show)
-        }}
-        onMouseLeave={() => {
-                    setShowShapes((show) => !show)
-                  }}
-        className="w-8 h-fit bg-slate-300 absolute top-[-400%] cursor-pointer rounded-md flex flex-col items-center justify-center">
-            <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('square-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-              ><FaRegSquare/></button>
-              <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('circle-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-              ><FaRegCircle/></button>
-              <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('triangle-shape'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-              ><TbTriangle/></button>
-              <button
-                className={`hover:bg-gray-100 active:text-teal-300 hover:text-teal-400`}
-                  onClick={() => {
-                      dispatch(setToolForm('line'))
-                      dispatch(setPencil())
-                      setShowShapes(false)
-                  }}
-              ><TbLine/></button>
-            </div>} */}
-
-
-        {/* <button
-                className={`hover:bg-gray-100 active:text-teal-300 hover:text-teal-400`}
-                  onClick={() => {
-                      dispatch(setToolForm('line'))
-                      dispatch(setPencil())
-                  }}
-                  onMouseEnter={() => {
-                    setShowShapes((show) => !show)
-                  }}
-                  onMouseLeave={() => {
-                    setShowShapes((show) => !show)
-                  }}
-              ><TbLine/></button> */}
-              {/* <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('square-shape'))
-                      dispatch(setPencil())
-                  }}
-              ><FaRegSquare/></button>
-              <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('circle-shape'))
-                      dispatch(setPencil())
-                  }}
-              ><FaRegCircle/></button>
-              <button
-              className="hover:bg-gray-100 active:text-teal-300 hover:text-teal-400"
-                  onClick={() => {
-                      dispatch(setToolForm('triangle-shape'))
-                      dispatch(setPencil())
-                  }}
-              ><TbTriangle/></button> */}
        </div>
   )
 }

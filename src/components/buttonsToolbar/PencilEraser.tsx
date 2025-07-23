@@ -1,57 +1,94 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import type { RootState } from "../../redux/store";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
+import { useState } from "react";
 
 // pencil eraser
 import { PiEraserFill } from "react-icons/pi";
 import { RiPencilFill } from "react-icons/ri";
 
 // pencil form
-import { TbCircleDashed } from "react-icons/tb";
-import { LuSquareDashed } from "react-icons/lu";
+import { MdCircle } from "react-icons/md";
+import { MdSquare } from "react-icons/md";
+
+
 
 
 const PencilEraser = () => {
   const dispatch = useDispatch()
 
+  const [showForms, setShowForms] = useState<boolean>(false)
+  const [showFormsEraser, setShowFormsEraser] = useState<boolean>(false)
+
+  const { tool, toolForm} = useSelector((state: RootState) => state.tools)
+
   return (
-    <div className="flex justify-center h-fit">
+    <div className="flex justify-center h-fit relative gap-x-2">
       <button
-        className="rounded-md text-3xl hover:text-amber-500 hover:bg-gray-100 focus:bg-gray-100 focus:text-amber-500"
+        className="rounded-md text-3xl flex justify-center items-center bg-gray-200"
+        style={{
+          color: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? '#f59e0b' : 'black',
+          backgroundColor: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? '#f3f4f6' : 'transparent',
+        }}
         onClick={() => {
           dispatch(setPencil())
-          dispatch(setToolForm('circle'))
+          if(toolForm !== 'circle' && toolForm !== 'square') {
+            dispatch(setToolForm('circle'))
+          }
         }}
       ><RiPencilFill />
       </button>
+
       <button
-        className="rounded-md text-3xl hover:text-red-500 hover:bg-gray-100 focus:text-red-500 focus:bg-gray-100"
+        className="rounded-md text-3xl hover:text-red-500 hover:bg-gray-100 focus:text-red-500 focus:bg-gray-100 flex justify-center items-center"
+        style={{
+          color: tool === 'eraser' && toolForm === 'circle' || toolForm === 'square' && tool !== 'pencil' ? '#ef4444' : 'black',
+          backgroundColor: tool === 'eraser' && toolForm === 'circle' || toolForm === 'square' && tool !== 'pencil' ? '#f3f4f6' : 'transparent'
+        }}
         onClick={() => {
           dispatch(setEraser())
-          dispatch(setToolForm('circle'))
+          if(toolForm !== 'circle' && toolForm !== 'square') {
+            dispatch(setToolForm('circle'))
+          }
         }}
-      ><PiEraserFill /></button>
+      ><PiEraserFill />
+      </button>
 
-      <div className="flex justify-around rounded-md">
+      <div className="flex justify-center items-center rounded-md text-base">
         <button
-          className="hover:bg-gray-100 rounded-md"
+          className="hover:bg-gray-100 w-[30px] h-full rounded-md flex justify-center items-center"
           style={{
-            color: '#000000'
+            color: '#000000',
+            backgroundColor: toolForm === 'circle' ? '#f3f4f6' : 'transparent'
           }}
           onClick={() => {
             dispatch(setToolForm('circle'))
-            dispatch(setPencil())
+            if(tool === 'eraser') {
+              dispatch(setEraser())
+            }
+            if(tool === 'pencil') {
+              dispatch(setPencil())
+            }
           }}
-        ><TbCircleDashed /></button>
+        ><MdCircle />
+        </button>
         <button
-          className="hover:bg-gray-100 rounded-md"
+          className="hover:bg-red-400 w-[30px] h-full rounded-md flex justify-center items-center"
           style={{
-            color: '#000000'
+            color: '#000000',
+            backgroundColor: toolForm === 'square' ? '#f3f4f6' : 'transparent'
           }}
           onClick={() => {
             dispatch(setToolForm('square'))
-            dispatch(setPencil())
+            if(tool === 'eraser') {
+              dispatch(setEraser())
+            }
+            if(tool === 'pencil') {
+              dispatch(setPencil())
+            }
           }}
-        ><LuSquareDashed /></button>
+        ><MdSquare />
+        </button>
       </div>
     </div>
   )

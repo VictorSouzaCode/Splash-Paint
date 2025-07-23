@@ -10,12 +10,9 @@ import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 import Toolbar from "./Toolbar"
 
 // instructions to what to do with my ui
-// pencil, inside the pencil i want to show the opstions for circle or square
+// pencil, inside the pencil i want to show the options for circle or square form
 // eraser is the same as the pencil
-
-// in shapes i only want to display one, when i click or hover over to choose i want to show the shapes options that i have
-// i think i will start with the shapes
-
+// Now i need to set to eraser when i select the circle and square that are on the side of the eraser
 
 // i need a button to make the toolbar desapper, and another button to make it appear again
 
