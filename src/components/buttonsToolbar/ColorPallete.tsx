@@ -22,7 +22,7 @@ const ColorPallete = () => {
           />
           {basicColorsOptions.map((colors) => (
               <button
-                  className="w-6 h-6 border1 rounded-full"
+                  className="w-5 h-5 border1 rounded-full"
                   key={colors}
                   style={{
                       backgroundColor: colors

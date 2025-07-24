@@ -20,15 +20,15 @@ const PencilEraser = () => {
   const [showForms, setShowForms] = useState<boolean>(false)
   const [showFormsEraser, setShowFormsEraser] = useState<boolean>(false)
 
-  const { tool, toolForm} = useSelector((state: RootState) => state.tools)
+  const { tool, toolForm, pencilColor} = useSelector((state: RootState) => state.tools)
 
   return (
     <div className="flex justify-center h-fit relative gap-x-2">
       <button
         className="rounded-md text-3xl flex justify-center items-center bg-gray-200"
         style={{
-          color: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? '#f59e0b' : 'black',
-          backgroundColor: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? '#f3f4f6' : 'transparent',
+          color: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? pencilColor : 'black',
+          backgroundColor: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? '#e5e7eb' : 'transparent',
         }}
         onClick={() => {
           dispatch(setPencil())
@@ -43,7 +43,7 @@ const PencilEraser = () => {
         className="rounded-md text-3xl hover:text-red-500 hover:bg-gray-100 focus:text-red-500 focus:bg-gray-100 flex justify-center items-center"
         style={{
           color: tool === 'eraser' && toolForm === 'circle' || toolForm === 'square' && tool !== 'pencil' ? '#ef4444' : 'black',
-          backgroundColor: tool === 'eraser' && toolForm === 'circle' || toolForm === 'square' && tool !== 'pencil' ? '#f3f4f6' : 'transparent'
+          backgroundColor: tool === 'eraser' && toolForm === 'circle' || toolForm === 'square' && tool !== 'pencil' ? '#e5e7eb' : 'transparent'
         }}
         onClick={() => {
           dispatch(setEraser())
@@ -58,8 +58,8 @@ const PencilEraser = () => {
         <button
           className="hover:bg-gray-100 w-[30px] h-full rounded-md flex justify-center items-center"
           style={{
-            color: '#000000',
-            backgroundColor: toolForm === 'circle' ? '#f3f4f6' : 'transparent'
+            color: tool === 'pencil' && toolForm === 'circle' ? pencilColor : '#000000',
+            backgroundColor: toolForm === 'circle' ? '#e5e7eb' : 'transparent'
           }}
           onClick={() => {
             dispatch(setToolForm('circle'))
@@ -75,8 +75,8 @@ const PencilEraser = () => {
         <button
           className="hover:bg-red-400 w-[30px] h-full rounded-md flex justify-center items-center"
           style={{
-            color: '#000000',
-            backgroundColor: toolForm === 'square' ? '#f3f4f6' : 'transparent'
+            color: tool === 'pencil' && toolForm === 'square' ? pencilColor : '#000000',
+            backgroundColor: toolForm === 'square' ? '#e5e7eb' : 'transparent'
           }}
           onClick={() => {
             dispatch(setToolForm('square'))

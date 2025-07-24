@@ -15,7 +15,7 @@
     border: 2px solid blue;
 }
 
-.effect-pencil:hover {
+.hover-shape:hover {
     color: '#f59e0b';
     background-color: '#f3f4f6';
 }

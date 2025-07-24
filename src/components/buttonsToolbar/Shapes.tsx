@@ -12,7 +12,7 @@ import { shapes} from "../../utils/shapeIcons";
 
 const Shapes = () => {
     const dispatch = useDispatch()
-    // const { pencilColor, toolForm} = useSelector((state:RootState) => state.tools)
+    const { pencilColor, toolForm} = useSelector((state:RootState) => state.tools)
 
     const [showShapes, setShowShapes] = useState<boolean>(false)
 
@@ -26,6 +26,10 @@ const Shapes = () => {
         if (shape.shapeName === 'line') {
 
             return <button
+            className="w-10 h-10 grid place-content-center rounded-t-md"
+            style={{
+                color: toolForm === 'line' ? pencilColor : '#000000'
+            }}
                 onClick={() => {
                     dispatch(setToolForm('line'))
                     dispatch(setPencil())
@@ -43,7 +47,11 @@ const Shapes = () => {
                 key={key}><Icon /></button>
         }
         if(shape.shapeName === 'square-shape') {
-            return <button 
+            return <button
+            className="w-10 h-10 grid place-content-center"
+            style={{
+                color: toolForm === 'square-shape' ? pencilColor : '#000000'
+            }}
                 onClick={() => {
                     dispatch(setToolForm('square-shape'))
                     dispatch(setPencil())
@@ -62,6 +70,10 @@ const Shapes = () => {
         }
         if(shape.shapeName === 'circle-shape') {
             return <button 
+            className="w-10 h-10 grid place-content-center"
+            style={{
+                color: toolForm === 'circle-shape' ? pencilColor : '#000000'
+            }}
                 onClick={() => {
                     dispatch(setToolForm('circle-shape'))
                     dispatch(setPencil())
@@ -80,6 +92,10 @@ const Shapes = () => {
         }
         if(shape.shapeName === 'triangle-shape') {
             return <button 
+            className="w-10 h-10 grid place-content-center rounded-b-md"
+            style={{
+                color: toolForm === 'triangle-shape' ? pencilColor : '#000000'
+            }}
                 onClick={() => {
                     dispatch(setToolForm('triangle-shape'))
                     dispatch(setPencil())
@@ -99,7 +115,10 @@ const Shapes = () => {
     }
 
   return (
-      <div className="flex w-[40px] h-[40px] justify-around relative"
+      <div className="w-[30px] h-[30px] relative rounded-md flex justify-center items-center"
+      style={{
+        backgroundColor: toolForm !== 'circle' && toolForm !== 'square' ? '#e5e7eb' : 'transparent'
+      }}
       onMouseLeave={() => {
                     setShowShapes(false)
                 }}>
@@ -107,7 +126,7 @@ const Shapes = () => {
         onMouseEnter={() => {
                     setShowShapes(true)
                 }}
-        className="absolute min-w-[40px] h-fit bg-gray-300 left-0 top-[-440%] flex flex-col items-center gap-y-4 rounded-md py-4">
+        className="absolute min-w-[40px] h-fit bg-gray-200 left-[50%] translate-x-[-50%] top-[-550%] flex flex-col items-center rounded-md">
             {shapes && shapes.map((shape, i) => {
                 return shapeElements(shape, i)
             })}
