@@ -9,7 +9,8 @@ import { shapes} from "../../utils/shapeIcons";
 
 
 
-
+// Make some adjustments to this code later add more stuff to the ui
+// i Had a great idea, i can make this type of hover box on the color pallete as well
 
 const Shapes = () => {
     const dispatch = useDispatch()
@@ -23,22 +24,38 @@ const Shapes = () => {
         dispatch(setPencil())
         previousSelectedShapes.pop()
         previousSelectedShapes.push(shapeName)
-        setShowShapes(false)
+        setShowShapes((show) => !show)
+    }
+
+    const renderSelectedButton = (shapeName: ToolForm, Icon: React.ElementType) => {
+        const isSelected = toolForm === shapeName
+
+        return (
+            <button
+                key={shapeName}
+                className={`w-10 h-10 grid place-content-center rounded-md`}
+                style={{
+                    color: isSelected ? pencilColor : '#000000'
+                }}
+                onClick={() => {
+                    handleClick(shapeName)
+                }}
+                onMouseEnter={() => setShowShapes(true)}
+            >
+                <Icon />
+            </button>
+        )
     }
 
     const renderShapeButton = (shapeName: ToolForm, Icon: React.ElementType, index: number) => {
-        const isSelected = toolForm === shapeName
         const isFirst = index === 0;
         const isLast = index === shapes.length - 1;
         const borderClass = isFirst ? "rounded-t-md" : isLast ? "rounded-b-md" : "";
 
         return (
             <button
-                key={shapeName}
-                className={`w-10 h-10 grid place-content-center ${borderClass}`}
-                style={{
-                    color: isSelected ? pencilColor : '#000000'
-                }}
+                key={index}
+                className={`w-10 h-10 grid place-content-center hover:bg-gray-100 ${borderClass}`}
                 onClick={() => {
                     handleClick(shapeName)
                 }}
@@ -61,9 +78,9 @@ const Shapes = () => {
           }}
       >
 
-          {shapes && shapes.filter((shape) => shape.shapeName === currentShape).map(({ shapeName, ShapeIcon }, i) => (
-              renderShapeButton(shapeName as ToolForm, ShapeIcon, i)
-          ))
+          {shapes && shapes.filter((shape) => shape.shapeName === currentShape).map(({ shapeName, ShapeIcon }) => (
+              renderSelectedButton(shapeName as ToolForm, ShapeIcon)
+          )) 
           }
 
           {showShapes &&
