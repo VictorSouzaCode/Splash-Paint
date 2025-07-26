@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../redux/store";
+import type { ToolForm } from "../../redux/slices/tools";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import { useState } from "react";
 import { toolsArray, strokeForm } from "../../utils/toolsData";
@@ -23,43 +24,18 @@ const PencilEraser = () => {
 
   const { tool, toolForm, pencilColor} = useSelector((state: RootState) => state.tools)
 
-  const handleToolsClick = (toolName: string) => {
-    if(toolName === 'pencil') {
-      dispatch(setPencil())
-    }
-    if(toolName === 'eraser') {
+  const handleFormClick = (strokeForm:ToolForm) => {
+
+    dispatch(setToolForm(strokeForm))
+    if (tool === 'eraser') {
       dispatch(setEraser())
     }
-    if (toolForm !== 'circle' && toolForm !== 'square') {
-      dispatch(setToolForm('circle'))
+    if (tool === 'pencil') {
+      dispatch(setPencil())
     }
   }
 
-  const handleFormClick = (strokeForm:string) => {
-    if(strokeForm === 'circle') {
-      dispatch(setToolForm('circle'))
-    }
-    if(strokeForm === 'square') {
-      dispatch(setToolForm('square'))
-    }
-  }
-
-  const renderToolsButton = (toolName: string, Icon: React.ElementType) => {
-
-    return (
-      <button 
-      key={toolName}
-      className="rounded-md text-3xl flex justify-center items-center"
-      onClick={() => {
-        handleToolsClick(toolName)
-      }}
-      >
-        <Icon/>
-      </button>
-    )
-  }
-
-  const renderStrokeFormsButton = (name:string, Icon:React.ElementType) => {
+  const renderStrokeFormsButton = (name:ToolForm, Icon:React.ElementType) => {
 
     return (
       <button
@@ -73,12 +49,51 @@ const PencilEraser = () => {
     )
   }
 
+  const handleToolsClick = (toolName: string) => {
+    if(toolName === 'pencil') {
+      dispatch(setPencil())
+    }
+    if(toolName === 'eraser') {
+      dispatch(setEraser())
+    }
+    if (toolForm !== 'circle' && toolForm !== 'square') {
+      dispatch(setToolForm('circle'))
+    }
+  }
+
+  const renderToolsButton = (toolName: string, Icon: React.ElementType) => {
+
+    const isSelected = tool === toolName;
+
+    const currentTool = isSelected && toolName
+
+    const iconColor = currentTool === 'pencil' && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? pencilColor : currentTool === 'eraser' ? '#ef4444' : '#000000';
+    
+    const bgColor = currentTool && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? '#e5e7eb' : 'transparent'
+
+    return (
+      <button 
+      key={toolName}
+      className={`rounded-md text-3xl flex justify-center items-center`}
+      style={{
+        color: iconColor,
+        backgroundColor: bgColor
+      }}
+      onClick={() => {
+        handleToolsClick(toolName)
+      }}
+      >
+        <Icon/>
+      </button>
+    )
+  }
+
   return (
     <div className="flex justify-center h-fit relative gap-x-2">
       {toolsArray && toolsArray.map(({name, Icon}) => (
         renderToolsButton(name, Icon)
       ))}
-      <button
+      {/* <button
         className="rounded-md text-3xl flex justify-center items-center"
         style={{
           color: tool === 'pencil' && toolForm === 'circle' || toolForm === 'square' && tool !== 'eraser' ? pencilColor : 'black',
@@ -106,7 +121,7 @@ const PencilEraser = () => {
           }
         }}
       ><PiEraserFill />
-      </button>
+      </button> */}
 
       <div className="flex justify-center items-center rounded-md text-base">
         {strokeForm && strokeForm.map(({name, Icon}) => (

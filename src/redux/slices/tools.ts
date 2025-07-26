@@ -63,7 +63,7 @@ const toolsSlice = createSlice({
         },
         setPencil: (state) => {
             state.tool = 'pencil'
-        }, 
+        },
         setPencilColor: (state, action: PayloadAction<string>) => {
             state.pencilColor = action.payload
         },
@@ -83,7 +83,7 @@ export const {
     decreasePointerSize, 
     setDrawing, 
     setEraser, 
-    setPencil, 
+    setPencil,
     setPencilColor, 
     setScreenColor,
     setToolForm
