@@ -13,8 +13,7 @@ const PencilEraser = () => {
   const handleToolsClick = (toolName: string) => {
     if(toolName === 'pencil') {
       dispatch(setPencil())
-    }
-    if(toolName === 'eraser') {
+    } else {
       dispatch(setEraser())
     }
     if (toolForm !== 'circle' && toolForm !== 'square') {
@@ -26,11 +25,11 @@ const PencilEraser = () => {
 
     const isSelected = tool === toolName;
 
-    const currentTool = isSelected && toolName
+    const currentTool = isSelected && toolName;
 
     const iconColor = currentTool === 'pencil' && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? pencilColor : currentTool === 'eraser' ? '#ef4444' : '#000000';
 
-    const bgColor = currentTool && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? '#e5e7eb' : 'transparent'
+    const bgColor = currentTool && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? '#e5e7eb' : 'transparent';
 
     return (
       <button 
@@ -52,11 +51,10 @@ const PencilEraser = () => {
   const handleFormClick = (strokeForm:ToolForm) => {
 
     dispatch(setToolForm(strokeForm))
-    if (tool === 'eraser') {
-      dispatch(setEraser())
-    }
     if (tool === 'pencil') {
       dispatch(setPencil())
+    } else {
+      dispatch(setEraser())
     }
   }
 
@@ -64,7 +62,8 @@ const PencilEraser = () => {
     const isSelected = toolForm === strokeForm
     const currentForm = isSelected && strokeForm
 
-    const iconColor = tool === 'pencil' && currentForm ? pencilColor : '#000000'
+    const iconColor = tool === 'pencil' && currentForm ? pencilColor : '#000000';
+
     const bgColor = currentForm ? '#e5e7eb' : 'transparent';
 
     return (

@@ -42,7 +42,6 @@ const Shapes = () => {
     }
 
     const renderShapeButtons = (shapeName: ToolForm, Icon: React.ElementType, index: number) => {
-        const isSelected = toolForm === shapeName
         const isFirst = index === 0;
         const isLast = index === shapes.length - 1;
         const borderClass = isFirst ? "rounded-t-md" : isLast ? "rounded-b-md" : "";
@@ -51,9 +50,6 @@ const Shapes = () => {
             <button
                 key={index}
                 className={`w-10 h-10 grid place-content-center hover:bg-gray-100 ${borderClass}`}
-                style={{
-                    color: isSelected ? pencilColor : '#000000'
-                }}
                 onClick={() => {
                     handleClick(shapeName)
                 }}
