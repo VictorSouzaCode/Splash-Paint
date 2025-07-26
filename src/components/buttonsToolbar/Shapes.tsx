@@ -5,12 +5,6 @@ import type { ToolForm } from "../../redux/slices/tools";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
-// import type { ElementType } from "react";
-
-
-
-// Make some adjustments to this code later add more stuff to the ui
-// i Had a great idea, i can make this type of hover box on the color pallete as well
 
 const Shapes = () => {
     const dispatch = useDispatch()
@@ -47,7 +41,8 @@ const Shapes = () => {
         )
     }
 
-    const renderShapeButton = (shapeName: ToolForm, Icon: React.ElementType, index: number) => {
+    const renderShapeButtons = (shapeName: ToolForm, Icon: React.ElementType, index: number) => {
+        const isSelected = toolForm === shapeName
         const isFirst = index === 0;
         const isLast = index === shapes.length - 1;
         const borderClass = isFirst ? "rounded-t-md" : isLast ? "rounded-b-md" : "";
@@ -56,6 +51,9 @@ const Shapes = () => {
             <button
                 key={index}
                 className={`w-10 h-10 grid place-content-center hover:bg-gray-100 ${borderClass}`}
+                style={{
+                    color: isSelected ? pencilColor : '#000000'
+                }}
                 onClick={() => {
                     handleClick(shapeName)
                 }}
@@ -91,7 +89,7 @@ const Shapes = () => {
                   className="absolute min-w-[40px] h-fit bg-gray-200 left-1/2 -translate-x-1/2 top-[-550%] flex flex-col items-center rounded-md"
                 >
                   {shapes && shapes.map(({ shapeName, ShapeIcon }, i) => {
-                      return renderShapeButton(shapeName as ToolForm, ShapeIcon, i)
+                      return renderShapeButtons(shapeName as ToolForm, ShapeIcon, i)
                   })}
               </div>
           }

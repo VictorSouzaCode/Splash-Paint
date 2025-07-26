@@ -3,14 +3,14 @@ import { setPencilColor, setScreenColor} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
 
-
+// i can make a square the reflects the color that the user choose
 
 const ColorPallete = () => {
     const dispatch = useDispatch()
     const {pencilColor, tool, screenColor} = useSelector((state:RootState) => state.tools)
 
   return (
-      <div className="flex items-center">
+      <div className="flex items-center border1">
           <input
               type="color"
               value={pencilColor}
