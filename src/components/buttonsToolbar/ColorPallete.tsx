@@ -3,8 +3,13 @@ import { setPencilColor, setScreenColor} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
 import { useState } from "react"
+import { PiAirplay } from "react-icons/pi";
 
-// i can make a square the reflects the color that the user choose
+
+
+
+// reminder
+// change customizable color picker box to a box with a lot of colors
 
 const ColorPallete = () => {
     const dispatch = useDispatch()
@@ -17,16 +22,19 @@ const ColorPallete = () => {
   return (
     <>
       <div 
-      className="flex items-center w-16 h-6 rounded-md relative border1"
+      className="flex items-center w-8 h-8 rounded-md relative text-3xl justify-center"
       onMouseEnter={() => {
         setShowColors(true)
       }}
-      onMouseLeave={() => {
-        setShowColors(false)
-      }}
       >
+        <PiAirplay/>
         {showColors && 
-        <div className="absolute flex flex-wrap justify-around items-center w-[160px] h-fit bg-gray-200 top-[-350%] left-1/2 -translate-x-1/2 rounded-md gap-y-2 gap-x-2 py-3 px-2">
+        <div 
+            onMouseLeave={() => {
+              setShowColors(false)
+            }}
+        className="absolute flex flex-wrap justify-around items-center w-[160px] h-fit bg-gray-200 top-[-240%] left-1/2 -translate-x-1/2 rounded-md gap-y-2 gap-x-2 py-3 px-2"
+        >
             <input
             type="color"
             value={pencilColor}
@@ -45,6 +53,7 @@ const ColorPallete = () => {
                   }}
                   onClick={() => {
                       dispatch(setPencilColor(colors))
+                      setShowColors(false)
                   }}
               ></button>
           ))}
