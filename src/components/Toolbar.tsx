@@ -33,13 +33,13 @@ const Toolbar = ({
 
           <div className="flex justify-around">
             <button
-              className="rounded-md hover:bg-gray-100 active:text-sky-300 hover:text-sky-400 w-[30px] h-[30px] grid place-content-center"
+              className="rounded-md active:text-gray-400 w-[30px] h-[30px] grid place-content-center"
               onClick={() => {
                 drawingEngine && drawingEngine.undo()
               }}
             ><PiArrowLeftFill /></button>
             <button
-              className="rounded-md hover:bg-gray-100 active:text-sky-300 hover:text-sky-400 w-8 h-[30px] grid place-content-center"
+              className="rounded-md active:text-gray-400 w-8 h-[30px] grid place-content-center"
               onClick={() => {
                 drawingEngine && drawingEngine.redo()
               }}
@@ -49,9 +49,9 @@ const Toolbar = ({
 
         <ColorPallete/>
 
-        <div className="flex flex-row-reverse gap-y-4 justify-around text-2xl">
+        <div className="flex flex-row-reverse gap-x-3 justify-around text-2xl">
           <button
-          className="hover:bg-gray-100 rounded-md"
+          className="active:text-gray-400 rounded-md"
             onClick={() => {
               drawingEngine && drawingEngine.clear()
             }}

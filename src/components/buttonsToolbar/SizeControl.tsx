@@ -3,8 +3,11 @@ import { useRef } from "react"
 import { increasePointerSize, decreasePointerSize} from "../../redux/slices/tools"
 
 
-import { FiPlus } from "react-icons/fi";
-import { HiMiniMinusSmall } from "react-icons/hi2";
+import { FaPlus } from "react-icons/fa6";
+import { TiMinus } from "react-icons/ti";
+
+
+
 
 
 
@@ -51,9 +54,9 @@ const SizeControl = () => {
       }
     }
   return (
-      <div className="flex justify-center items-center rounded-xl text-2xl">
+      <div className="flex justify-center items-center rounded-xl text-2xl gap-2">
           <button
-              className="rounded-md grid place-content-center border1"
+              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-400"
               onMouseDown={(e) => {
                   handleMouseDownPlus(e)
               }}
@@ -61,12 +64,13 @@ const SizeControl = () => {
                   preventContextMenu(e)
               }}
               onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
           >
-              <FiPlus />
+              <FaPlus />
           </button>
 
           <button
-              className="rounded-md border1 grid place-content-center"
+              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-400"
               onMouseDown={(e) => {
                   handleMouseDownMinus(e)
               }}
@@ -74,8 +78,9 @@ const SizeControl = () => {
                   preventContextMenu(e)
               }}
               onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
           >
-              <HiMiniMinusSmall />
+              <TiMinus/>
           </button>
       </div>
   )

@@ -22,17 +22,17 @@ const ColorPallete = () => {
   return (
     <>
       <div 
-      className="flex items-center w-8 h-8 rounded-md relative text-3xl justify-center"
+      className="flex items-center w-10 h-8 rounded-md relative text-3xl justify-center cursor-pointer"
       onMouseEnter={() => {
         setShowColors(true)
       }}
+      onMouseLeave={() => {
+              setShowColors(false)
+            }}
       >
         <PiAirplay/>
         {showColors && 
-        <div 
-            onMouseLeave={() => {
-              setShowColors(false)
-            }}
+        <div
         className="absolute flex flex-wrap justify-around items-center w-[160px] h-fit bg-gray-200 top-[-240%] left-1/2 -translate-x-1/2 rounded-md gap-y-2 gap-x-2 py-3 px-2"
         >
             <input
