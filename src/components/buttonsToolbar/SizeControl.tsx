@@ -56,7 +56,7 @@ const SizeControl = () => {
   return (
       <div className="flex justify-center items-center rounded-xl text-2xl gap-2">
           <button
-              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-400"
+              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-600"
               onMouseDown={(e) => {
                   handleMouseDownPlus(e)
               }}
@@ -70,7 +70,7 @@ const SizeControl = () => {
           </button>
 
           <button
-              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-400"
+              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-600"
               onMouseDown={(e) => {
                   handleMouseDownMinus(e)
               }}

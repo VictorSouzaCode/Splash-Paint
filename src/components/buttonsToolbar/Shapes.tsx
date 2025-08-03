@@ -6,6 +6,8 @@ import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
 
+// change the hover effect so i doenst show on hover instead only when clicked so it combines with the color pallete function
+
 const Shapes = () => {
     const dispatch = useDispatch()
 

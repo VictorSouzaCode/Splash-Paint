@@ -31,6 +31,8 @@ const Toolbar = ({
 
           <Shapes />
 
+          <ColorPallete/>
+
           <div className="flex justify-around">
             <button
               className="rounded-md active:text-gray-400 w-[30px] h-[30px] grid place-content-center"
@@ -45,9 +47,8 @@ const Toolbar = ({
               }}
             ><PiArrowRightFill /></button>
           </div>
-        </div>
 
-        <ColorPallete/>
+        </div>
 
         <div className="flex flex-row-reverse gap-x-3 justify-around text-2xl">
           <button
