@@ -7,6 +7,9 @@ import { PiAirplay } from "react-icons/pi";
 import multiColorbackground from '../../assets/rainbow.jpg'
 
 
+
+// add a button inside the color palete to choose background color
+
 const ColorPallete = () => {
     const dispatch = useDispatch()
     const {pencilColor, tool, screenColor} = useSelector((state:RootState) => state.tools)

@@ -11,11 +11,8 @@ import Toolbar from "./Toolbar"
 
 // instructions to what to do with my ui
 
-// i need a button to make the toolbar desapper, and another button to make it appear again
-
 // after all that i will add a fill bucket tool, i can look at some git hub repos that has a flash app in javascript and see how they handle the fill option
 
-// i Had a great idea, i can make this type of hover box on the color pallete as well
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)

@@ -3,11 +3,36 @@ import Download from "./buttonsToolbar/Download"
 import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
 import ColorPallete from "./buttonsToolbar/ColorPallete"
+import { useState } from "react"
 
 // undo redo reset
 import { PiArrowLeftFill } from "react-icons/pi";
 import { PiArrowRightFill } from "react-icons/pi";
 import { TfiTrash } from "react-icons/tfi";
+
+// hideShow
+import { PiArrowBendLeftDownFill } from "react-icons/pi";
+import { PiArrowFatLineDownLight } from "react-icons/pi";
+
+import { PiArrowFatLinesDownFill } from "react-icons/pi";
+import { PiArrowFatLinesDown } from "react-icons/pi";
+
+import { PiArrowLineDownBold } from "react-icons/pi";
+
+import { PiCaretCircleDown } from "react-icons/pi";
+
+import { PiCaretDoubleDownLight } from "react-icons/pi";
+
+import { PiCaretDoubleDownBold } from "react-icons/pi";
+import { PiCaretDoubleUpBold } from "react-icons/pi";
+
+
+
+
+
+
+
+
 
 
 
@@ -20,9 +45,32 @@ const Toolbar = ({
   drawingEngine,
 }:ToolbarProp) => {
 
+  const [hide, setHide] = useState<boolean>(false)
+
   return (
     <>
+    {
+    hide && 
+    <button 
+    className="text-lg z-50 absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] opacity-25"
+    onClick={() => {
+      setHide((show) => !show)
+    }}
+    >
+      <PiCaretDoubleUpBold />
+    </button>
+    }
+
+    {!hide && 
     <div className="z-50 min-w-32 w-full h-[60px] absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] rounded-xl flex px-2 justify-center gap-x-4 border1 items-center bg-white">
+
+      <button className="text-xl"
+      onClick={() => {
+        setHide((show) => !show)
+      }}
+      >
+        <PiCaretDoubleDownBold/>
+      </button>
         
         <div className="h-fit text-2xl flex items-center gap-x-4">
           <SizeControl />
@@ -62,6 +110,8 @@ const Toolbar = ({
         </div>
 
       </div>
+      }
+    
     </>
   )
 }
