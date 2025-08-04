@@ -8,33 +8,24 @@ import { useResizeCanvas } from "../hooks/useResizeCanvas"
 import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 import Toolbar from "./Toolbar"
-
-// instructions to what to do with my ui
-
-// after all that i will add a fill bucket tool, i can look at some git hub repos that has a flash app in javascript and see how they handle the fill option
+import { setEngine } from "../utils/drawingEgineSingleton"
 
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
+  const [engineReady, setEngineReady] = useState<boolean>(false)
 
-  const [engine, setEngine] = useState<ReturnType<typeof createDrawingEngine> | null>(null)
-
-  const download = () => {
-    if (!canvasRef.current) return
-    const link = document.createElement("a")
-    link.download = "drawing.png"
-    link.href = canvasRef.current.toDataURL()
-    link.click()
-  }
+  const [someChange, setSomeChange] = useState(true)
 
   useEffect(() => {
-    if(canvasRef.current) {
-      const drawingEngine = createDrawingEngine(canvasRef.current, canvasPreviewRef.current)
-      setEngine(drawingEngine)
+    if(canvasRef.current && canvasPreviewRef.current) {
+      const engine = createDrawingEngine(canvasRef.current, canvasPreviewRef.current)
+      setEngine(engine)
+      setEngineReady(true)
     }
-  },[canvasRef, state])
+  },[canvasRef.current, state])
 
   useResizeCanvas(
     canvasRef, 
@@ -43,9 +34,9 @@ const Canvas = () => {
 
   useCanvasEvents({
     canvasRef,
-    drawingEngine: engine
   })
 
+  // if(!engineReady) return null; // or a loading spinner
 
   return (
     <>
@@ -59,7 +50,8 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-    <Toolbar drawingEngine={engine} download={download} />
+    {engineReady && 
+    <Toolbar />}
     <MouseFollower/>
     </>
   )

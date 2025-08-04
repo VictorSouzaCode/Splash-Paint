@@ -1,28 +1,37 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
+import { getEngine } from "../utils/drawingEgineSingleton"
 
 
 type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>
-    drawingEngine: ReturnType<typeof import("../typescript/engine/drawingEngine").createDrawingEngine> | null,
 }
 
 export const useCanvasEvents = ({
     canvasRef,
-    drawingEngine,
 }:UseEffectProps) => {
 
     const state = useSelector((state: RootState) => state.tools)
 
     useEffect(() => {
+
+
       const canvas = canvasRef.current!;
-      if (!canvas || !drawingEngine) { return }
+      if (!canvas) { return }
+
+      let engine;
+      try {
+        engine = getEngine();
+      } catch (err) {
+        console.warn("Drawing engine not ready:", err);
+        return;
+      }
 
       const handleMouseMove = (e: MouseEvent) => {
         const point = { x: e.clientX, y: e.clientY }
         
-        drawingEngine.updateStroke(point, state)
+        engine.updateStroke(point, state)
       }
 
       const handleMouseDown = async (e: MouseEvent) => {
@@ -30,18 +39,18 @@ export const useCanvasEvents = ({
 
         const point = { x: e.clientX, y: e.clientY }
 
-        drawingEngine.startStroke(point, state)
+        engine.startStroke(point, state)
 
 
       }
 
       const handleMouseUp = async () => {
-        await drawingEngine.endStroke(state)
+        await engine.endStroke(state)
 
       }
 
       const handleMouseLeave = async () => {
-        await drawingEngine.endStroke(state)
+        await engine.endStroke(state)
       }
 
       canvas.addEventListener('mousedown', handleMouseDown)
@@ -55,5 +64,5 @@ export const useCanvasEvents = ({
         canvas.removeEventListener('mousemove', handleMouseMove)
         canvas.removeEventListener('mouseleave', handleMouseLeave)
       }
-  },[state, drawingEngine])
+  },[state, canvasRef])
 }

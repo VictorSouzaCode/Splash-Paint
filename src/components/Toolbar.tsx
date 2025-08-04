@@ -4,7 +4,10 @@ import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
 import ColorPallete from "./buttonsToolbar/ColorPallete"
 import FillButton from "./buttonsToolbar/FillButton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import type { RootState } from "../redux/store"
+import { getEngine } from "../utils/drawingEgineSingleton"
 
 // undo redo reset
 import { PiArrowLeftFill } from "react-icons/pi";
@@ -17,17 +20,22 @@ import { PiCaretDoubleUpBold } from "react-icons/pi";
 
 
 
-
-type ToolbarProp = {
-  drawingEngine: ReturnType<typeof import("../typescript/engine/drawingEngine").createDrawingEngine> | null,
-  download: () => void
-}
-
-const Toolbar = ({
-  drawingEngine,
-}:ToolbarProp) => {
+const Toolbar = () => {
 
   const [hide, setHide] = useState<boolean>(false)
+
+  const state = useSelector((state: RootState) => state.tools)
+
+  let engine: any;
+
+  useEffect(() => {
+    try {
+      engine = getEngine();
+    } catch (err) {
+      console.warn("Drawing engine not ready:", err);
+      return;
+    }
+  }, [state])
 
   return (
     <>
@@ -62,13 +70,13 @@ const Toolbar = ({
             <button
               className="rounded-md active:text-gray-400 w-[30px] h-[30px] grid place-content-center"
               onClick={() => {
-                drawingEngine && drawingEngine.undo()
+                engine && engine.undo()
               }}
             ><PiArrowLeftFill /></button>
             <button
               className="rounded-md active:text-gray-400 w-8 h-[30px] grid place-content-center"
               onClick={() => {
-                drawingEngine && drawingEngine.redo()
+                engine && engine.redo()
               }}
             ><PiArrowRightFill /></button>
           </div>
@@ -79,7 +87,7 @@ const Toolbar = ({
           <button
           className="active:text-gray-400 rounded-md"
             onClick={() => {
-              drawingEngine && drawingEngine.clear()
+              engine && engine.clear()
             }}
           ><TfiTrash /></button>
 

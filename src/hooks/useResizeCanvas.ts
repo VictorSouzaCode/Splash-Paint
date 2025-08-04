@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+
 type CanvasPropRef = React.RefObject<HTMLCanvasElement | null>
 
 type CanvasPropRef2 = React.RefObject<HTMLCanvasElement | null>
@@ -17,6 +18,7 @@ export const useResizeCanvas = (
     if(!canvas) { return }
 
     const resizeCanvas = () => {
+
       if (canvas) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
