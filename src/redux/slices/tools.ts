@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
-export type Tools = 'pencil' | 'eraser';
+export type Tools = 'pencil' | 'eraser' | 'fill';
 
 export type ToolForm = 'square' | 'circle' | 'line' | 'square-shape' | 'circle-shape' | 'triangle-shape';
 
@@ -64,6 +64,9 @@ const toolsSlice = createSlice({
         setPencil: (state) => {
             state.tool = 'pencil'
         },
+        setFill: (state) => {
+            state.tool = 'fill'
+        },
         setPencilColor: (state, action: PayloadAction<string>) => {
             state.pencilColor = action.payload
         },
@@ -86,7 +89,8 @@ export const {
     setPencil,
     setPencilColor, 
     setScreenColor,
-    setToolForm
+    setToolForm,
+    setFill
 } = toolsSlice.actions;
 
 export default toolsSlice.reducer

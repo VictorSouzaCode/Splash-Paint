@@ -3,6 +3,7 @@ import Download from "./buttonsToolbar/Download"
 import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
 import ColorPallete from "./buttonsToolbar/ColorPallete"
+import FillButton from "./buttonsToolbar/FillButton"
 import { useState } from "react"
 
 // undo redo reset
@@ -10,28 +11,9 @@ import { PiArrowLeftFill } from "react-icons/pi";
 import { PiArrowRightFill } from "react-icons/pi";
 import { TfiTrash } from "react-icons/tfi";
 
-// hideShow
-import { PiArrowBendLeftDownFill } from "react-icons/pi";
-import { PiArrowFatLineDownLight } from "react-icons/pi";
-
-import { PiArrowFatLinesDownFill } from "react-icons/pi";
-import { PiArrowFatLinesDown } from "react-icons/pi";
-
-import { PiArrowLineDownBold } from "react-icons/pi";
-
-import { PiCaretCircleDown } from "react-icons/pi";
-
-import { PiCaretDoubleDownLight } from "react-icons/pi";
-
+// hideShow icons
 import { PiCaretDoubleDownBold } from "react-icons/pi";
 import { PiCaretDoubleUpBold } from "react-icons/pi";
-
-
-
-
-
-
-
 
 
 
@@ -63,14 +45,6 @@ const Toolbar = ({
 
     {!hide && 
     <div className="z-50 min-w-32 w-full h-[60px] absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] rounded-xl flex px-2 justify-center gap-x-4 border1 items-center bg-white">
-
-      <button className="text-xl"
-      onClick={() => {
-        setHide((show) => !show)
-      }}
-      >
-        <PiCaretDoubleDownBold/>
-      </button>
         
         <div className="h-fit text-2xl flex items-center gap-x-4">
           <SizeControl />
@@ -80,6 +54,9 @@ const Toolbar = ({
           <Shapes />
 
           <ColorPallete/>
+
+          <FillButton/>
+
 
           <div className="flex justify-around">
             <button
@@ -108,6 +85,14 @@ const Toolbar = ({
 
         <Download/>
         </div>
+
+        <button className="text-lg opacity-70"
+      onClick={() => {
+        setHide((show) => !show)
+      }}
+      >
+        <PiCaretDoubleDownBold/>
+      </button>
 
       </div>
       }
