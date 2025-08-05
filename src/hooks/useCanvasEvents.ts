@@ -63,7 +63,7 @@ export const useCanvasEvents = ({
         const startX = e.clientX
         const startY = e.clientY
 
-        if(!ctx || e.button === 2) return;
+        if(!ctx || e.button === 2 || state.tool === 'pencil' || state.tool === 'eraser') return;
 
         fillTool(ctx, startX, startY, state)
       }

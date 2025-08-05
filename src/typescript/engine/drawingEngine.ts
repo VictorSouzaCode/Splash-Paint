@@ -174,6 +174,8 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     const clear = async () => {
         if(snapshotIndex < 0) { return };
         ctx.clearRect(0, 0, width, height)
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         snapshots = []
         snapshotIndex = -1
         pendingStrokes = []
