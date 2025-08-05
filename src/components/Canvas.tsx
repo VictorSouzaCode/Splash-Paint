@@ -17,8 +17,6 @@ const Canvas = () => {
   const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
   const [engineReady, setEngineReady] = useState<boolean>(false)
 
-  const [someChange, setSomeChange] = useState(true)
-
   useEffect(() => {
     if(canvasRef.current && canvasPreviewRef.current) {
       const engine = createDrawingEngine(canvasRef.current, canvasPreviewRef.current)

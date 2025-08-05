@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { getEngine } from "../utils/drawingEgineSingleton"
+import { fillTool } from "../typescript/fill/fillTool"
 
 
 type UseEffectProps = {
@@ -20,6 +21,8 @@ export const useCanvasEvents = ({
       const canvas = canvasRef.current!;
       if (!canvas) { return }
 
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })
+
       let engine;
       try {
         engine = getEngine();
@@ -30,12 +33,14 @@ export const useCanvasEvents = ({
 
       const handleMouseMove = (e: MouseEvent) => {
         const point = { x: e.clientX, y: e.clientY }
+
+        if(state.tool === 'fill') return;
         
         engine.updateStroke(point, state)
       }
 
       const handleMouseDown = async (e: MouseEvent) => {
-        if (e.button === 2) return;
+        if (e.button === 2 || state.tool === 'fill') return;
 
         const point = { x: e.clientX, y: e.clientY }
 
@@ -45,6 +50,7 @@ export const useCanvasEvents = ({
       }
 
       const handleMouseUp = async () => {
+        if(state.tool === 'fill') return;
         await engine.endStroke(state)
 
       }
@@ -53,16 +59,27 @@ export const useCanvasEvents = ({
         await engine.endStroke(state)
       }
 
+      const handleFillClick = async (e:MouseEvent) => {
+        const startX = e.clientX
+        const startY = e.clientY
+
+        if(!ctx || e.button === 2) return;
+
+        fillTool(ctx, startX, startY, state)
+      }
+
       canvas.addEventListener('mousedown', handleMouseDown)
       canvas.addEventListener('mouseup', handleMouseUp)
       canvas.addEventListener('mousemove', handleMouseMove)
       canvas.addEventListener('mouseleave', handleMouseLeave)
+      canvas.addEventListener('click', handleFillClick)
 
       return () => {
         canvas.removeEventListener('mousedown', handleMouseDown)
         canvas.removeEventListener('mouseup', handleMouseUp)
         canvas.removeEventListener('mousemove', handleMouseMove)
         canvas.removeEventListener('mouseleave', handleMouseLeave)
+        canvas.removeEventListener('click', handleFillClick)
       }
   },[state, canvasRef])
 }

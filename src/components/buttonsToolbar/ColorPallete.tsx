@@ -1,18 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setPencilColor, setScreenColor} from "../../redux/slices/tools"
+import { setPencilColor} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
 import { useState } from "react"
 import { PiAirplay } from "react-icons/pi";
 import multiColorbackground from '../../assets/rainbow.jpg'
 
-
-
-// add a button inside the color palete to choose background color
-
 const ColorPallete = () => {
     const dispatch = useDispatch()
-    const {pencilColor, tool, screenColor} = useSelector((state:RootState) => state.tools)
+    const {pencilColor, tool} = useSelector((state:RootState) => state.tools)
 
     const [showColors, setShowColors] = useState(false)
 
@@ -26,7 +22,9 @@ const ColorPallete = () => {
         setShowColors((show) => !show)
       }}
       >
-        <PiAirplay/>
+        <button>
+          <PiAirplay/>
+        </button>
         {showColors && 
         <div
         onClick={() => {
@@ -68,18 +66,6 @@ const ColorPallete = () => {
           ))}
           </div>
         }
-          
-          {/* <div className="">
-              <p>BG Color</p>
-              <input
-                  type="color"
-                  value={screenColor}
-                  onChange={(e) => {
-                      dispatch(setScreenColor(e.target.value))
-                  }}
-                  disabled={tool === 'eraser'}
-              />
-          </div> */}
       </div>
     </>
   )

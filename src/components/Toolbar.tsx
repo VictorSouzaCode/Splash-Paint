@@ -7,6 +7,8 @@ import FillButton from "./buttonsToolbar/FillButton"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
+import type { Point } from "../utils/types"
+import type { ToolState } from "../redux/slices/tools"
 import { getEngine } from "../utils/drawingEgineSingleton"
 
 // undo redo reset
@@ -26,7 +28,14 @@ const Toolbar = () => {
 
   const state = useSelector((state: RootState) => state.tools)
 
-  let engine: any;
+  let engine: {
+    startStroke: (point: Point, state: ToolState) => void;
+    updateStroke: (point: Point, state: ToolState) => void;
+    endStroke: (state: ToolState) => Promise<void>;
+    undo: () => Promise<void>;
+    redo: () => Promise<void>;
+    clear: () => Promise<void>;
+};
 
   useEffect(() => {
     try {

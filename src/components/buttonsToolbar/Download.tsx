@@ -1,12 +1,8 @@
-import type { RootState } from "../../redux/store"
-import { useSelector } from "react-redux"
 import { IoMdDownload } from "react-icons/io";
 
 type imageFormat = 'png' | 'jpeg'
 
 const Download = () => {
-
-    const {screenColor} = useSelector((state:RootState) => state.tools)
 
     const format: imageFormat = 'png'
     const fileName = 'canvas-image'
@@ -14,7 +10,6 @@ const Download = () => {
     const download = () => {
 
       const canvas = document.querySelector('canvas')
-      const backgroundColor = screenColor
       if (!canvas) {
         console.warn("No canvas element provided");
         return;
@@ -27,12 +22,6 @@ const Download = () => {
 
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
-
-      // Draw background color if specified
-      if (backgroundColor) {
-        ctx.fillStyle = backgroundColor;
-        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-      }
 
       // Draw the original canvas content over the background
       ctx.drawImage(canvas, 0, 0);
