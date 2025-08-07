@@ -8,8 +8,15 @@ import drawstrokes from "../drawstrokes"
 import drawShapes from "../drawShapes"
 import { fillTool } from "../fill/fillToolTest"
 
-let snapshots: ImageBitmap[] = []
-let snapshotIndex = -1
+let baseImageBitMap: ImageBitmap | null = null;
+let snapshots: ImageBitmap[] = [];
+let snapshotIndex = -1;
+const MAX_SNAPSHOTS = 20;
+
+// Maybe add it later
+/* const undoStack:ImageBitmap[] = [];
+const redoStack:ImageBitmap[] = []; */
+
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
 
@@ -174,7 +181,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     
     const undo = async () => {
         if (snapshotIndex < 0) return
-        snapshotIndex--
+        snapshotIndex--;
         await restoreSnapShot()
     }
 
@@ -185,13 +192,15 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
 
     const clear = async () => {
-        if(snapshotIndex < 0) { return };
+        // if(snapshotIndex < 0) { return };
         ctx.clearRect(0, 0, width, height)
         ctx.fillStyle = '#ffffff'
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        snapshots = []
-        snapshotIndex = -1
-        pendingStrokes = []
+
+        snapshots = [];
+        baseImageBitMap = null;
+        snapshotIndex = -1;
+        pendingStrokes = [];
     }
 
     const commitToSnapShot = async () => {
@@ -203,13 +212,25 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         const bitmap = await createImageBitmap(ctx.canvas)
         snapshots = snapshots.slice(0, snapshotIndex + 1)
+
         snapshots.push(bitmap)
-        snapshotIndex++
+        snapshotIndex++;
+
+        if(snapshots.length > MAX_SNAPSHOTS) {
+            baseImageBitMap = snapshots.shift()!;
+            snapshotIndex--;
+        }
+        
     }
 
     const restoreSnapShot = async () => {
         ctx.clearRect(0, 0, width, height)
         ctxPreview.clearRect(0, 0, previewHeight, previewWidth)
+
+        if(baseImageBitMap) {
+            ctx.drawImage(baseImageBitMap, 0, 0)
+        }
+
         if(snapshotIndex >= 0 && snapshotIndex < snapshots.length) {
             const snapshot = snapshots[snapshotIndex]
             ctx.drawImage(snapshot, 0, 0)

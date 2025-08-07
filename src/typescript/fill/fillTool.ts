@@ -130,7 +130,7 @@ export const fillTool = (
             if (neighborX >= 0 && neighborY >= 0 && neighborX < canvasWidth && neighborY < canvasHeight) {
                 const neighborIndex = neighborY * canvasWidth + neighborX;
                 if (!visited[neighborIndex]) {
-                    pixels[neighborIndex] = fillColor32B;
+                    pixels[neighborIndex] = fillColor32B
                     visited[neighborIndex] = 1;
                 }
             }

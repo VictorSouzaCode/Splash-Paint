@@ -67,11 +67,16 @@ export const useCanvasEvents = ({
         engine.fillAt(startX, startY, state)
       }
 
+      const undoRedoShortCut = async (e:KeyboardEvent) => {
+        console.log(e)
+      }
+
       canvas.addEventListener('mousedown', handleMouseDown)
       canvas.addEventListener('mouseup', handleMouseUp)
       canvas.addEventListener('mousemove', handleMouseMove)
       canvas.addEventListener('mouseleave', handleMouseLeave)
       canvas.addEventListener('click', handleFillClick)
+      canvas.addEventListener('keypress', undoRedoShortCut)
 
       return () => {
         canvas.removeEventListener('mousedown', handleMouseDown)
@@ -79,6 +84,7 @@ export const useCanvasEvents = ({
         canvas.removeEventListener('mousemove', handleMouseMove)
         canvas.removeEventListener('mouseleave', handleMouseLeave)
         canvas.removeEventListener('click', handleFillClick)
+        canvas.removeEventListener('keydown', undoRedoShortCut)
       }
   },[state, canvasRef])
 }
