@@ -2,7 +2,6 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { getEngine } from "../utils/drawingEgineSingleton"
-import { fillTool } from "../typescript/fill/fillTool"
 
 
 type UseEffectProps = {
@@ -65,7 +64,7 @@ export const useCanvasEvents = ({
 
         if(!ctx || e.button === 2 || state.tool === 'pencil' || state.tool === 'eraser') return;
 
-        engine.fillAt(ctx, startX, startY, state)
+        engine.fillAt(startX, startY, state)
       }
 
       canvas.addEventListener('mousedown', handleMouseDown)

@@ -14,8 +14,10 @@ let snapshotIndex = -1
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
 
     if(!canvas || !canvasPreview ) return
+
     const ctxPreview = canvasPreview.getContext('2d')
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
+
     if(!ctx || !ctxPreview) throw new Error('Canvas 2D context not supported')
 
     const width = canvas.width
@@ -161,7 +163,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
 
     const fillAt = async (
-        ctx:CanvasRenderingContext2D,
         startX:number,
         startY:number,
         state:ToolState
