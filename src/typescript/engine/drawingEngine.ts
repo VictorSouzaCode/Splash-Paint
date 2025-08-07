@@ -11,11 +11,13 @@ import { fillTool } from "../fill/fillToolTest"
 let baseImageBitMap: ImageBitmap | null = null;
 let snapshots: ImageBitmap[] = [];
 let snapshotIndex = -1;
-const MAX_SNAPSHOTS = 20;
+const MAX_SNAPSHOTS = 2;
 
 // Maybe add it later
 /* const undoStack:ImageBitmap[] = [];
 const redoStack:ImageBitmap[] = []; */
+
+// New Problem, Now that i added baseIMageBitmap the background of my drawings gets transparent when i use the last undo
 
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
@@ -180,7 +182,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
     
     const undo = async () => {
-        if (snapshotIndex < 0) return
+        if (snapshotIndex < 0) return;
         snapshotIndex--;
         await restoreSnapShot()
     }
@@ -229,6 +231,9 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         if(baseImageBitMap) {
             ctx.drawImage(baseImageBitMap, 0, 0)
+        } else {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height); // add BG when doing the last redo
         }
 
         if(snapshotIndex >= 0 && snapshotIndex < snapshots.length) {
