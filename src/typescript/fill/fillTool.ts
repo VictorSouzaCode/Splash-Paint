@@ -5,8 +5,6 @@ import type { ToolState } from "../../redux/slices/tools";
 
 // if the stroke is too thin, the fill tool will scape to the outside area filling all the canvas 
 
-// the fill tool is not include in the in the undo redo function,
-
 const hexConvertToRgb = (hex:string):[number, number, number, number] => {
     hex = hex.replace(/^#/, '')
 

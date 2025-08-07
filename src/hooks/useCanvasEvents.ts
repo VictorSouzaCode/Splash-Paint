@@ -65,7 +65,7 @@ export const useCanvasEvents = ({
 
         if(!ctx || e.button === 2 || state.tool === 'pencil' || state.tool === 'eraser') return;
 
-        fillTool(ctx, startX, startY, state)
+        engine.fillAt(ctx, startX, startY, state)
       }
 
       canvas.addEventListener('mousedown', handleMouseDown)

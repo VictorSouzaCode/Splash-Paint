@@ -6,6 +6,7 @@ import previewShapesHandler from "../previewShapesHandler"
 import previewStrokeHandler from "../previewStrokeHandler"
 import drawstrokes from "../drawstrokes"
 import drawShapes from "../drawShapes"
+import { fillTool } from "../fill/fillToolTest"
 
 let snapshots: ImageBitmap[] = []
 let snapshotIndex = -1
@@ -158,6 +159,17 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         currentStroke = null
         }
     }
+
+    const fillAt = async (
+        ctx:CanvasRenderingContext2D,
+        startX:number,
+        startY:number,
+        state:ToolState
+    ) => {
+
+        fillTool(ctx, startX, startY, state)
+        await commitToSnapShot()
+    }
     
     const undo = async () => {
         if (snapshotIndex < 0) return
@@ -209,6 +221,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         endStroke,
         undo,
         redo,
-        clear
+        clear,
+        fillAt
     }
 }

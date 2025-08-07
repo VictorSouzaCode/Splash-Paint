@@ -15,6 +15,7 @@ function hextoRgba(hex: string): [number, number, number, number] {
     return [r, g, b, a]
 }
 
+// i will leave this function here for now, just in case i need to revisit fill tool
 
 export function fillTool (
 
