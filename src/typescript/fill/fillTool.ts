@@ -1,10 +1,6 @@
 import type { ToolState } from "../../redux/slices/tools";
 
 
-// Problems that i have, i dont know How to solve yet
-
-// if the stroke is too thin, the fill tool will scape to the outside area filling all the canvas 
-
 const hexConvertToRgb = (hex:string):[number, number, number, number] => {
     hex = hex.replace(/^#/, '')
 

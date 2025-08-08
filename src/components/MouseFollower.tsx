@@ -2,6 +2,16 @@ import type { RootState } from "../redux/store"
 import { useSelector } from "react-redux"
 import { useEffect, useRef } from "react"
 
+// Change the increase and decrease, to every time i click on it the circle that follows the mouse needs to appear in the middle of the screen or slight above the tool bar
+
+// change increase and decrease icons to arrows one up and one down
+
+// add key board commads to increase and decrease
+
+// i really cant think about a solution for the increase and decrease problem right now, so i will change other things on the ui and then come back to this part of the code later
+
+// i think i will add a painel on top of the size buttons showing the increase in size
+
 const MouseFollower = () => {
   const state = useSelector((state: RootState) => state.tools)
 
@@ -11,10 +21,14 @@ const MouseFollower = () => {
 
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
-      positionRef.current = {
-        x: e.clientX - (followerRef.current?.offsetWidth || 0) / 2,
-        y: e.clientY - (followerRef.current?.offsetHeight || 0) / 2
-      };
+
+      if (!state.isResizing) {
+
+        positionRef.current = {
+          x: e.clientX - (followerRef.current?.offsetWidth || 0) / 2,
+          y: e.clientY - (followerRef.current?.offsetHeight || 0) / 2
+        };
+      }
     };
 
     const animate = () => {
@@ -35,7 +49,18 @@ const MouseFollower = () => {
       window.removeEventListener('mousemove', updatePosition);
       cancelAnimationFrame(animationRef.current!);
     };
-  }, []);
+  }, [state.isResizing]);
+
+  useEffect(() => {
+
+    if (state.isResizing && followerRef.current) {
+        positionRef.current = {
+        x: window.innerWidth / 2 - (followerRef.current.offsetWidth || 0) / 2,
+        y: window.innerHeight / 2 - (followerRef.current.offsetHeight || 0) / 2
+      }
+    }
+
+  },[state.isResizing, state.size])
   
   return (
     <div

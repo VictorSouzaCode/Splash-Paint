@@ -5,21 +5,13 @@ export type Tools = 'pencil' | 'eraser' | 'fill';
 
 export type ToolForm = 'square' | 'circle' | 'line' | 'square-shape' | 'circle-shape' | 'triangle-shape';
 
-export type StoredStrokes = {x:number, y:number}
-
 export type ToolState = {
     tool: Tools,
     toolForm: ToolForm,
     pencilColor: string,
-    borderColor: string,
     screenColor: string,
     size: number,
-    isDrawing: boolean,
-    pointer: {
-        x: number,
-        y: number
-    }
-    storedStrokes: StoredStrokes[]
+    isResizing: boolean,
 }
 
 
@@ -27,15 +19,9 @@ const initialState: ToolState = {
     tool: 'pencil',
     toolForm: 'circle',
     pencilColor: '#000000',
-    borderColor: '#000000',
     screenColor: "#ffffff",
-    isDrawing: false,
     size: 15,
-    pointer: {
-        x: 0,
-        y: 0
-    },
-    storedStrokes: []
+    isResizing: false,
 }
 
 
@@ -51,12 +37,8 @@ const toolsSlice = createSlice({
             if(state.size === 1) return;
             state.size -= 1
         },
-        setPointerPosition: (state, action: PayloadAction<{ x: number, y: number}>) => {
-            state.pointer = action.payload
-        },
-        setDrawing: (state, action: PayloadAction<boolean>) => {
-            state.isDrawing = action.payload
-            // console.log(state.isDrawing)
+        setIsResizing: (state, action: PayloadAction<boolean>) => {
+            state.isResizing = action.payload
         },
         setEraser: (state) => {
             state.tool = 'eraser'
@@ -81,10 +63,9 @@ const toolsSlice = createSlice({
 
 
 export const { 
-    setPointerPosition, 
     increasePointerSize, 
-    decreasePointerSize, 
-    setDrawing, 
+    decreasePointerSize,
+    setIsResizing,
     setEraser, 
     setPencil,
     setPencilColor, 
