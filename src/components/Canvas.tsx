@@ -1,6 +1,6 @@
 
 
-import { useRef, useEffect, useState } from "react"
+import { useRef, useEffect, useState, } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import MouseFollower from "./MouseFollower"
@@ -9,6 +9,7 @@ import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 import Toolbar from "./Toolbar"
 import { setEngine } from "../utils/drawingEgineSingleton"
+
 
 
 // Change of plans for now
@@ -26,6 +27,8 @@ import { setEngine } from "../utils/drawingEgineSingleton"
 // i need a color Schema for the background of the selected tools
 
 // i need a size pattern for the icons box
+
+// i will start the rework of the ui, cleaning the tailwind files
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
@@ -64,8 +67,10 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-    {engineReady && 
-    <Toolbar />}
+    {engineReady &&
+    <Toolbar />
+    }
+
     <MouseFollower/>
     </>
   )

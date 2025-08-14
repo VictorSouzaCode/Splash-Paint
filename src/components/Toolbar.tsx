@@ -4,17 +4,8 @@ import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
 import ColorPallete from "./buttonsToolbar/ColorPallete"
 import FillButton from "./buttonsToolbar/FillButton"
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import type { RootState } from "../redux/store"
-import type { Point } from "../utils/types"
-import type { ToolState } from "../redux/slices/tools"
-import { getEngine } from "../utils/drawingEgineSingleton"
-
-// undo redo reset
-import { PiArrowLeftFill } from "react-icons/pi";
-import { PiArrowRightFill } from "react-icons/pi";
-import { TfiTrash } from "react-icons/tfi";
+import UndoRedoDelete from "./buttonsToolbar/UndoRedoDelete"
+import { useState } from "react"
 
 // hideShow icons
 import { PiCaretDoubleDownBold } from "react-icons/pi";
@@ -25,26 +16,6 @@ import { PiCaretDoubleUpBold } from "react-icons/pi";
 const Toolbar = () => {
 
   const [hide, setHide] = useState<boolean>(false)
-
-  const state = useSelector((state: RootState) => state.tools)
-
-  let engine: {
-    startStroke: (point: Point, state: ToolState) => void;
-    updateStroke: (point: Point, state: ToolState) => void;
-    endStroke: (state: ToolState) => Promise<void>;
-    undo: () => Promise<void>;
-    redo: () => Promise<void>;
-    clear: () => Promise<void>;
-};
-
-  useEffect(() => {
-    try {
-      engine = getEngine();
-    } catch (err) {
-      console.warn("Drawing engine not ready:", err);
-      return;
-    }
-  }, [state])
 
   return (
     <>
@@ -61,9 +32,9 @@ const Toolbar = () => {
     }
 
     {!hide && 
-    <div className="z-50 min-w-32 w-full h-[60px] absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] rounded-xl flex px-2 justify-center gap-x-4 border1 items-center bg-white">
+    <div className="z-50 flex-center bottom-position min-h-[50px] h-fit main-container-width rounded-md gap-x-4 border1 bg-white">
         
-        <div className="h-fit text-2xl flex items-center gap-x-4">
+        <div className="h-full text-2xl flex-center flex-wrap gap-x-4">
           <SizeControl />
 
           <PencilEraser />
@@ -74,43 +45,18 @@ const Toolbar = () => {
 
           <FillButton/>
 
+          <UndoRedoDelete/>
 
-          <div className="flex justify-around">
-            <button
-              className="rounded-md active:text-gray-400 w-[30px] h-[30px] grid place-content-center"
-              onClick={() => {
-                engine && engine.undo()
-              }}
-            ><PiArrowLeftFill /></button>
-            <button
-              className="rounded-md active:text-gray-400 w-8 h-[30px] grid place-content-center"
-              onClick={() => {
-                engine && engine.redo()
-              }}
-            ><PiArrowRightFill /></button>
-          </div>
+          <Download/>
 
-        </div>
-
-        <div className="flex flex-row-reverse gap-x-3 justify-around text-2xl">
-          <button
-          className="active:text-gray-400 rounded-md"
+          <button className="text-lg opacity-70"
             onClick={() => {
-              engine && engine.clear()
+              setHide((show) => !show)
             }}
-          ><TfiTrash /></button>
-
-        <Download/>
+          >
+            <PiCaretDoubleDownBold />
+          </button>
         </div>
-
-        <button className="text-lg opacity-70"
-      onClick={() => {
-        setHide((show) => !show)
-      }}
-      >
-        <PiCaretDoubleDownBold/>
-      </button>
-
       </div>
       }
     

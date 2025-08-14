@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import toolsReducer from "./slices/tools";
+import configToolBarReducer from "./slices/configToolBar";
 
 
 export const store = configureStore({
     reducer: {
-        tools: toolsReducer
+        tools: toolsReducer,
+        configBar: configToolBarReducer
     }
 })
 

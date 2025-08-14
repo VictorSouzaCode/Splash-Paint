@@ -19,3 +19,25 @@
     color: '#f59e0b';
     background-color: '#f3f4f6';
 }
+
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center
+  }
+
+  .flex-column {
+    @apply flex flex-col items-center justify-center
+  }
+
+  .bottom-position {
+    @apply absolute top-[99%] left-[50%] translate-y-[-100%] translate-x-[-50%]
+  }
+
+  .main-container-width {
+    @apply min-w-32 w-full max-w-[98%] lg:max-w-fit lg:px-2
+  }
+
+  .button-tools-box {
+    @apply rounded-md h-full w-[30px] active:text-gray-600
+  }
+}

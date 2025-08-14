@@ -7,10 +7,8 @@ import { FaPlus } from "react-icons/fa6";
 import { TiMinus } from "react-icons/ti";
 
 
-
-// Change the increase and decrease, to every time i click on it the circle that follows the mouse needs to appear in the middle of the screen or slight above the tool bar
-
-// change increase and decrease icons to arrows one up and one down
+import { BiSolidUpArrow } from "react-icons/bi";
+import { BiSolidDownArrow } from "react-icons/bi";
 
 // add key board commads to increase and decrease
 
@@ -61,7 +59,7 @@ const SizeControl = () => {
       }
     }
   return (
-      <div className="flex justify-center items-center rounded-xl text-2xl gap-2"
+      <div className="flex-center flex-col text-lg"
       onMouseEnter={() => {
         dispatch(setIsResizing(true))
       }}
@@ -70,7 +68,7 @@ const SizeControl = () => {
       }}
       >
           <button
-              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-600"
+              className="active:text-gray-600"
               onMouseDown={(e) => {
                   handleMouseDownPlus(e)
               }}
@@ -80,11 +78,11 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <FaPlus />
+              <BiSolidUpArrow />
           </button>
 
           <button
-              className="rounded-md grid place-content-center h-[30px] w-[30px] active:text-gray-600"
+              className="active:text-gray-600"
               onMouseDown={(e) => {
                   handleMouseDownMinus(e)
               }}
@@ -94,7 +92,7 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <TiMinus/>
+              <BiSolidDownArrow />
           </button>
       </div>
   )
