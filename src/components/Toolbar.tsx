@@ -31,7 +31,7 @@ const Toolbar = () => {
     }
 
     {!hide && 
-    <div className="z-50 flex-center bottom-position min-h-[50px] h-fit main-container-width rounded-md gap-x-4 border1 bg-white">
+    <div className="z-50 flex-center bottom-position min-h-[50px] h-fit main-container-width rounded-md border1 bg-white">
         
         <div className="h-full text-2xl flex-center flex-wrap gap-x-4">
           <SizeControl />

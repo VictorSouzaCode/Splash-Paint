@@ -10,6 +10,11 @@ import { TiMinus } from "react-icons/ti";
 import { BiSolidUpArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 
+
+import { CiCirclePlus } from "react-icons/ci";
+import { CiCircleMinus } from "react-icons/ci";
+
+
 // add key board commads to increase and decrease
 
 
@@ -59,7 +64,7 @@ const SizeControl = () => {
       }
     }
   return (
-      <div className="flex-center flex-col text-lg"
+      <div className="flex-center text-3xl"
       onMouseEnter={() => {
         dispatch(setIsResizing(true))
       }}
@@ -78,7 +83,7 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <BiSolidUpArrow />
+              <CiCirclePlus />
           </button>
 
           <button
@@ -92,7 +97,7 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <BiSolidDownArrow />
+              <CiCircleMinus />
           </button>
       </div>
   )

@@ -1,11 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../redux/store";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
-import { setConfigBar } from "../../redux/slices/configToolBar";
 import { toolsArray } from "../../utils/toolsData";
 import ToolConfigurationBar from "../configurationBar/ToolConfigurationBar";
-
-import { RiArrowUpWideLine } from "react-icons/ri";
 
 import OpenConfigBarButton from "../OpenConfigBarButton";
 

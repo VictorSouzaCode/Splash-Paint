@@ -34,7 +34,7 @@
   }
 
   .main-container-width {
-    @apply min-w-32 w-full max-w-[98%] lg:max-w-fit lg:px-2
+    @apply min-w-32 w-full max-w-[98%] lg:max-w-[26%] lg:px-2
   }
 
   .button-tools-box {

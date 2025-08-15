@@ -578,10 +578,6 @@ video {
   left: 0px;
 }
 
-.left-1\/2 {
-  left: 50%;
-}
-
 .left-\[50\%\] {
   left: 50%;
 }
@@ -590,20 +586,12 @@ video {
   top: 0px;
 }
 
-.top-\[-550\%\] {
-  top: -550%;
-}
-
 .top-\[1\%\] {
   top: 1%;
 }
 
 .top-\[100\%\] {
   top: 100%;
-}
-
-.bottom-10 {
-  bottom: 2.5rem;
 }
 
 .z-0 {
@@ -634,10 +622,6 @@ video {
   height: 30px;
 }
 
-.h-\[40px\] {
-  height: 40px;
-}
-
 .h-fit {
   height: -moz-fit-content;
   height: fit-content;
@@ -649,6 +633,10 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.min-h-\[40px\] {
+  min-height: 40px;
 }
 
 .min-h-\[50px\] {
@@ -671,21 +659,8 @@ video {
   width: 30px;
 }
 
-.w-\[35\%\] {
-  width: 35%;
-}
-
 .w-full {
   width: 100%;
-}
-
-.min-w-\[40px\] {
-  min-width: 40px;
-}
-
-.-translate-x-1\/2 {
-  --tw-translate-x: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .translate-x-\[-50\%\] {
@@ -801,16 +776,6 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-zinc-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(161 161 170 / var(--tw-bg-opacity, 1));
-}
-
-.bg-gray-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
-}
-
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -898,8 +863,7 @@ video {
 
 @media (min-width: 1024px) {
   .main-container-width {
-    max-width: -moz-fit-content;
-    max-width: fit-content;
+    max-width: 26%;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
@@ -937,11 +901,6 @@ video {
   background-color: '#f3f4f6';
 }
 
-.hover\:bg-gray-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
-}
-
 .active\:text-gray-400:active {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
@@ -954,4 +913,16 @@ video {
 
 .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .md\:w-\[35\%\] {
+    width: 35%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:w-\[45\%\] {
+    width: 45%;
+  }
 }

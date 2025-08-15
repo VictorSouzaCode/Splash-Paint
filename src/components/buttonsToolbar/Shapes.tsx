@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import {  setPencil, setToolForm, setShape} from "../../redux/slices/tools"
+import {  setToolForm, setShape} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store";
 import type { ToolForm } from "../../redux/slices/tools";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
 import OpenConfigBarButton from "../OpenConfigBarButton";
 
-// change the hover effect so i doenst show on hover instead only when clicked so it combines with the color pallete function
+// for it to work properly with the configuration tool bar, i will have to divide this component in two parts, the first parts renders the shape selected, and the other one will render all the shapes inside the configuration bar
 
 const Shapes = () => {
     const dispatch = useDispatch()
@@ -26,16 +26,15 @@ const Shapes = () => {
     }
 
     const renderSelectedButton = (shapeName: ToolForm, Icon: React.ElementType) => {
-        const isSelected = toolForm === shapeName
 
         return (
             <>
-            {isSelected && !barIsActive && <OpenConfigBarButton/>}
+            {tool === 'shape' && !barIsActive && <OpenConfigBarButton/>}
             <button
                 key={shapeName}
                 className={`w-10 h-10 grid place-content-center rounded-md`}
                 style={{
-                    color: isSelected ? pencilColor : '#000000'
+                    color: tool === 'shape' ? pencilColor : '#000000'
                 }}
                 onClick={() => {
                     handleClick(shapeName)
@@ -48,31 +47,12 @@ const Shapes = () => {
         )
     }
 
-    const renderShapeButtons = (shapeName: ToolForm, Icon: React.ElementType, index: number) => {
-        const isFirst = index === 0;
-        const isLast = index === shapes.length - 1;
-        const borderClass = isFirst ? "rounded-t-md" : isLast ? "rounded-b-md" : "";
-
-        return (
-            <button
-                key={index}
-                className={`w-10 h-10 grid place-content-center hover:bg-gray-100 ${borderClass}`}
-                onClick={() => {
-                    handleClick(shapeName)
-                }}
-                onMouseEnter={() => setShowShapes(true)}
-            >
-                <Icon />
-            </button>
-        )
-    }
-
     const currentShape = previousSelectedShapes[0] as ToolForm || 'line';
 
   return (
       <div className="w-[30px] h-[30px] relative rounded-md flex justify-center items-center"
           style={{
-              backgroundColor: ['circle', 'square'].includes(toolForm) ? 'transparent' : '#e5e7eb'
+              backgroundColor: tool !== 'shape' ? 'transparent' : '#e5e7eb'
           }}
           onMouseLeave={() => {
               setShowShapes(false)
@@ -82,19 +62,6 @@ const Shapes = () => {
           {shapes && shapes.filter((shape) => shape.shapeName === currentShape).map(({ shapeName, ShapeIcon }) => (
               renderSelectedButton(shapeName as ToolForm, ShapeIcon)
           )) 
-          }
-
-          {showShapes &&
-              <div
-                  onMouseEnter={() => {
-                      setShowShapes(true)
-                  }}
-                  className="absolute min-w-[40px] h-fit bg-gray-200 left-1/2 -translate-x-1/2 top-[-550%] flex flex-col items-center rounded-md"
-                >
-                  {shapes && shapes.map(({ shapeName, ShapeIcon }, i) => {
-                      return renderShapeButtons(shapeName as ToolForm, ShapeIcon, i)
-                  })}
-              </div>
           }
       </div>
   )
