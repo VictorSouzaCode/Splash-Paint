@@ -23,7 +23,7 @@ const OpenConfigBarButton = () => {
             }}
         >
             <RiArrowDownWideFill />
-        </button> 
+        </button>
         )
     } else {
 
