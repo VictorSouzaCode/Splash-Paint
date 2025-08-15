@@ -2,7 +2,6 @@ import SizeControl from "./buttonsToolbar/SizeControl"
 import Download from "./buttonsToolbar/Download"
 import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
-import ColorPallete from "./buttonsToolbar/ColorPallete"
 import FillButton from "./buttonsToolbar/FillButton"
 import UndoRedoDelete from "./buttonsToolbar/UndoRedoDelete"
 import { useState } from "react"
@@ -40,8 +39,6 @@ const Toolbar = () => {
           <PencilEraser />
 
           <Shapes />
-
-          <ColorPallete/>
 
           <FillButton/>
 

@@ -3,9 +3,11 @@ import type { RootState } from "../../redux/store";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import { setConfigBar } from "../../redux/slices/configToolBar";
 import { toolsArray } from "../../utils/toolsData";
-import StrokeFormSelector from "./StrokeFormsSelector";
+import ToolConfigurationBar from "../configurationBar/ToolConfigurationBar";
 
 import { RiArrowUpWideLine } from "react-icons/ri";
+
+import OpenConfigBarButton from "../OpenConfigBarButton";
 
 
 
@@ -40,16 +42,8 @@ const PencilEraser = () => {
 
     return (
       <>
-      <div className="flex flex-col flex-center">
-      {isSelected && <button 
-      onClick={() => {
-        dispatch(setConfigBar())
-      }}
-      className="absolute bottom-9"
-      key={1}>
-        <RiArrowUpWideLine/>
-      </button>
-      }
+      <div className="flex-col flex-center">
+      {isSelected && !barIsActive && <OpenConfigBarButton/>}
       <button 
       key={toolName}
       className={`flex-center rounded-md text-3xl`}
@@ -70,7 +64,7 @@ const PencilEraser = () => {
 
   return (
     <>
-    {barIsActive  && <StrokeFormSelector/>}
+    {barIsActive  && <ToolConfigurationBar/>}
     <div className="flex justify-center relative gap-x-2">
       {toolsArray && toolsArray.map(({name, Icon}) => (
         renderToolsButton(name, Icon)

@@ -570,6 +570,10 @@ video {
   position: relative;
 }
 
+.bottom-9 {
+  bottom: 2.25rem;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -586,32 +590,16 @@ video {
   top: 0px;
 }
 
-.top-\[-230\%\] {
-  top: -230%;
-}
-
 .top-\[-550\%\] {
   top: -550%;
 }
 
+.top-\[1\%\] {
+  top: 1%;
+}
+
 .top-\[100\%\] {
   top: 100%;
-}
-
-.top-10 {
-  top: 2.5rem;
-}
-
-.bottom-10 {
-  bottom: 2.5rem;
-}
-
-.bottom-8 {
-  bottom: 2rem;
-}
-
-.bottom-9 {
-  bottom: 2.25rem;
 }
 
 .z-0 {
@@ -638,16 +626,12 @@ video {
   height: 1.25rem;
 }
 
-.h-8 {
-  height: 2rem;
-}
-
 .h-\[30px\] {
   height: 30px;
 }
 
-.h-\[50px\] {
-  height: 50px;
+.h-\[40px\] {
+  height: 40px;
 }
 
 .h-fit {
@@ -661,14 +645,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-\[100px\] {
-  height: 100px;
 }
 
 .min-h-\[50px\] {
@@ -687,12 +663,12 @@ video {
   width: 2rem;
 }
 
-.w-\[160px\] {
-  width: 160px;
-}
-
 .w-\[30px\] {
   width: 30px;
+}
+
+.w-\[35\%\] {
+  width: 35%;
 }
 
 .w-full {
@@ -754,10 +730,6 @@ video {
   justify-content: space-around;
 }
 
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .gap-4 {
   gap: 1rem;
 }
@@ -792,10 +764,6 @@ video {
   border-radius: 0.375rem;
 }
 
-.rounded-xl {
-  border-radius: 0.75rem;
-}
-
 .rounded-b-md {
   border-bottom-right-radius: 0.375rem;
   border-bottom-left-radius: 0.375rem;
@@ -815,9 +783,9 @@ video {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
 }
 
-.bg-green-300 {
+.bg-neutral-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(134 239 172 / var(--tw-bg-opacity, 1));
+  background-color: rgb(229 229 229 / var(--tw-bg-opacity, 1));
 }
 
 .bg-transparent {
@@ -829,19 +797,14 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-neutral-200 {
+.bg-zinc-400 {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 229 229 / var(--tw-bg-opacity, 1));
+  background-color: rgb(161 161 170 / var(--tw-bg-opacity, 1));
 }
 
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
 }
 
 .text-2xl {
@@ -864,17 +827,20 @@ video {
   line-height: 1.75rem;
 }
 
-.text-6xl {
-  font-size: 3.75rem;
-  line-height: 1;
-}
-
 .opacity-0 {
   opacity: 0;
 }
 
+.opacity-20 {
+  opacity: 0.2;
+}
+
 .opacity-25 {
   opacity: 0.25;
+}
+
+.opacity-30 {
+  opacity: 0.3;
 }
 
 .opacity-70 {
@@ -939,6 +905,10 @@ video {
 .button-tools-box:active {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
+.box-rounded {
+  border-radius: 0.375rem;
 }
 
 .border1 {

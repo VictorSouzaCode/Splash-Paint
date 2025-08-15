@@ -40,4 +40,8 @@
   .button-tools-box {
     @apply rounded-md h-full w-[30px] active:text-gray-600
   }
+
+  .box-rounded {
+    @apply rounded-md
+  }
 }

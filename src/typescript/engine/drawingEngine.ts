@@ -40,7 +40,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     const startStroke = (point: Point, state: ToolState) => {
 
-        if (state.toolForm !== 'circle' && state.toolForm !== 'square') {
+        if (state.toolForm !== 'circle' && state.toolForm !== 'square' && state.tool === 'shape') {
 
             shapeStartPoint = point
 
@@ -143,7 +143,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     const endStroke = async (state: ToolState) => {
         if(state.toolForm !== 'circle' && state.toolForm !== 'square' && shapeStartPoint && shapeEndingPoint) {
 
-            const color = state.tool === 'pencil' ? state.pencilColor : state.screenColor
+            const color = state.pencilColor
             const size = state.size
             const toolForm = state.toolForm
 

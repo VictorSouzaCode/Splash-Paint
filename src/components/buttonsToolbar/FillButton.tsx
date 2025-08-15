@@ -13,9 +13,10 @@ const FillButton = () => {
 
   return (
     <button
-      className="text-3xl"
+      className="text-3xl rounded-md flex-center"
       style={{
-        color: state.tool === 'fill' ? state.pencilColor : '#000000'
+        color: state.tool === 'fill' ? state.pencilColor : '#000000',
+        backgroundColor: state.tool === 'fill' ? '#e5e7eb' : 'transparent'
       }}
       onClick={() => {
         dispatch(setFill())

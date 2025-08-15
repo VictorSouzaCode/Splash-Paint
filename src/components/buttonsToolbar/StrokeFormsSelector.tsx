@@ -3,6 +3,8 @@ import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import type { ToolForm } from "../../redux/slices/tools";
 import type { RootState } from "../../redux/store";
 import { strokeForm } from "../../utils/toolsData";
+import { setConfigBar } from "../../redux/slices/configToolBar";
+
 
 
 const StrokeFormSelector = () => {
@@ -38,6 +40,7 @@ const StrokeFormSelector = () => {
         }}
         onClick={() => {
           handleFormClick(strokeForm)
+          dispatch(setConfigBar())
         }}
       >
         <Icon />

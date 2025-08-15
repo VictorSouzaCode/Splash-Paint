@@ -1,23 +1,25 @@
 import { useDispatch, useSelector } from "react-redux"
-import {  setPencil, setToolForm} from "../../redux/slices/tools"
+import {  setPencil, setToolForm, setShape} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store";
 import type { ToolForm } from "../../redux/slices/tools";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
+import OpenConfigBarButton from "../OpenConfigBarButton";
 
 // change the hover effect so i doenst show on hover instead only when clicked so it combines with the color pallete function
 
 const Shapes = () => {
     const dispatch = useDispatch()
 
-    const { pencilColor, toolForm} = useSelector((state:RootState) => state.tools)
+    const { pencilColor, toolForm, tool} = useSelector((state:RootState) => state.tools)
+    const barIsActive = useSelector((state: RootState) => state.configBar.isActive)
 
     const [showShapes, setShowShapes] = useState<boolean>(false)
 
     const handleClick = (shapeName: ToolForm) => {
         dispatch(setToolForm(shapeName))
-        dispatch(setPencil())
+        dispatch(setShape())
         previousSelectedShapes.pop()
         previousSelectedShapes.push(shapeName)
         setShowShapes((show) => !show)
@@ -27,6 +29,8 @@ const Shapes = () => {
         const isSelected = toolForm === shapeName
 
         return (
+            <>
+            {isSelected && !barIsActive && <OpenConfigBarButton/>}
             <button
                 key={shapeName}
                 className={`w-10 h-10 grid place-content-center rounded-md`}
@@ -40,6 +44,7 @@ const Shapes = () => {
             >
                 <Icon />
             </button>
+            </>
         )
     }
 

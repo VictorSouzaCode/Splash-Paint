@@ -17,7 +17,7 @@ const configBarSlice = createSlice({
     reducers: {
          setConfigBar: (state) => {
             state.isActive = !state.isActive
-         }
+        }
     }
 })
 
