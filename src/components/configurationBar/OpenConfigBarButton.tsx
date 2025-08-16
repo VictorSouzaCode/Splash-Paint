@@ -1,8 +1,8 @@
-import { setConfigBar } from "../redux/slices/configToolBar";
+import { setConfigBar } from "../../redux/slices/configToolBar";
 import { useDispatch } from "react-redux"
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { RiArrowUpWideLine } from "react-icons/ri";
-import type { RootState } from "../redux/store";
+import type { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 
 

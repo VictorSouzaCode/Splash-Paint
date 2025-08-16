@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import {  setFill } from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store";
-import OpenConfigBarButton from "../OpenConfigBarButton";
+import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
 // fill Icon
 import { BsPaintBucket } from "react-icons/bs";

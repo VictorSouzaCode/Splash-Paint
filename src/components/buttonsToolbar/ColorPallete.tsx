@@ -12,7 +12,7 @@ const ColorPallete = () => {
   return (
     <>
     <div
-        className="flex flex-wrap justify-around items-center h-fit bg-gray-200 gap-y-2 gap-x-2 px-2"
+        className="flex flex-wrap justify-around items-center h-fit gap-y-2 gap-x-2 px-2"
         >
             <div className="relative w-5 h-5 rounded-full transition-all duration-200"
               style={{

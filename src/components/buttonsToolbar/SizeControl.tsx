@@ -1,14 +1,15 @@
 import { useDispatch } from "react-redux"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { increasePointerSize, decreasePointerSize, setIsResizing} from "../../redux/slices/tools"
+import MiniScreen from "../miniScreenForSize/MiniScreen";
 
 
 import { FaPlus } from "react-icons/fa6";
 import { TiMinus } from "react-icons/ti";
 
 
-import { BiSolidUpArrow } from "react-icons/bi";
-import { BiSolidDownArrow } from "react-icons/bi";
+// import { BiSolidUpArrow } from "react-icons/bi";
+// import { BiSolidDownArrow } from "react-icons/bi";
 
 
 import { CiCirclePlus } from "react-icons/ci";
@@ -22,6 +23,8 @@ import { CiCircleMinus } from "react-icons/ci";
 const SizeControl = () => {
     const dispatch = useDispatch()
     const intervalRef = useRef<number | null>(null);
+
+    const [showMiniScreen, setShowMiniScreen] = useState<boolean>(false)
 
     const preventContextMenu = (e:React.MouseEvent) => {
       e.preventDefault()
@@ -63,15 +66,19 @@ const SizeControl = () => {
         intervalRef.current = null;
       }
     }
+
   return (
       <div className="flex-center text-3xl"
       onMouseEnter={() => {
         dispatch(setIsResizing(true))
+        setShowMiniScreen(true)
       }}
       onMouseLeave={() => {
         dispatch(setIsResizing(false))
+        setShowMiniScreen(false)
       }}
       >
+        {showMiniScreen && <MiniScreen/>}
           <button
               className="active:text-gray-600"
               onMouseDown={(e) => {

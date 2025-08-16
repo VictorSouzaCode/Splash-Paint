@@ -5,7 +5,7 @@ import type { ToolForm } from "../../redux/slices/tools";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { useState } from "react";
 import { shapes} from "../../utils/shapeIcons";
-import OpenConfigBarButton from "../OpenConfigBarButton";
+import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
 // for it to work properly with the configuration tool bar, i will have to divide this component in two parts, the first parts renders the shape selected, and the other one will render all the shapes inside the configuration bar
 

@@ -4,7 +4,7 @@ import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import { toolsArray } from "../../utils/toolsData";
 import ToolConfigurationBar from "../configurationBar/ToolConfigurationBar";
 
-import OpenConfigBarButton from "../OpenConfigBarButton";
+import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
 
 

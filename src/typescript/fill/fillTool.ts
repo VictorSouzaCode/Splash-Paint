@@ -76,13 +76,12 @@ export const fillTool = (
         const da = a1 - a2;
 
         return dr * dr + dg * dg + db * db + da * da;
-    };
+    }; // ------- Main Flood Fill Algorithm ------------
 
     const isSimilarColor = (color1:number, color2:number) => {
         return colorDifference(color1, color2) <= COLOR_TOLERANCE;
     }
 
-    // ------- Main Flood Fill Algorithm ------------
     while(queue.length > 0){
         const [x, y] = queue.shift()!;
         const index = y * canvasWidth + x;
