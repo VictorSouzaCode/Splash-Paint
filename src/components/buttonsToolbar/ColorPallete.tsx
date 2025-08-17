@@ -12,7 +12,7 @@ const ColorPallete = () => {
   return (
     <>
     <div
-        className="flex flex-wrap justify-around items-center h-fit gap-y-2 gap-x-2 px-2"
+        className="flex flex-wrap justify-around items-center h-fit gap-x-2"
         >
             <div className="relative w-5 h-5 rounded-full transition-all duration-200"
               style={{
@@ -35,7 +35,7 @@ const ColorPallete = () => {
             </div>
           {basicColorsOptions.map((colors) => (
               <button
-                  className="w-5 h-5 rounded-full gap-4"
+                  className="w-5 h-5 rounded-full"
                   key={colors}
                   style={{
                       border: '1px solid gray',                      

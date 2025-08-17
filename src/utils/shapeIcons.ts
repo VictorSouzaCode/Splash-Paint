@@ -6,20 +6,20 @@ import { TbLine } from "react-icons/tb";
 
 export const shapes = [
     {
-        shapeName: 'line',
-        ShapeIcon: TbLine
+        shapeName: 'circle-shape',
+        ShapeIcon: FaRegCircle
     },
     { 
         shapeName: 'square-shape',
         ShapeIcon: FaRegSquare
     },
     {
-        shapeName: 'circle-shape',
-        ShapeIcon: FaRegCircle
-    },
-    {
         shapeName: 'triangle-shape',
         ShapeIcon: TbTriangle
+    },
+    {
+        shapeName: 'line',
+        ShapeIcon: TbLine
     }
 ]
 

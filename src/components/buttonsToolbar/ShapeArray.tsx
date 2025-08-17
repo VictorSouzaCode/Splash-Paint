@@ -27,7 +27,7 @@ const ShapeArray = () => {
         return (
             <button
                 key={index}
-                className={`w-10 h-10 grid place-content-center`}
+                className={`flex-center text-2xl`}
                 onClick={() => {
                     handleClick(shapeName)
                     dispatch(setConfigBar())
@@ -40,7 +40,7 @@ const ShapeArray = () => {
 
   return (
       <div
-          className="h-fit flex-center rounded-md"
+          className="h-fit flex-center rounded-md gap-x-2"
       >
           {shapes && shapes.map(({ shapeName, ShapeIcon }, i) => {
               return renderShapeButtons(shapeName as ToolForm, ShapeIcon, i)

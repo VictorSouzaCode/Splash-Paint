@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import toolsReducer from "./slices/tools";
 import configToolBarReducer from "./slices/configToolBar";
+import toggleMainToolBarReducer from "./slices/ToggleMainToolBar"
 
 
 export const store = configureStore({
     reducer: {
         tools: toolsReducer,
-        configBar: configToolBarReducer
+        configBar: configToolBarReducer,
+        toggleToolBar: toggleMainToolBarReducer
     }
 })
 

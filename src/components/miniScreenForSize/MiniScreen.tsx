@@ -8,15 +8,12 @@ const MiniScreen = () => {
 
     const state = useSelector((state:RootState) => state.tools)
     const followerRef = useRef<HTMLDivElement>(null);
-    
-    /* , */
-    
 
   return (
     <div
-    className="absolute bottom-[100%] min-w-[100px] h-[200px] bg-transparent rounded-md flex-center p-2"
+    className="absolute bottom-[100%] min-w-[100px] h-[200px] rounded-md flex-center p-2"
     >
-        <div className="bg-transparent w-full h-full rounded-md flex-center">
+        <div className="w-full h-full rounded-md flex-center">
               <div
               ref={followerRef}
                   className="absolute pointer-events-none z-0"

@@ -33,7 +33,7 @@ const StrokeFormSelector = () => {
     return (
       <button
         key={strokeForm}
-        className="button-tools-box flex-center"
+        className="button-tools-box flex-center h-full"
         style={{
           color: iconColor,
           backgroundColor: bgColor
@@ -49,7 +49,7 @@ const StrokeFormSelector = () => {
   }
 
   return (
-    <div className="flex-center rounded-md text-base">
+    <div className="flex-center rounded-md text-base h-[30px]">
       {strokeForm && strokeForm.map(({ name, Icon }) => (
         render(name, Icon)
       ))}

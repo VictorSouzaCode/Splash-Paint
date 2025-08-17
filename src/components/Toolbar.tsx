@@ -4,31 +4,19 @@ import Shapes from "./buttonsToolbar/Shapes"
 import PencilEraser from "./buttonsToolbar/PencilEraser"
 import FillButton from "./buttonsToolbar/FillButton"
 import UndoRedoDelete from "./buttonsToolbar/UndoRedoDelete"
-import { useState } from "react"
-
-// hideShow icons
-import { PiCaretDoubleDownBold } from "react-icons/pi";
-import { PiCaretDoubleUpBold } from "react-icons/pi";
+import ToggleToolBarButton from "./buttonsToolbar/ToggleToolBarButton"
+import type { RootState } from "../redux/store"
+import { useSelector } from "react-redux"
 
 
 
 const Toolbar = () => {
 
-  const [hide, setHide] = useState<boolean>(false)
+  const hide = useSelector((state: RootState) => state.toggleToolBar.isShowing)
 
   return (
     <>
-    {
-    hide && 
-    <button 
-    className="text-lg z-50 absolute top-[100%] left-[50%] translate-y-[-100%] translate-x-[-50%] opacity-25"
-    onClick={() => {
-      setHide((show) => !show)
-    }}
-    >
-      <PiCaretDoubleUpBold />
-    </button>
-    }
+    {hide && <ToggleToolBarButton/>}
 
     {!hide && 
     <div className="z-50 flex-center bottom-position min-h-[50px] h-fit main-container-width rounded-md border1 bg-white">
@@ -46,13 +34,8 @@ const Toolbar = () => {
 
           <Download/>
 
-          <button className="text-lg opacity-70"
-            onClick={() => {
-              setHide((show) => !show)
-            }}
-          >
-            <PiCaretDoubleDownBold />
-          </button>
+          <ToggleToolBarButton/>
+
         </div>
       </div>
       }

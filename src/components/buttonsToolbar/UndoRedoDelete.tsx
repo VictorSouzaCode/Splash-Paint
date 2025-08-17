@@ -31,8 +31,9 @@ const UndoRedoDelete = () => {
 
   return (
     <>
-          <button
-              className="rounded-md active:text-gray-400 w-[30px] h-[30px] flex-center"
+          <div className="flex-center gap-x-1">
+            <button
+              className="rounded-md active:text-gray-400 h-[30px] flex-center"
               onClick={() => {
                   engine && engine.undo()
               }}
@@ -40,13 +41,15 @@ const UndoRedoDelete = () => {
               <PiArrowLeftFill />
           </button>
           <button
-              className="rounded-md active:text-gray-400 w-8 h-[30px] flex-center"
+              className="rounded-md active:text-gray-400 h-[30px] flex-center"
               onClick={() => {
                   engine && engine.redo()
               }}
           >
               <PiArrowRightFill />
           </button>
+          </div>
+
           <button
               className="active:text-gray-400 rounded-md"
               onClick={() => {

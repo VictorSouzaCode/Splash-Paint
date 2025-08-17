@@ -3,21 +3,8 @@ import { useRef, useState } from "react"
 import { increasePointerSize, decreasePointerSize, setIsResizing} from "../../redux/slices/tools"
 import MiniScreen from "../miniScreenForSize/MiniScreen";
 
-
-import { FaPlus } from "react-icons/fa6";
-import { TiMinus } from "react-icons/ti";
-
-
-// import { BiSolidUpArrow } from "react-icons/bi";
-// import { BiSolidDownArrow } from "react-icons/bi";
-
-
-import { CiCirclePlus } from "react-icons/ci";
-import { CiCircleMinus } from "react-icons/ci";
-
-
-// add key board commads to increase and decrease
-
+import { FaPlusSquare } from "react-icons/fa";
+import { FaMinusSquare } from "react-icons/fa";
 
 
 const SizeControl = () => {
@@ -68,7 +55,7 @@ const SizeControl = () => {
     }
 
   return (
-      <div className="flex-center text-3xl"
+      <div className="flex-center gap-x-1 text-2xl"
       onMouseEnter={() => {
         dispatch(setIsResizing(true))
         setShowMiniScreen(true)
@@ -90,7 +77,7 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <CiCirclePlus />
+              <FaPlusSquare />
           </button>
 
           <button
@@ -104,7 +91,7 @@ const SizeControl = () => {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
           >
-              <CiCircleMinus />
+              <FaMinusSquare />
           </button>
       </div>
   )
