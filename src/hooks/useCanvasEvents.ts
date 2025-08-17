@@ -8,6 +8,16 @@ type UseEffectProps = {
     canvasRef: React.RefObject<HTMLCanvasElement | null>
 }
 
+// Next step is to add control + z keyboard command to my app
+// after that is make a good read.me file
+// after that is make contributions guidelines
+// after that is deploy it online
+// deal with all trouble that can or can not happen
+// after that is make a linkedin post about it
+// after that is make a linkedin project section about it
+// after that is make a twitter post about it
+// after that i might or might not write something about it on the dev.io, because there i want to comment like a normal human being on stuff
+
 export const useCanvasEvents = ({
     canvasRef,
 }:UseEffectProps) => {
@@ -68,7 +78,16 @@ export const useCanvasEvents = ({
       }
 
       const undoRedoShortCut = async (e:KeyboardEvent) => {
-        console.log(e)
+
+        const ctrlKey = e.ctrlKey;
+
+        if(ctrlKey && e.key === 'z') {
+          await engine.undo()
+        }
+        if(ctrlKey && e.key === 'x') {
+          await engine.redo()
+        }
+
       }
 
       canvas.addEventListener('mousedown', handleMouseDown)
@@ -76,7 +95,7 @@ export const useCanvasEvents = ({
       canvas.addEventListener('mousemove', handleMouseMove)
       canvas.addEventListener('mouseleave', handleMouseLeave)
       canvas.addEventListener('click', handleFillClick)
-      canvas.addEventListener('keypress', undoRedoShortCut)
+      window.addEventListener('keydown', undoRedoShortCut)
 
       return () => {
         canvas.removeEventListener('mousedown', handleMouseDown)
@@ -84,7 +103,7 @@ export const useCanvasEvents = ({
         canvas.removeEventListener('mousemove', handleMouseMove)
         canvas.removeEventListener('mouseleave', handleMouseLeave)
         canvas.removeEventListener('click', handleFillClick)
-        canvas.removeEventListener('keydown', undoRedoShortCut)
+        window.removeEventListener('keydown', undoRedoShortCut)
       }
   },[state, canvasRef])
 }
