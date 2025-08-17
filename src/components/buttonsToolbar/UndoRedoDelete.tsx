@@ -7,7 +7,11 @@ import type { RootState } from "../../redux/store";
 
 import { PiArrowLeftFill } from "react-icons/pi";
 import { PiArrowRightFill } from "react-icons/pi";
-import { TfiTrash } from "react-icons/tfi";
+import { BiSolidTrash } from "react-icons/bi";
+
+
+
+
 
 const UndoRedoDelete = () => {
     const state = useSelector((state: RootState) => state.tools)
@@ -56,7 +60,7 @@ const UndoRedoDelete = () => {
                   engine && engine.clear()
               }}
           >
-              <TfiTrash />
+              <BiSolidTrash />
           </button>
     </>
     

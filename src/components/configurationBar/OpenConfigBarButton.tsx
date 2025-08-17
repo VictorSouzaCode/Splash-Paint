@@ -16,7 +16,7 @@ const OpenConfigBarButton = () => {
 
         return (
             <button
-            className="opacity-30"
+            className="opacity-30 bottom-9 absolute"
             key={1}
             onClick={() => {
                 dispatch(setConfigBar())

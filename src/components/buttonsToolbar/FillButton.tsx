@@ -4,7 +4,9 @@ import {  setFill } from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store";
 import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
-import { BsPaintBucket } from "react-icons/bs";
+import { BiSolidColorFill } from "react-icons/bi";
+
+
 
 
 const FillButton = () => {
@@ -26,7 +28,7 @@ const FillButton = () => {
         dispatch(setFill())
       }}
     >
-      <BsPaintBucket />
+      <BiSolidColorFill />
     </button>
     </div>
   )
