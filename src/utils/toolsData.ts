@@ -10,32 +10,38 @@ import type { Tools, ToolForm } from "../redux/slices/tools";
 
 type ToolsType = {
     name: Tools
-    Icon: React.ElementType
+    Icon: React.ElementType,
+    keyNumber: number
 }[]
 
 type StrokeType = {
     name: ToolForm,
-    Icon: React.ElementType
+    Icon: React.ElementType,
+    keyNumber: number
 }[]
 
 export const toolsArray: ToolsType = [
     {
         name: 'pencil',
-        Icon: RiPencilFill
+        Icon: RiPencilFill,
+        keyNumber: 1
     },
     {
         name: 'eraser',
-        Icon: PiEraserFill
+        Icon: PiEraserFill,
+        keyNumber: 2
     }
 ]
 
 export const strokeForm:StrokeType = [
     {
         name: 'circle',
-        Icon: MdCircle
+        Icon: MdCircle,
+        keyNumber: 1
     },
     {
         name: 'square',
-        Icon: MdSquare
+        Icon: MdSquare,
+        keyNumber: 2
     }
 ]

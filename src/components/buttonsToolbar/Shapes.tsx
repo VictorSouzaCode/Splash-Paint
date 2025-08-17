@@ -22,11 +22,13 @@ const Shapes = () => {
     const renderSelectedButton = (shapeName: ToolForm, Icon: React.ElementType) => {
 
         return (
-            <>
-            {tool === 'shape' && !barIsActive && <OpenConfigBarButton/>}
+            <div
+            className="flex-center"
+            key={shapeName}>
+            {tool === 'shape' && !barIsActive && <OpenConfigBarButton/>
+            }
             <button
-                key={shapeName}
-                className={`w-10 h-10 grid place-content-center rounded-md`}
+                className={`flex-center rounded-md`}
                 style={{
                     color: tool === 'shape' ? pencilColor : '#000000'
                 }}
@@ -36,7 +38,7 @@ const Shapes = () => {
             >
                 <Icon />
             </button>
-            </>
+            </div>
         )
     }
 

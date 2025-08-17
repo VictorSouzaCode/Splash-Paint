@@ -4,7 +4,6 @@ import {  setFill } from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store";
 import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
-// fill Icon
 import { BsPaintBucket } from "react-icons/bs";
 
 
@@ -15,7 +14,7 @@ const FillButton = () => {
   const barIsActive = useSelector((state: RootState) => state.configBar.isActive)
 
   return (
-    <div className="relative">
+    <div className="relative flex-center">
     {state.tool === 'fill' && !barIsActive && <OpenConfigBarButton />}
     <button
       className="text-3xl rounded-md flex-center"

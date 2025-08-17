@@ -27,7 +27,7 @@ const PencilEraser = () => {
     }
   }
 
-  const renderToolsButton = (toolName: string, Icon: React.ElementType) => {
+  const renderToolsButton = (toolName: string, Icon: React.ElementType, keyNumber:number) => {
 
     const isSelected = tool === toolName;
 
@@ -38,11 +38,12 @@ const PencilEraser = () => {
     const bgColor = currentTool && !['line', 'square-shape', 'circle-shape','triangle-shape'].includes(toolForm) ? '#e5e7eb' : 'transparent';
 
     return (
-      <>
-      <div className="flex-col flex-center">
-      {isSelected && !barIsActive && <OpenConfigBarButton/>}
-      <button 
+      <div 
+      className="flex-col flex-center"
       key={toolName}
+      >
+      {isSelected && !barIsActive && <OpenConfigBarButton/>}
+      <button
       className={`flex-center rounded-md text-3xl`}
       style={{
         color: iconColor,
@@ -55,7 +56,6 @@ const PencilEraser = () => {
         <Icon/>
       </button>
       </div>
-      </>
     )
   }
 
@@ -63,8 +63,8 @@ const PencilEraser = () => {
     <>
     {barIsActive  && <ToolConfigurationBar/>}
     <div className="flex justify-center relative gap-x-2">
-      {toolsArray && toolsArray.map(({name, Icon}) => (
-        renderToolsButton(name, Icon)
+      {toolsArray && toolsArray.map(({name, Icon, keyNumber}) => (
+        renderToolsButton(name, Icon, keyNumber)
       ))}
       
     </div>

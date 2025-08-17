@@ -6,7 +6,7 @@ import previewShapesHandler from "../previewShapesHandler"
 import previewStrokeHandler from "../previewStrokeHandler"
 import drawstrokes from "../drawstrokes"
 import drawShapes from "../drawShapes"
-import { fillTool } from "../fill/fillToolTest"
+import { fillTool } from "../fill/fillTool"
 
 let baseImageBitMap: ImageBitmap | null = null;
 let snapshots: ImageBitmap[] = [];
