@@ -37,8 +37,8 @@ export function drawSquareShape (
     const width = end.x - start.x;
     const height = end.y - start.y;
 
-    ctx.lineCap = 'butt'
-    ctx.lineJoin = 'miter'
+    ctx.lineCap = 'round' // or butt
+    ctx.lineJoin = 'round' // or miter, default
     ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
     ctx.lineWidth = state.size;
     ctx.beginPath()
@@ -61,8 +61,8 @@ export function drawTriangleShape (
     const width = end.x - start.x;
     const height = end.y - start.y;
 
-    ctx.lineCap = 'butt'
-    ctx.lineJoin = 'miter'
+    ctx.lineCap = 'round' // or butt
+    ctx.lineJoin = 'round' // or miter, default
     ctx.strokeStyle = state.tool === 'eraser' ? state.screenColor : state.pencilColor;
     ctx.lineWidth = state.size;
     ctx.beginPath();

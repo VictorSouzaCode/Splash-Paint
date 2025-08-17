@@ -40,8 +40,8 @@ const drawShapes = ({
         const width = end.x - start.x;
         const height = end.y - start.y;
 
-        ctx.lineCap = 'square'
-        ctx.lineJoin = 'miter'
+        ctx.lineCap = 'round' // or square
+        ctx.lineJoin = 'round' // or miter, default
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size;
         ctx.beginPath()
@@ -55,8 +55,8 @@ const drawShapes = ({
         const triangleWidth = end.x - start.x;
         const triangleHeight = end.y - start.y;
 
-        ctx.lineCap = 'butt'
-        ctx.lineJoin = 'miter'
+        ctx.lineCap = 'round' // or square
+        ctx.lineJoin = 'round' // or miter, default
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size;
         ctx.beginPath();
