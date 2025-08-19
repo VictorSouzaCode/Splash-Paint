@@ -15,6 +15,7 @@ const drawstrokes = ({
 
     if(stroke.toolForm === 'circle') {
 
+        // drawing circle on click
             if(stroke.points.length === 1) {
                 const radius = stroke.size / 2
                 const circleX = stroke.points[0].x
@@ -25,9 +26,9 @@ const drawstrokes = ({
                 ctx.fillStyle = stroke.color
                 ctx.fill()
                 ctx.closePath()
-            }
-            
+            }            
 
+        // draw mouse movements
         ctx.strokeStyle = stroke.color
         ctx.lineWidth = stroke.size
         ctx.lineJoin = 'round'
@@ -52,6 +53,7 @@ const drawstrokes = ({
             ctx.lineCap = 'butt'
             ctx.lineJoin = 'miter'
 
+            // draw square on click
             if (points.length === 1) {
                 const points = stroke.points
 
@@ -61,7 +63,8 @@ const drawstrokes = ({
                 ctx.fillStyle = stroke.color
                 ctx.fillRect(positionX, positionY, stroke.size, stroke.size)
             }
-            
+
+            // draw mouse movements
             if(points.length > 1) {
                 ctx.fillStyle = stroke.color
                 for(let i = 1; i < points.length; i++){

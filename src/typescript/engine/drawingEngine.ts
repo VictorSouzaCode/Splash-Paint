@@ -216,6 +216,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         snapshots.push(bitmap)
         snapshotIndex++;
 
+        // if snapShots length get big, take the first snapshot out and put it in the main drawing base
         if(snapshots.length > MAX_SNAPSHOTS) {
             baseImageBitMap = snapshots.shift()!;
             snapshotIndex--;

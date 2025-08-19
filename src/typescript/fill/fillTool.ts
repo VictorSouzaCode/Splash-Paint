@@ -1,6 +1,5 @@
 import type { ToolState } from "../../redux/slices/tools";
 
-
 const hexConvertToRgb = (hex:string):[number, number, number, number] => {
     hex = hex.replace(/^#/, '')
 
@@ -40,7 +39,7 @@ export const fillTool = (
         (fillColorRgb[1] << 8) |
         fillColorRgb[0];
 
-    const clickedPixel = startY + canvasHeight + startX;
+    const clickedPixel = startY * canvasWidth + startX;
     const targetColor32B = pixels[clickedPixel]
 
 
@@ -55,6 +54,7 @@ export const fillTool = (
     const directions = [
         [-1, 0], [1, 0], [0, -1], [0, 1], // 4-connected // // Up, down, left, right
         [-1, -1], [-1, 1], [1, -1], [1, 1], // // Diagonals
+        
     ];
 
     const COLOR_TOLERANCE = 100;
@@ -76,12 +76,13 @@ export const fillTool = (
         const da = a1 - a2;
 
         return dr * dr + dg * dg + db * db + da * da;
-    }; // ------- Main Flood Fill Algorithm ------------
+    };
 
     const isSimilarColor = (color1:number, color2:number) => {
         return colorDifference(color1, color2) <= COLOR_TOLERANCE;
     }
 
+    // ------- Main Flood Fill Algorithm ------------
     while(queue.length > 0){
         const [x, y] = queue.shift()!;
         const index = y * canvasWidth + x;
@@ -112,8 +113,6 @@ export const fillTool = (
         if(isEdge) edgePixels.push(index);
     }
 
-    // ------ DILATION STEP ------
-    // fill unvisited edges pixels
     for (const index of edgePixels) {
         const x = index % canvasWidth;
         const y = Math.floor(index / canvasWidth);

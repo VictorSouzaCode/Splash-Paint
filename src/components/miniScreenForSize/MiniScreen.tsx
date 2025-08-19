@@ -11,7 +11,7 @@ const MiniScreen = () => {
 
   return (
     <div
-    className="absolute bottom-[100%] min-w-[100px] h-[200px] rounded-md flex-center p-2"
+    className="absolute bottom-[100%] min-w-[200px] h-[200px] rounded-md flex-center p-2"
     >
         <div className="w-full h-full rounded-md flex-center">
               <div
