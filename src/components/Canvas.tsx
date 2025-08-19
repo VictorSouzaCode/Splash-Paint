@@ -9,6 +9,7 @@ import { useCanvasEvents } from "../hooks/useCanvasEvents"
 import { createDrawingEngine } from "../typescript/engine/drawingEngine"
 import Toolbar from "./Toolbar"
 import { setEngine } from "../utils/drawingEgineSingleton"
+import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 
 const Canvas = () => {
@@ -48,8 +49,12 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-    {engineReady &&
-    <Toolbar />
+    {engineReady && (
+      <div>
+        <Toolbar />
+        <ToolConfigurationBar/>
+      </div>
+    )
     }
 
     <MouseFollower/>

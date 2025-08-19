@@ -26,11 +26,11 @@
   }
 
   .main-container-width {
-    @apply min-w-32 w-full max-w-[98%] lg:max-w-[500px] lg:px-2
+    @apply min-w-32 w-full max-w-[98%] lg:w-fit lg:px-4
   }
 
   .button-tools-box {
-    @apply rounded-md h-full w-[30px] active:text-gray-600
+    @apply rounded-md w-[30px] min-h-[30px] active:text-gray-600
   }
 
   .box-rounded {

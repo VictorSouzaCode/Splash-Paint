@@ -40,7 +40,7 @@ const ShapeArray = () => {
 
   return (
       <div
-          className="h-fit flex-center rounded-md gap-x-2"
+          className="h-fit flex-center flex-col rounded-md gap-y-4"
       >
           {shapes && shapes.map(({ shapeName, ShapeIcon }, i) => {
               return renderShapeButtons(shapeName as ToolForm, ShapeIcon, i)

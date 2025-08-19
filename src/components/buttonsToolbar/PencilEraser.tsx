@@ -2,19 +2,18 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../redux/store";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import { toolsArray } from "../../utils/toolsData";
-import ToolConfigurationBar from "../configurationBar/ToolConfigurationBar";
 
-import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
+import { FaSquare } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa6";
 
 
+// change color pallete and tool forms to a side bar
 
 
 const PencilEraser = () => {
   const dispatch = useDispatch()
 
   const { tool, toolForm, pencilColor} = useSelector((state: RootState) => state.tools)
-
-  const barIsActive = useSelector((state: RootState) => state.configBar.isActive)
 
   const handleToolsClick = (toolName: string) => {
     if(toolName === 'pencil') {
@@ -27,7 +26,7 @@ const PencilEraser = () => {
     }
   }
 
-  const renderToolsButton = (toolName: string, Icon: React.ElementType, keyNumber:number) => {
+  const renderToolsButton = (toolName: string, Icon: React.ElementType) => {
 
     const isSelected = tool === toolName;
 
@@ -42,7 +41,6 @@ const PencilEraser = () => {
       className="flex-col flex-center"
       key={toolName}
       >
-      {isSelected && !barIsActive && <OpenConfigBarButton/>}
       <button
       className={`flex-center rounded-md text-3xl`}
       style={{
@@ -60,15 +58,11 @@ const PencilEraser = () => {
   }
 
   return (
-    <>
-    {barIsActive  && <ToolConfigurationBar/>}
-    <div className="flex justify-center relative gap-x-2">
-      {toolsArray && toolsArray.map(({name, Icon, keyNumber}) => (
-        renderToolsButton(name, Icon, keyNumber)
+    <div className="flex justify-center relative gap-x-4">
+      {toolsArray && toolsArray.map(({name, Icon}) => (
+        renderToolsButton(name, Icon)
       ))}
-      
     </div>
-    </>
   )
 }
 

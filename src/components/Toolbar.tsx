@@ -7,6 +7,7 @@ import UndoRedoDelete from "./buttonsToolbar/UndoRedoDelete"
 import ToggleToolBarButton from "./buttonsToolbar/ToggleToolBarButton"
 import type { RootState } from "../redux/store"
 import { useSelector } from "react-redux"
+import ColorPallete from "./buttonsToolbar/ColorPallete"
 
 
 
@@ -19,7 +20,7 @@ const Toolbar = () => {
     {hide && <ToggleToolBarButton/>}
 
     {!hide && 
-    <div className="z-50 flex-center bottom-position min-h-[50px] h-fit main-container-width rounded-md border1 bg-white">
+    <div className="z-50 flex-center flex-col bottom-position min-h-[40px] h-fit main-container-width rounded-md border1 bg-white">
         
         <div className="h-full text-2xl flex-center flex-wrap gap-x-4">
           <SizeControl />

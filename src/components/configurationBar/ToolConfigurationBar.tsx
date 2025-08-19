@@ -1,23 +1,22 @@
 import StrokeFormSelector from "../buttonsToolbar/StrokeFormsSelector"
-import ColorPallete from "../buttonsToolbar/ColorPallete"
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 import ShapeArray from "../buttonsToolbar/ShapeArray";
-import OpenConfigBarButton from "./OpenConfigBarButton";
+import ColorPallete from "../buttonsToolbar/ColorPallete";
+
+// i want that strokeformselector only shows on the side bar when pencil or eraser is selected
+// i want shapes to appear only when shapes are selected
 
 
 const ToolConfigurationBar = () => {
 
     const {tool} = useSelector((state:RootState) => state.tools)
 
-    const modularGap = tool == 'pencil' || tool == 'eraser' ? `gap-x-2` : `gap-x-4`;
-
   return (
-    <div className={`border1 min-h-[40px] h-fit w-full absolute top-[0%] left-[50%] translate-y-[-100%] translate-x-[-50%] box-rounded flex-center bg-white ${modularGap}`}>
-      <OpenConfigBarButton/>
-        {tool === 'pencil' || tool === 'eraser' ? <StrokeFormSelector/> : <div></div>}
-        {tool === 'shape' && <ShapeArray/>}
-        {tool === 'eraser' ? <div className="w-[197px]"></div> : <ColorPallete />}
+    <div className={`border1 flex flex-col items-center justify-center absolute top-[50%] translate-y-[-50%] right-[10px] w-[40px] min-h-[40px] h-fit py-8 gap-8 box-rounded bg-white`}>
+      {(tool === 'pencil' || tool === 'eraser') && <StrokeFormSelector/>}
+      {tool === 'shape' && <ShapeArray/>}
+      {(tool === 'fill' || tool === 'shape' || tool === 'pencil') && <ColorPallete/>}
     </div>
   )
 }

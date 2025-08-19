@@ -4,13 +4,11 @@ import type { RootState } from "../../redux/store";
 import type { ToolForm } from "../../redux/slices/tools";
 import { previousSelectedShapes } from "../../utils/shapeIcons";
 import { shapes} from "../../utils/shapeIcons";
-import OpenConfigBarButton from "../configurationBar/OpenConfigBarButton";
 
 const Shapes = () => {
     const dispatch = useDispatch()
 
     const { pencilColor, tool} = useSelector((state:RootState) => state.tools)
-    const barIsActive = useSelector((state: RootState) => state.configBar.isActive)
 
     const handleClick = (shapeName: ToolForm) => {
         dispatch(setToolForm(shapeName))
@@ -25,8 +23,6 @@ const Shapes = () => {
             <div
             className="flex-center"
             key={shapeName}>
-            {tool === 'shape' && !barIsActive && <OpenConfigBarButton/>
-            }
             <button
                 className={`flex-center rounded-md`}
                 style={{
@@ -45,7 +41,7 @@ const Shapes = () => {
     const currentShape = previousSelectedShapes[0] as ToolForm || 'line';
 
   return (
-      <div className="w-[30px] h-[30px] relative rounded-md flex justify-center items-center"
+      <div className="w-[30px] h-[30px] relative rounded-md flex-center"
           style={{
               backgroundColor: tool !== 'shape' ? 'transparent' : '#e5e7eb'
           }}

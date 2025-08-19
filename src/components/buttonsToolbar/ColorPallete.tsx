@@ -2,8 +2,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { setPencilColor} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
-import { setConfigBar } from "../../redux/slices/configToolBar";
 import multiColorbackground from '../../assets/rainbow.jpg'
+
+// icon if i want a button to open colorPallete
+import { PiCirclesThreeFill } from "react-icons/pi";
+import { PiIntersectThreeFill } from "react-icons/pi";
+
+
 
 const ColorPallete = () => {
     const dispatch = useDispatch()
@@ -12,7 +17,7 @@ const ColorPallete = () => {
   return (
     <>
     <div
-        className="flex flex-wrap justify-around items-center h-fit gap-x-2"
+        className="flex-center flex-col flex-wrap h-fit gap-y-4"
         >
             <div className="relative w-5 h-5 rounded-full transition-all duration-200"
               style={{
@@ -43,7 +48,6 @@ const ColorPallete = () => {
                   }}
                   onClick={() => {
                       dispatch(setPencilColor(colors))
-                      dispatch(setConfigBar())
                   }}
               ></button>
           ))}
