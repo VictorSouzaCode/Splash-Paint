@@ -13,9 +13,8 @@ import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 
 // Final implementations
-// cancel shape forms on right click
-// a previous custom selected color circle on colorPallete
 // keep drawing even if i go over the toolbar
+// a previous custom selected color circle on colorPallete
 
 
 const Canvas = () => {

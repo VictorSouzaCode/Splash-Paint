@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { getEngine } from "../utils/drawingEgineSingleton"
@@ -12,7 +12,7 @@ export const useCanvasEvents = ({
     canvasRef,
 }:UseEffectProps) => {
 
-    const [isDrawing, setIsDrawing] = useState<boolean>(false)
+    let isDrawingRef = useRef<boolean>(false)
 
     const state = useSelector((state: RootState) => state.tools)
 
@@ -41,8 +41,6 @@ export const useCanvasEvents = ({
       }
 
       const handleMouseDown = async (e: MouseEvent) => {
-        e.preventDefault()
-        setIsDrawing(true)
         
         if(e.button === 2) {
           undoDrawnShapesOnRightClick(e)
@@ -55,12 +53,17 @@ export const useCanvasEvents = ({
 
         engine.startStroke(point, state)
 
+        isDrawingRef.current = true
+
       }
 
       const handleMouseUp = async () => {
-        setIsDrawing(false)
+
         if(state.tool === 'fill') return;
+
         await engine.endStroke(state)
+
+        isDrawingRef.current = false
 
       }
 
@@ -93,7 +96,7 @@ export const useCanvasEvents = ({
 
       const undoDrawnShapesOnRightClick = async (e:MouseEvent) => {
 
-        if(isDrawing) return;
+        if(isDrawingRef.current) return;
 
         if(e.button === 2 && state.tool == 'shape') {
 
@@ -101,9 +104,9 @@ export const useCanvasEvents = ({
         }
       }
 
-      const handleContextMenu = async (e:MouseEvent) => {
+      const handleContextMenu = (e:MouseEvent) => {
         e.preventDefault()
-        await engine.cancelShapeStroke()
+        engine.cancelShapeStroke()
       }
 
       canvas.addEventListener('mousedown', handleMouseDown)
@@ -124,5 +127,5 @@ export const useCanvasEvents = ({
         window.removeEventListener('keydown', undoRedoShortCut)
         window.removeEventListener('contextmenu', handleContextMenu)
       }
-  },[state, canvasRef, isDrawing])
+  },[state, canvasRef])
 }

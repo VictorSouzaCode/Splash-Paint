@@ -203,7 +203,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         pendingStrokes = [];
     }
 
-    const cancelShapeStroke = async () => {
+    const cancelShapeStroke = () => {
 
         shapeStartPoint = null;
         shapeEndingPoint = null;
