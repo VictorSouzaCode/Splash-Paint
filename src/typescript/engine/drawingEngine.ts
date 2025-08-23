@@ -203,6 +203,14 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         pendingStrokes = [];
     }
 
+    const cancelShapeStroke = async () => {
+
+        shapeStartPoint = null;
+        shapeEndingPoint = null;
+
+        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+    }
+
     const commitToSnapShot = async () => {
         pendingStrokes.forEach((stroke) => {
             drawstrokes({ctx, stroke})
@@ -248,6 +256,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         undo,
         redo,
         clear,
-        fillAt
+        fillAt,
+        cancelShapeStroke
     }
 }

@@ -13,10 +13,9 @@ import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 
 // Final implementations
-// keep drawing after minimizing the screen, because when i minimize it the drawings goes away
 // cancel shape forms on right click
 // a previous custom selected color circle on colorPallete
-// keep drawing even if i go over ui menus
+// keep drawing even if i go over the toolbar
 
 
 const Canvas = () => {
