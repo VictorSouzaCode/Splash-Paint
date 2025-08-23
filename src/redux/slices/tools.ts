@@ -20,7 +20,7 @@ const initialState: ToolState = {
     toolForm: 'circle',
     pencilColor: '#000000',
     screenColor: "#ffffff",
-    size: 15,
+    size: 10,
     isResizing: false,
 }
 

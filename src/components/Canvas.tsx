@@ -12,6 +12,13 @@ import { setEngine } from "../utils/drawingEgineSingleton"
 import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 
+// Final implementations
+// keep drawing after minimizing the screen, because when i minimize it the drawings goes away
+// cancel shape forms on right click
+// a previous custom selected color circle on colorPallete
+// keep drawing even if i go over ui menus
+
+
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
   const canvasRef = useRef<HTMLCanvasElement |  null>(null)

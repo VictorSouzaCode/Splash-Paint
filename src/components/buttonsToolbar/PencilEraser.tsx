@@ -3,12 +3,6 @@ import type { RootState } from "../../redux/store";
 import {  setEraser, setPencil, setToolForm} from "../../redux/slices/tools"
 import { toolsArray } from "../../utils/toolsData";
 
-import { FaSquare } from "react-icons/fa";
-import { FaCircle } from "react-icons/fa6";
-
-
-// change color pallete and tool forms to a side bar
-
 
 const PencilEraser = () => {
   const dispatch = useDispatch()

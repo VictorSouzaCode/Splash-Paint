@@ -24,13 +24,22 @@ export const useResizeCanvas = (
     const resizeCanvas = () => {
 
       if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if(!ctx) return;
+
+        // save old content
+        const oldWidth = canvas.width;
+        const oldHeight = canvas.height;
+        const imageData = ctx.getImageData(0, 0, oldWidth, oldHeight);
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const ctx = canvas.getContext('2d');
-        if(!ctx) return;
         ctx.fillStyle = state.screenColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // restore content
+        ctx.putImageData(imageData, 0, 0);
       }
       if(canvasPreview) {
         canvasPreview.width = window.innerWidth;

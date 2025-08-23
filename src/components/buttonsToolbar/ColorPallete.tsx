@@ -4,11 +4,6 @@ import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
 import multiColorbackground from '../../assets/rainbow.jpg'
 
-// icon if i want a button to open colorPallete
-import { PiCirclesThreeFill } from "react-icons/pi";
-import { PiIntersectThreeFill } from "react-icons/pi";
-
-
 
 const ColorPallete = () => {
     const dispatch = useDispatch()

@@ -4,9 +4,6 @@ import type { RootState } from "../../redux/store";
 import ShapeArray from "../buttonsToolbar/ShapeArray";
 import ColorPallete from "../buttonsToolbar/ColorPallete";
 
-// i want that strokeformselector only shows on the side bar when pencil or eraser is selected
-// i want shapes to appear only when shapes are selected
-
 
 const ToolConfigurationBar = () => {
 

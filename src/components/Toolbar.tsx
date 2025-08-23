@@ -7,7 +7,6 @@ import UndoRedoDelete from "./buttonsToolbar/UndoRedoDelete"
 import ToggleToolBarButton from "./buttonsToolbar/ToggleToolBarButton"
 import type { RootState } from "../redux/store"
 import { useSelector } from "react-redux"
-import ColorPallete from "./buttonsToolbar/ColorPallete"
 
 
 
