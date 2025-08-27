@@ -1,8 +1,9 @@
 # 🫟 Splash Paint
 
-A paint app for you to draw whatever is in your mind, built to be easy and enjoyable to use.
-
 ![alt text](https://img.shields.io/badge/contributions-welcome-green)
+![alt text](https://img.shields.io/badge/website-up-green)
+
+A paint app for you to draw whatever is in your mind, built to be easy and enjoyable to use.
 
 ### Reasons behind the project
 
