@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { getEngine } from "../utils/drawingEgineSingleton"
@@ -123,7 +123,6 @@ export const useCanvasEvents = ({
         canvas.removeEventListener('mousemove', handleMouseMove)
         canvas.removeEventListener('mouseleave', handleMouseLeave)
         canvas.removeEventListener('click', handleFillClick)
-        canvas.removeEventListener('click', undoDrawnShapesOnRightClick)
         window.removeEventListener('keydown', undoRedoShortCut)
         window.removeEventListener('contextmenu', handleContextMenu)
       }

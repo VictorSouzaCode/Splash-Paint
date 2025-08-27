@@ -15,7 +15,7 @@ const Download = () => {
         return;
       }
 
-      // Create a temporary canvas to draw background + original content
+      // Create a temporary canvas to draw original content
       const tempCanvas = document.createElement("canvas");
       const ctx = tempCanvas.getContext("2d");
       if (!ctx) return;

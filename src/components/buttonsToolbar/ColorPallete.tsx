@@ -3,11 +3,14 @@ import { setPencilColor} from "../../redux/slices/tools"
 import type { RootState } from "../../redux/store"
 import { basicColorsOptions } from "../../utils/colorPalleteData"
 import multiColorbackground from '../../assets/rainbow.jpg'
+import { useRef } from "react"
 
 
 const ColorPallete = () => {
     const dispatch = useDispatch()
     const {pencilColor, tool} = useSelector((state:RootState) => state.tools)
+
+    let customColorValueRef = useRef<string>('#ffffff')
 
   return (
     <>
@@ -28,7 +31,10 @@ const ColorPallete = () => {
               <input
                 type="color"
                 value={pencilColor}
-                onChange={(e) => dispatch(setPencilColor(e.target.value))}
+                onChange={(e) => {
+                  dispatch(setPencilColor(e.target.value))
+                  customColorValueRef.current = e.target.value
+                }}
                 disabled={tool === 'eraser'}
                 className={`absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed`}
               />
@@ -46,6 +52,16 @@ const ColorPallete = () => {
                   }}
               ></button>
           ))}
+        <div
+          className="w-5 h-5 rounded-full"
+          onClick={() => {
+            dispatch(setPencilColor(customColorValueRef.current))
+          }}
+          style={{
+            backgroundColor: `${customColorValueRef.current}`,
+            border: '1px solid gray'
+          }}
+        ></div>
           </div>
     </>
   )
