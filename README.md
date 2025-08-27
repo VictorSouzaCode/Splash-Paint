@@ -1,6 +1,6 @@
-# React + TypeScript + Vite
+# 🫟 Splash Paint 🫟
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A paint app for you to draw whatever is in your mind, this app was built to give the user freedom when drawing.
 
 Currently, two official plugins are available:
 
