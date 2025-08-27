@@ -12,14 +12,10 @@ import { setEngine } from "../utils/drawingEgineSingleton"
 import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 
-// Final implementations
-// keep drawing even if i go over the toolbar
-
-
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
-  const canvasRef = useRef<HTMLCanvasElement |  null>(null)
-  const canvasPreviewRef = useRef<HTMLCanvasElement |  null>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const canvasPreviewRef = useRef<HTMLCanvasElement | null>(null)
   const [engineReady, setEngineReady] = useState<boolean>(false)
 
   useEffect(() => {

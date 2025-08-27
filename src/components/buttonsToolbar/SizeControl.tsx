@@ -5,6 +5,9 @@ import MiniScreen from "../miniScreenForSize/MiniScreen";
 
 import { FaPlusSquare } from "react-icons/fa";
 import { FaMinusSquare } from "react-icons/fa";
+import { getEngine } from "../../utils/drawingEgineSingleton";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/store";
 
 
 const SizeControl = () => {
@@ -12,6 +15,13 @@ const SizeControl = () => {
     const intervalRef = useRef<number | null>(null);
 
     const [showMiniScreen, setShowMiniScreen] = useState<boolean>(false)
+
+    // end stroke on mouse enter
+    const state = useSelector((state:RootState) => state.tools)
+    const engine = getEngine();
+    const endStrokeHandler = async () => {
+      await engine.endStroke(state)
+    }
 
     const preventContextMenu = (e:React.MouseEvent) => {
       e.preventDefault()
@@ -59,10 +69,12 @@ const SizeControl = () => {
       onMouseEnter={() => {
         dispatch(setIsResizing(true))
         setShowMiniScreen(true)
+        endStrokeHandler()
       }}
       onMouseLeave={() => {
         dispatch(setIsResizing(false))
         setShowMiniScreen(false)
+        endStrokeHandler()
       }}
       >
         {showMiniScreen && <MiniScreen/>}
