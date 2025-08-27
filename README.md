@@ -2,7 +2,7 @@
 
 ![alt text](https://img.shields.io/badge/contributions-welcome-green)
 ![alt text](https://img.shields.io/badge/website-up-green)
-![GitHub Repo stars](https://img.shields.io/github/stars/creative/Splash-Paint)
+![GitHub Repo stars](https://img.shields.io/github/stars/creativeplot/Splash-Paint)
 
 A paint app for you to draw whatever is in your mind, designed to be easy and enjoyable to use.
 
