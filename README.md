@@ -4,8 +4,9 @@ A paint app for you to draw whatever is in your mind, built to be easy and enjoy
 
 ### Reasons behind the project
 
-I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want.
-Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure typescript for the drawing logic to see if later i could connect both parts together. it was hard but worth it
+I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
+
+Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure typescript for the drawing logic to see if i could later connect both parts together. it was hard but worth it
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
