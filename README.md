@@ -1,8 +1,8 @@
 # 🫟 Splash Paint
 
-![alt text](https://img.shields.io/badge/contributions-welcome-#0CF25D)
-![alt text](https://img.shields.io/badge/website-up-#0CF25D)
-![GitHub forks](https://img.shields.io/github/forks/:user/:repo)
+![alt text](https://img.shields.io/badge/contributions-welcome-green)
+![alt text](https://img.shields.io/badge/website-up-green)
+![GitHub Repo stars](https://img.shields.io/github/stars/:creative/:splash-paint)
 
 A paint app for you to draw whatever is in your mind, designed to be easy and enjoyable to use.
 
