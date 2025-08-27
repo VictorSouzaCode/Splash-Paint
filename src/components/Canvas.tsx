@@ -14,7 +14,6 @@ import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 // Final implementations
 // keep drawing even if i go over the toolbar
-// a previous custom selected color circle on colorPallete
 
 
 const Canvas = () => {
