@@ -2,7 +2,7 @@
 
 A paint app for you to draw whatever is in your mind, built to be easy and enjoyable to use.
 
-https://img.shields.io/badge/contributions_welcome-green
+![alt text](https://img.shields.io/badge/any_text-you_like-blue).
 
 ### Reasons behind the project
 
