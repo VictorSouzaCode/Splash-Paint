@@ -6,6 +6,8 @@
 
 A paint app for you to draw whatever is in your mind, designed to be easy and enjoyable to use.
 
+![Alt text](/home/creative/Desktop/Screenshot from 2025-08-27 17-55-06.png)
+
 ### Reasons behind the project
 
 I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
