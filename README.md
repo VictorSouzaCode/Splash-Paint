@@ -74,22 +74,22 @@
 2. **Install dependencies**
    ```bash
    npm install
-# or
-yarn install
+   # or
+   yarn install
 
 3. **Run the development server**
    ```bash
-npm run dev
-# or
-yarn dev
+   npm run dev
+   # or
+   yarn dev
 
 The app will be accessible at http://localhost:5173/ (or another port Vite assigns).
 
 4. **Build for production**
    ```bash
-npm run build
-# or
-yarn build
+   npm run build
+   # or
+   yarn build
 
 Production-ready files will be output to the dist/ folder.
 
@@ -120,6 +120,6 @@ This project is available under the MIT License. Check out the LICENSE
  file for full details.
 
 
-## About the Author
+##About the Author
 
 Built by creativeplot. If you’re nostalgic about Microsoft Paint and enjoy modern, lightweight web apps—this is for you.
