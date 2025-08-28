@@ -6,7 +6,7 @@
 
 A paint app for you to draw whatever is in your mind, designed to be easy and enjoyable to use.
 
-![alt text](Desktop/splash-paint-dragon.png)
+![alt text](home/creative/Desktop/splash-paint-dragon.png)
 
 ### Reasons behind the project
 
