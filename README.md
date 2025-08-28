@@ -15,8 +15,10 @@ I created this project because a loved microsoft paint when i was a kid, so i wa
 Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
 
 
-### What the app can do
+### Design Philosophy
 Splash Paint was designed with drawing freedom in mind, altough its features are simple you can draw pretty much anything with it.
+it was projected to make the drawing experience relaxing and enjoyable for the user
+it has a interface simple and intuitive allowing any person to use it easily
 
 
 ### Main Features
