@@ -6,14 +6,21 @@
 
 ![Alt text](src/assets/splash-paint-with-styled-name.png)
 
-**Splash Paint** is a lightweight, React-based drawing application, inspired by Microsoft Paint, it was designed for simplicity and to give you full control over your creative flow.
+This is a lightweight, React-based drawing application, inspired by Microsoft Paint, it was designed for simplicity and to give you full control over your creative flow.
+
+---
+
+##  Why Build Splash Paint?
+- **Nostalgic yet modern**: I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
+
+- **A good challenge**: i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
 
 ---
 
 ##  Key Features
 
 - **Drawing Tool (Pencil)**  
-  Smooth, performant strokes with fully customizable size. Choose between **rounded** or **squared** brush tips.
+  Smooth, performant strokes with fully customizable size. Choose between **rounded** or **squared** brush stroke.
 
 - **Eraser**  
   Adjustable size and style—same flexibility as the pencil tool.
@@ -36,15 +43,7 @@
 - **Clear Canvas (Trash)**  
   Start fresh anytime with a full canvas reset.
 
----
 
-
-##  Why Build Splash Paint?
-- **Nostalgic yet modern**: I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
-
-- **A good challenge**: i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
-
----
 
 ##  Tech Stack
 
@@ -57,7 +56,6 @@
 - **Linting**: ESLint (configured via `eslint.config.js`)  
 - **Build Configs**: `tsconfig`, `vite.config.ts`, and Tailwind/TSC presets
 
----
 
 ##  Getting Started
 
@@ -93,6 +91,8 @@ The app will be accessible at http://localhost:5173/ (or another port Vite assig
 
 Production-ready files will be output to the dist/ folder.
 
+---
+
 
 ##  Contribution Guide
 Interested in helping? Here’s how:
@@ -112,7 +112,6 @@ Ideas for improvement:
 - Provide mobile/tablet touch support
 - Add color history or recent colors
 
----
 
 ## License
 
@@ -120,6 +119,6 @@ This project is available under the MIT License. Check out the LICENSE
  file for full details.
 
 
-##About the Author
+## About the Author
 
 Built by creativeplot. If you’re nostalgic about Microsoft Paint and enjoy modern, lightweight web apps—this is for you.
