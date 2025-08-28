@@ -15,23 +15,26 @@ I created this project because a loved microsoft paint when i was a kid, so i wa
 Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together. it was hard but worth it.
 
 
-### Philosofy for this app
+### Main Features
 
 Splash Paint was designed with drawing freedom in mind, altough its features are simple you can draw pretty much anything with it.
 
+pencil: you can increase or decrease its size as much as you like, it has smooth stroke while mainting a good performance and it comes with two modes of stroke, rounded and squared for you to choose from
 
-### Features
+eraser: you can increase or decrease the eraser size and you can change its stroke style as well
 
-pencil: you can increase it as much as you like there is no limit of size you can change the stroke style, instead of circle you can use square producing different effects in the drawing
+shapes: it comes with a set of basic shapes, line, square, circle and triangle with well defined borders.
 
-eraser: basically a pencil but you can earaser the drawing with it, you can change its stroke style as well
+fill bucket: a fill tool to cover large areas with any color you like.
 
-shapes: one of the most fun features if you want to build drawings with well defined borders or just mess around with the shapes
+undo/redo : it allows you to undo/redo up to 20 actions
 
-undo/redo : it has a undo redo function that allows you to undo up to 20 actions
+download: Allows you to download you drawing in a png format.
 
-trash/delete all: you can clean the canvas completely
+color pallete: a set of predefined colors with and a custom color option.
 
-download button: Allows you to download you drawing, after all it wouldn't be fun to draw in it if you can't keep your drawing.
+trash: clean the canvas completely
 
-color pallete: this app comes with a set of predefined colors and a option to choose a custom color of your like
+
+### Getting Started
+This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these steps.
