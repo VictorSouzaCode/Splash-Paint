@@ -20,9 +20,6 @@ Splash Paint was designed with drawing freedom in mind, altough its features are
 
 
 ### Main Features
-
-Splash Paint was designed with drawing freedom in mind, altough its features are simple you can draw pretty much anything with it.
-
 pencil: you can increase or decrease its size as much as you like, it has smooth stroke while mainting a good performance and it comes with two modes of stroke, rounded and squared for you to choose from
 
 eraser: you can increase or decrease the eraser size and you can change its stroke style as well
