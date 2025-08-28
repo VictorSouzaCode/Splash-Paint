@@ -6,59 +6,28 @@
 
 A paint app for you to draw whatever is in your mind, designed to be easy and enjoyable to use.
 
-![Alt text](src/assets/splash-paint-dragon.png).
-
 ### Reasons behind the project
 
 I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
 
-Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
+Another reason is that i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together. it was hard but worth it.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+### What you can do with it
+![Alt text](src/assets/splash-paint-dragon.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Splash Paint was designed with drawing freedom in mind, altough its features are simple you can draw pretty much anything with it.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+pencil: you can increase it as much as you like there is no limit of size you can change the stroke style, instead of circle you can use square producing different effects in the drawing
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+eraser: basically a pencil but you can earaser the drawing with it, you can change its stroke style as well
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+shapes: one of the most fun features if you want to build drawings with well defined borders or just mess around with the shapes
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+undo/redo : it has a undo redo function that allows you to undo up to 20 actions
+
+trash/delete all: you can clean the canvas completely
+
+download button: Allows you to download you drawing, after all it wouldn't be fun to draw in it if you can't keep your drawing.
+
+color pallete: this app comes with a set of predefined colors and a option to choose a custom color of your like
