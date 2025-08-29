@@ -1,8 +1,14 @@
 # 🫟 Splash Paint
 
-![alt text](https://img.shields.io/badge/contributions-welcome-green)
+<p align="center">
+<img src="https://img.shields.io/badge/contributions-welcome-green"/>
+<img src="https://img.shields.io/badge/website-up-green"/>
+<img src="https://img.shields.io/github/stars/creativeplot/Splash-Paint"/>
+</p>
+
 ![alt text](https://img.shields.io/badge/website-up-green)
 ![GitHub Repo stars](https://img.shields.io/github/stars/creativeplot/Splash-Paint)
+![alt text](https://img.shields.io/badge/contributions-welcome-green)
 
 ![Alt text](src/assets/splash-paint-with-styled-name.png)
 
@@ -105,4 +111,4 @@ This project is available under the MIT License. Check out the LICENSE
 
 ## About the Author
 
-Built by creativeplot. If you’re nostalgic about Microsoft Paint and enjoy modern, lightweight web apps—this is for you.
+Built by Victor Souza. If you’re nostalgic about Microsoft Paint and enjoy modern, lightweight web apps—this is for you.
