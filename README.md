@@ -1,7 +1,7 @@
 <!-- # Splash Paint -->
 
 <p align="center">
-Splash Paint
+# Splash Paint
 </p>
 
 <p align="center">
@@ -12,7 +12,8 @@ Splash Paint
 
 ![Alt text](src/assets/splash-paint-with-styled-name.png)
 
-This is a lightweight, React-based drawing application, inspired by Microsoft Paint, it was designed for simplicity and to give you full control over your creative flow.
+## Splash Paint ## 
+is a lightweight, React-based drawing application, inspired by Microsoft Paint, it was designed for simplicity and to give you full control over your creative flow.
 
 ---
 
