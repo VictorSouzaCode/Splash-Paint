@@ -1,6 +1,6 @@
 <!-- # Splash Paint -->
 
-<h1 align="center">Splash Paint<h/1>
+<h1 align="center">Splash Paint</h1>
 
 <p align="center">
 <img src="https://img.shields.io/badge/contributions-welcome-green"/>
