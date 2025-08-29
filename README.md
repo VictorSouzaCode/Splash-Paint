@@ -10,9 +10,8 @@
 
 ![Alt text](src/assets/splash-paint-with-styled-name.png)
 
-**Splash Paint** is a lightweight, React-based drawing application offering a modern take on Microsoft Paint, it was designed for simplicity and to give you full control over your creative flow.
+**Splash Paint** is a lightweight, React-based drawing application offering a modern take on Microsoft Paint. it was designed for simplicity and to give you full control over your creative flow.
 
----
 
 ##  Why Build Splash Paint?
 - **Nostalgic yet modern**: I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
