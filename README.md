@@ -1,14 +1,10 @@
-# 🫟 Splash Paint
+# Splash Paint
 
 <p align="center">
 <img src="https://img.shields.io/badge/contributions-welcome-green"/>
 <img src="https://img.shields.io/badge/website-up-green"/>
 <img src="https://img.shields.io/github/stars/creativeplot/Splash-Paint"/>
 </p>
-
-![alt text](https://img.shields.io/badge/website-up-green)
-![GitHub Repo stars](https://img.shields.io/github/stars/creativeplot/Splash-Paint)
-![alt text](https://img.shields.io/badge/contributions-welcome-green)
 
 ![Alt text](src/assets/splash-paint-with-styled-name.png)
 
