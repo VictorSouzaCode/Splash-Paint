@@ -1,4 +1,8 @@
-# Splash Paint
+<!-- # Splash Paint -->
+
+<p align="center">
+Splash Paint
+</p>
 
 <p align="center">
 <img src="https://img.shields.io/badge/contributions-welcome-green"/>
