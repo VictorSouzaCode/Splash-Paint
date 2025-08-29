@@ -103,8 +103,7 @@ Check out the [Contributing Guide](CONTRIBUTING.md) for full details on how to g
 
 ## License
 
-This project is available under the MIT License. Check out the LICENSE
- file for full details.
+This project is licensed under the terms of the [MIT License](LICENSE).
 
 
 ## About the Author

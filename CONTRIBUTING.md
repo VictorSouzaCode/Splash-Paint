@@ -9,9 +9,9 @@ Interested in helping? Here’s how:
 
 Ideas for improvement:
 
+- add a zoom tool
 - Add layered drawing or multiple canvases
+- Add keyboard shortcuts (shape switching)
 - Include shape fill options (e.g., filled shapes)
-- Add keyboard shortcuts (undo, shape switching)
-- Implement brush shape customization (e.g., textured brushes)
 - Provide mobile/tablet touch support
-- Add color history or recent colors
+- Add color history
