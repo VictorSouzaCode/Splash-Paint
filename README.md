@@ -8,16 +8,16 @@
 <img src="https://img.shields.io/github/stars/creativeplot/Splash-Paint"/>
 </p>
 
-![Alt text](src/assets/splash-paint-with-styled-name.png)
+![Alt text](src/assets/Splash-paint-Big-logo-pencil-for-gitHub.png)
 
 **Splash Paint** is a lightweight, React-based drawing application offering a modern take on Microsoft Paint. it was designed for simplicity and to give you full control over your creative flow.
 
 ---
 
 ##  Why Build Splash Paint?
-- **Nostalgic yet modern**: I created this project because a loved microsoft paint when i was a kid, so i wanted to create a mordernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much i want
+- **Nostalgic yet modern**: I created this project because i loved Microsoft Paint when i was a kid, so i wanted to create a modernized version of it, easier to use, being able to undo more than three actions and increase the pencil size as much as i want.
 
-- **A good challenge**: i wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
+- **A good challenge**: I wanted to challenge myself and create a hybrid project that uses react for the UI and pure TypeScript for the drawing logic to see if i could connect both parts together later. it was hard but worth it.
 
 
 ##  Key Features
@@ -64,8 +64,8 @@
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (version 14 or newer)  
-- A modern web browser (supports HTML5 Canvas)
+- [Node.js](https://nodejs.org/) (version 14 or newer).  
+- A modern web browser (supports HTML5 Canvas).
 
 1. **Clone the repo**  
    ```bash
@@ -92,7 +92,7 @@ The app will be accessible at http://localhost:5173/ (or another port Vite assig
    # or
    yarn build
 
-Production-ready files will be output to the dist/ folder.
+Production-ready files will be output to the dist folder.
 
 ---
 
