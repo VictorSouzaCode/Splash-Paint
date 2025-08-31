@@ -107,8 +107,9 @@ This project is licensed under the terms of the [MIT License](LICENSE).
 
 ## About the Author
 
-Built by **Victor Souza.
+Built by **Victor Souza**.
 This project was born from my desire to create an enjoyable and intuitive experience for anyone who uses it.
+
 I invested a lot of effort into it not only to deliver a fun and smooth user experience, but also to challenge myself by working with a complex frontend.
 
 If you’re interested in experimenting with creative coding or simply want a fun project to contribute to, I believe you’ll find Splash Paint both enjoyable and rewarding to dive into.  
