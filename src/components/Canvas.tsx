@@ -39,7 +39,11 @@ const Canvas = () => {
 
   return (
     <>
-    <canvas 
+    
+    {engineReady && (
+      
+      <div>
+        <canvas 
     ref={canvasRef}
     className="absolute top-0 left-0 z-0"
     style={{
@@ -49,8 +53,6 @@ const Canvas = () => {
     ref={canvasPreviewRef}
     className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
     />
-    {engineReady && (
-      <div>
         <Toolbar />
         <ToolConfigurationBar/>
       </div>
