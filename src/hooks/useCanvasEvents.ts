@@ -67,9 +67,9 @@ export const useCanvasEvents = ({
 
       }
 
-      // const handleMouseLeave = async () => {
-      //   await engine.endStroke(state)
-      // }
+      const handleMouseLeave = async () => {
+        await engine.endStroke(state)
+      }
 
       const handleFillClick = async (e:MouseEvent) => {
         e.preventDefault()
@@ -112,7 +112,7 @@ export const useCanvasEvents = ({
       canvas.addEventListener('mousedown', handleMouseDown)
       canvas.addEventListener('mouseup', handleMouseUp)
       canvas.addEventListener('mousemove', handleMouseMove)
-      // canvas.addEventListener('mouseleave', handleMouseLeave)
+      canvas.addEventListener('mouseleave', handleMouseLeave)
       canvas.addEventListener('click', handleFillClick)
       window.addEventListener('keydown', undoRedoShortCut)
       window.addEventListener('contextmenu', handleContextMenu)
@@ -121,7 +121,7 @@ export const useCanvasEvents = ({
         canvas.removeEventListener('mousedown', handleMouseDown)
         canvas.removeEventListener('mouseup', handleMouseUp)
         canvas.removeEventListener('mousemove', handleMouseMove)
-        // canvas.removeEventListener('mouseleave', handleMouseLeave)
+        canvas.removeEventListener('mouseleave', handleMouseLeave)
         canvas.removeEventListener('click', handleFillClick)
         window.removeEventListener('keydown', undoRedoShortCut)
         window.removeEventListener('contextmenu', handleContextMenu)

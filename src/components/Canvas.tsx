@@ -39,27 +39,27 @@ const Canvas = () => {
 
   return (
     <>
-    
-    {engineReady && (
-      
-      <div>
-        <canvas 
-    ref={canvasRef}
-    className="absolute top-0 left-0 z-0"
-    style={{
-      backgroundColor: state.screenColor,
-    }}/>
-    <canvas
-    ref={canvasPreviewRef}
-    className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
-    />
-        <Toolbar />
-        <ToolConfigurationBar/>
-      </div>
-    )
-    }
+      <canvas
+        ref={canvasRef}
+        className="absolute top-0 left-0 z-0"
+        style={{
+          backgroundColor: state.screenColor,
+        }} />
+      <canvas
+        ref={canvasPreviewRef}
+        className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
+      />
 
-    <MouseFollower/>
+      {engineReady && (
+
+        <div>
+          <Toolbar />
+          <ToolConfigurationBar />
+        </div>
+      )
+      }
+
+      <MouseFollower />
     </>
   )
 }

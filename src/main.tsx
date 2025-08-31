@@ -6,9 +6,11 @@ import App from './App.tsx'
 import "./splashOutput.css"
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
       <App />
     </Provider>
-  </StrictMode>,
 )
+
+/* <StrictMode>
+    
+  </StrictMode>, */
