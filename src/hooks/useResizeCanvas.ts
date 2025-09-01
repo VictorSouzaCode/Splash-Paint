@@ -7,76 +7,83 @@ type CanvasPropRef = React.RefObject<HTMLCanvasElement | null>
 
 type CanvasPropRef2 = React.RefObject<HTMLCanvasElement | null>
 
+type CanvasPropRef3 = React.RefObject<HTMLCanvasElement | null>
+
+
 export const useResizeCanvas = (
-  canvasProp: CanvasPropRef, 
-  canvasProp2: CanvasPropRef2
+  bgRef: React.RefObject<HTMLCanvasElement | null>,
+  drawRef: React.RefObject<HTMLCanvasElement | null>,
+  previewRef: React.RefObject<HTMLCanvasElement | null>
 ) => {
+  const state = useSelector((s: RootState) => s.tools);
 
-  const state = useSelector((state: RootState) => state.tools)
-
-  // keep a ref to the last saved image + dimensions
-  const savedImage = useRef<{
-    data: ImageData | null;
-    width: number;
-    height: number;
-  }>({ data: null, width: 0, height: 0 });
+  // save strokes temporarily
+  const savedDrawing = useRef<ImageData | null>(null);
 
   useEffect(() => {
-    const canvas = canvasProp.current;
-    const canvasPreview = canvasProp2.current;
+    const bgCanvas = bgRef.current;
+    const drawCanvas = drawRef.current;
+    const previewCanvas = previewRef.current;
 
-    if (!canvas) return;
+    if (!bgCanvas || !drawCanvas) return;
 
-    const resizeCanvas = () => {
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      // save current image BEFORE resizing
-      if (canvas.width && canvas.height) {
-
-        const rect = canvas.getBoundingClientRect()
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-        savedImage.current = {
-          data: imageData,
-          width: canvas.width,
-          height: canvas.height,
-        };
+    const resizeAll = () => {
+      // ---- Save strokes before resizing ----
+      if (drawCanvas.width && drawCanvas.height) {
+        const ctx = drawCanvas.getContext("2d");
+        if (ctx) {
+          savedDrawing.current = ctx.getImageData(
+            0,
+            0,
+            drawCanvas.width,
+            drawCanvas.height
+          );
+        }
       }
 
-      // resize canvases
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
 
-      ctx.fillStyle = state.screenColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // ---- Background canvas ----
+      if (bgCanvas) {
+        const bgCtx = bgCanvas.getContext("2d");
+        if (bgCtx) {
+          // Save old canvas
+          const oldCanvas = document.createElement("canvas");
+          oldCanvas.width = bgCanvas.width;
+          oldCanvas.height = bgCanvas.height;
+          oldCanvas.getContext("2d")?.drawImage(bgCanvas, 0, 0);
 
-      // restore image in original size (not stretched)
-      if (savedImage.current.data) {
-        const { data, width, height } = savedImage.current;
+          // Resize
+          bgCanvas.width = w;
+          bgCanvas.height = h;
 
-        // calculate center placement
-        const offsetX = (canvas.width - width) / 2;
-        const offsetY = (canvas.height - height) / 2;
+          // Draw old content scaled
+          bgCtx.drawImage(oldCanvas, 0, 0, w, h);
 
-        ctx.putImageData(data, offsetX, offsetY);
+          // Fill missing areas if needed
+          bgCtx.fillStyle = state.screenColor;
+          bgCtx.fillRect(0, 0, w, h);
+        }
       }
-      if (canvasPreview) {
-        
-        canvasPreview.width = window.innerWidth;
-        canvasPreview.height = window.innerHeight;
+
+      // ---- Drawing canvas ----
+      drawCanvas.width = w;
+      drawCanvas.height = h;
+      const dctx = drawCanvas.getContext("2d");
+      if (dctx && savedDrawing.current) {
+        dctx.putImageData(savedDrawing.current, 0, 0);
+      }
+
+      // ---- Preview canvas ----
+      if (previewCanvas) {
+        previewCanvas.width = w;
+        previewCanvas.height = h;
       }
     };
 
-    resizeCanvas();
-
-    window.addEventListener("resize", resizeCanvas);
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-    };
-  }, [state.screenColor]);
+    resizeAll();
+    window.addEventListener("resize", resizeAll);
+    return () => window.removeEventListener("resize", resizeAll);
+  }, [state.screenColor, bgRef, drawRef, previewRef]);
 };

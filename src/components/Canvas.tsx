@@ -14,32 +14,10 @@ import ToolConfigurationBar from "./configurationBar/ToolConfigurationBar"
 
 const Canvas = () => {
   const state = useSelector((state: RootState) => state.tools)
+  const canvasBgRef = useRef<HTMLCanvasElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement | null>(null)
   const [engineReady, setEngineReady] = useState<boolean>(false)
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const canvasPreview = canvasPreviewRef.current;
-
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.fillStyle = state.screenColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
-    if(canvasPreview) {
-      const ctxPreview = canvasPreview.getContext('2d')
-
-      if(ctxPreview) {
-        ctxPreview.fillStyle = state.screenColor;
-        ctxPreview.fillRect(0, 0, canvasPreview.width, canvasPreview.height)
-      }
-    }
-  }, [state.screenColor]);
-  
 
   useEffect(() => {
     if(canvasRef.current && canvasPreviewRef.current) {
@@ -51,8 +29,9 @@ const Canvas = () => {
   },[canvasRef.current, state])
 
   useResizeCanvas(
+    canvasBgRef,
     canvasRef, 
-    canvasPreviewRef
+    canvasPreviewRef,
   )
 
   useCanvasEvents({
@@ -62,13 +41,15 @@ const Canvas = () => {
   // if(!engineReady) return null; // or a loading spinner
 
   return (
-    <>
+    <div className="relative w-full h-full">
+      {/* Background layer*/}
+      <canvas
+        ref={canvasBgRef}
+        className="absolute top-0 left-0 z-0"
+      />
       <canvas
         ref={canvasRef}
-        className="absolute top-0 left-0 z-0"
-        style={{
-          backgroundColor: state.screenColor,
-        }} />
+        className="absolute top-0 left-0 z-0" />
       <canvas
         ref={canvasPreviewRef}
         className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
@@ -84,7 +65,7 @@ const Canvas = () => {
       }
 
       <MouseFollower />
-    </>
+    </div>
   )
 }
 
