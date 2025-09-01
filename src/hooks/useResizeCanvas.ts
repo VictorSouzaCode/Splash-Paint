@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
@@ -9,61 +9,69 @@ type CanvasPropRef2 = React.RefObject<HTMLCanvasElement | null>
 
 export const useResizeCanvas = (
   canvasProp: CanvasPropRef, 
-  canvasProp2: CanvasPropRef2,
-  onReady?: () => void
+  canvasProp2: CanvasPropRef2
 ) => {
 
   const state = useSelector((state: RootState) => state.tools)
 
-  useLayoutEffect(() => {
+  // keep a ref to the last saved image + dimensions
+  const savedImage = useRef<{
+    data: ImageData | null;
+    width: number;
+    height: number;
+  }>({ data: null, width: 0, height: 0 });
+
+  useEffect(() => {
     const canvas = canvasProp.current;
     const canvasPreview = canvasProp2.current;
+
     if (!canvas) return;
 
     const resizeCanvas = () => {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      // Save old content
-      const oldW = canvas.width || 0;
-      const oldH = canvas.height || 0;
+      // save current image BEFORE resizing
+      if (canvas.width && canvas.height) {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        savedImage.current = {
+          data: imageData,
+          width: canvas.width,
+          height: canvas.height,
+        };
+      }
 
-      const offscreen = document.createElement("canvas");
-      offscreen.width = oldW;
-      offscreen.height = oldH;
-      const offCtx = offscreen.getContext("2d");
-      if (offCtx) offCtx.drawImage(canvas, 0, 0);
+      // resize canvases
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-      // Resize both canvases to viewport
-      const newW = window.innerWidth;
-      const newH = window.innerHeight;
-      canvas.width = newW;
-      canvas.height = newH;
-
-      // Fill background first
       ctx.fillStyle = state.screenColor;
-      ctx.fillRect(0, 0, newW, newH);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Restore old content (scaled to new size)
-      if (oldW && oldH && offCtx) {
-        ctx.drawImage(offscreen, 0, 0, oldW, oldH, 0, 0, newW, newH);
+      // restore image in original size (not stretched)
+      if (savedImage.current.data) {
+        const { data, width, height } = savedImage.current;
+
+        // calculate center placement
+        const offsetX = (canvas.width - width) / 2;
+        const offsetY = (canvas.height - height) / 2;
+
+        ctx.putImageData(data, offsetX, offsetY);
       }
 
       if (canvasPreview) {
-        canvasPreview.width = newW;
-        canvasPreview.height = newH;
-        const pctx = canvasPreview.getContext("2d");
-        if (pctx) {
-          // ensure preview is fully cleared
-          pctx.clearRect(0, 0, newW, newH);
-        }
+        
+        canvasPreview.width = window.innerWidth;
+        canvasPreview.height = window.innerHeight;
       }
-
-      onReady?.();
     };
 
     resizeCanvas();
+
     window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
-  },[state.screenColor, onReady])
-}
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, [state.screenColor]);
+};

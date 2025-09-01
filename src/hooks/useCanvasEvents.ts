@@ -33,7 +33,7 @@ export const useCanvasEvents = ({
       }
 
       const handleMouseMove = (e: MouseEvent) => {
-        const point = { x: e.clientX, y: e.clientY }
+        const point = { x: e.clientX - 1, y: e.clientY - 1}
 
         if(state.tool === 'fill') return;
         

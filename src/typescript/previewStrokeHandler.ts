@@ -5,16 +5,14 @@ type drawingProps = {
     ctxPreview: CanvasRenderingContext2D,
     stroke: Stroke
     points: Point[]
-    previewWidth: number,
-    previewHeight: number,
+    canvasPreview: HTMLCanvasElement,
 }
 
 const previewStrokeHandler = ({
     ctxPreview, 
     stroke, 
     points,
-    previewWidth,
-    previewHeight
+    canvasPreview
 }:drawingProps) => {
 
     const color = stroke.color;
@@ -25,8 +23,8 @@ const previewStrokeHandler = ({
         if (points.length === 1) {
 
             const radius = stroke.size / 2
-            const circleX = stroke.points[0].x
-            const circleY = stroke.points[0].y
+            const circleX = stroke.points[0].x - 1
+            const circleY = stroke.points[0].y - 1
             
             ctxPreview.beginPath()
             ctxPreview.arc(circleX, circleY, radius, 0, Math.PI * 100)
@@ -36,7 +34,7 @@ const previewStrokeHandler = ({
         }
 
         if(points.length > 1) {
-            ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+            ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
             ctxPreview.strokeStyle = color;
             ctxPreview.lineWidth = size;
             ctxPreview.lineJoin = 'round';
@@ -55,8 +53,8 @@ const previewStrokeHandler = ({
         if (points.length === 1) {
             const points = stroke.points
 
-            const positionX = points[0].x - stroke.size / 2
-            const positionY = points[0].y - stroke.size / 2
+            const positionX = (points[0].x - 1) - stroke.size / 2
+            const positionY = (points[0].y - 1) - stroke.size / 2
             ctxPreview.beginPath()
             ctxPreview.fillStyle = stroke.color
             ctxPreview.fillRect(positionX, positionY, stroke.size, stroke.size)
@@ -64,7 +62,7 @@ const previewStrokeHandler = ({
 
         if(points.length > 1) {
 
-            ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+            ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
             ctxPreview.fillStyle = stroke.color
             for (let i = 1; i < points.length; i++) {
                 const positionX = points[i].x - stroke.size / 2

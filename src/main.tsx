@@ -5,7 +5,9 @@ import { store } from './redux/store.ts'
 import App from './App.tsx'
 import "./splashOutput.css"
 
-// bug needing fix asap, when the app initializes, the smooth effect is not applied to the brush, it only gets applied when the user interacts with the ui and then draw a stroke again on the screen, see chat gpt for clues on what to do
+// New fixes to do
+// the performance got a little bit slower, this one is more tricky to solve though, look at chat gpt readme review feedback conversation to better understand how to improve the performance of the strokes
+// When i download a image i get a background transparent square right in the middle, it is problably because of my new resize code in my custom hook
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

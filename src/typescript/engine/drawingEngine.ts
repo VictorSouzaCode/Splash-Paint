@@ -60,7 +60,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const stroke = currentStroke
             const points = currentStroke.points
 
-            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
+            previewStrokeHandler({ctxPreview, stroke, points, canvasPreview})
 
         }
     }
@@ -97,7 +97,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const points = currentStroke.points
             const stroke = currentStroke
 
-            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
+            previewStrokeHandler({ctxPreview, stroke, points, canvasPreview})
 
         }
 
@@ -114,7 +114,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             const points = currentStroke.points
             const stroke = currentStroke
 
-            previewStrokeHandler({ctxPreview, stroke, points, previewWidth, previewHeight})
+            previewStrokeHandler({ctxPreview, stroke, points, canvasPreview})
             
         } else {
             return
@@ -157,10 +157,10 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
             shapeStartPoint = null
             shapeEndingPoint = null
-            ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
+            ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
         }
         if(currentStroke) {
-        ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
+        ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
         pendingStrokes.push(currentStroke)
         await commitToSnapShot()
  
@@ -207,7 +207,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
         shapeStartPoint = null;
         shapeEndingPoint = null;
 
-        ctxPreview.clearRect(0, 0, previewWidth, previewHeight);
+        ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
     }
 
     const commitToSnapShot = async () => {
@@ -233,7 +233,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     const restoreSnapShot = async () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctxPreview.clearRect(0, 0, previewHeight, previewWidth)
+        ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
 
         if(baseImageBitMap) {
             ctx.drawImage(baseImageBitMap, 0, 0)
