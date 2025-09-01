@@ -27,9 +27,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     if(!ctx || !ctxPreview) throw new Error('Canvas 2D context not supported')
 
-    const width = canvas.width
-    const height = canvas.height
-
     const previewWidth = canvasPreview.width
     const previewHeight = canvasPreview.height
 
@@ -38,6 +35,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     let shapeEndingPoint: Point | null = null
     let shapeStartPoint: Point | null = null
 
+
     const startStroke = (point: Point, state: ToolState) => {
 
         if (state.toolForm !== 'circle' && state.toolForm !== 'square' && state.tool === 'shape') {
@@ -45,6 +43,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
             shapeStartPoint = point
 
         } else {
+
             const color = state.tool === 'pencil' ? state.pencilColor : state.screenColor
 
             const size = state.size
@@ -71,7 +70,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
         if(shapeStartPoint && state.toolForm !== 'circle' && state.toolForm !== 'square') {
 
-            ctxPreview.clearRect(0, 0, previewWidth, previewHeight)
+            ctxPreview.clearRect(0, 0, canvasPreview.width, canvasPreview.height)
 
             shapeEndingPoint = point
 
@@ -193,7 +192,7 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
 
     const clear = async () => {
         // if(snapshotIndex < 0) { return };
-        ctx.clearRect(0, 0, width, height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.fillStyle = '#ffffff'
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -233,14 +232,14 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     }
 
     const restoreSnapShot = async () => {
-        ctx.clearRect(0, 0, width, height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctxPreview.clearRect(0, 0, previewHeight, previewWidth)
 
         if(baseImageBitMap) {
             ctx.drawImage(baseImageBitMap, 0, 0)
         } else {
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, width, height); // add BG when doing the last redo
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // add BG when doing the last redo
         }
 
         if(snapshotIndex >= 0 && snapshotIndex < snapshots.length) {

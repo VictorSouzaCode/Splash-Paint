@@ -17,6 +17,7 @@ const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement | null>(null)
   const [engineReady, setEngineReady] = useState<boolean>(false)
+  
 
   useEffect(() => {
     if(canvasRef.current && canvasPreviewRef.current) {
@@ -24,6 +25,7 @@ const Canvas = () => {
       setEngine(engine)
       setEngineReady(true)
     }
+    console.log(engineReady)
   },[canvasRef.current, state])
 
   useResizeCanvas(
@@ -41,13 +43,13 @@ const Canvas = () => {
     <>
       <canvas
         ref={canvasRef}
-        className="absolute top-0 left-0 z-0"
+        className="absolute top-0 left-0 z-0 border1"
         style={{
           backgroundColor: state.screenColor,
         }} />
       <canvas
         ref={canvasPreviewRef}
-        className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
+        className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent border1"
       />
 
       {engineReady && (
