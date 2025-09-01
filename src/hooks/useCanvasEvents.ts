@@ -21,7 +21,6 @@ export const useCanvasEvents = ({
 
       const canvas = canvasRef.current!;
       if (!canvas) { return }
-
       const ctx = canvas.getContext('2d', { willReadFrequently: true })
 
       let engine;
@@ -33,7 +32,11 @@ export const useCanvasEvents = ({
       }
 
       const handleMouseMove = (e: MouseEvent) => {
-        const point = { x: e.clientX - 1, y: e.clientY - 1}
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height
+
+        const point = { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY}
 
         if(state.tool === 'fill') return;
         
@@ -41,6 +44,10 @@ export const useCanvasEvents = ({
       }
 
       const handleMouseDown = async (e: MouseEvent) => {
+
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
         
         if(e.button === 2) {
           undoDrawnShapesOnRightClick(e)
@@ -49,7 +56,7 @@ export const useCanvasEvents = ({
         // prevents erasing the stroke on right click or drawing a a stroke when using the fill tool
         if (e.button === 2 || state.tool === 'fill') return;
 
-        const point = { x: e.clientX, y: e.clientY }
+        const point = { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY}
 
         engine.startStroke(point, state)
 

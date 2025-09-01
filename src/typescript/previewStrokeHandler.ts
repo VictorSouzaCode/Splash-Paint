@@ -23,8 +23,8 @@ const previewStrokeHandler = ({
         if (points.length === 1) {
 
             const radius = stroke.size / 2
-            const circleX = stroke.points[0].x - 1
-            const circleY = stroke.points[0].y - 1
+            const circleX = stroke.points[0].x
+            const circleY = stroke.points[0].y
             
             ctxPreview.beginPath()
             ctxPreview.arc(circleX, circleY, radius, 0, Math.PI * 100)
@@ -53,8 +53,8 @@ const previewStrokeHandler = ({
         if (points.length === 1) {
             const points = stroke.points
 
-            const positionX = (points[0].x - 1) - stroke.size / 2
-            const positionY = (points[0].y - 1) - stroke.size / 2
+            const positionX = (points[0].x) - stroke.size / 2
+            const positionY = (points[0].y) - stroke.size / 2
             ctxPreview.beginPath()
             ctxPreview.fillStyle = stroke.color
             ctxPreview.fillRect(positionX, positionY, stroke.size, stroke.size)
