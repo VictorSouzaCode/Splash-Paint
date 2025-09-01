@@ -33,7 +33,13 @@ export const useResizeCanvas = (
 
       // save current image BEFORE resizing
       if (canvas.width && canvas.height) {
+
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
         savedImage.current = {
           data: imageData,
           width: canvas.width,
@@ -58,7 +64,6 @@ export const useResizeCanvas = (
 
         ctx.putImageData(data, offsetX, offsetY);
       }
-
       if (canvasPreview) {
         
         canvasPreview.width = window.innerWidth;

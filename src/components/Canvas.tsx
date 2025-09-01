@@ -17,6 +17,28 @@ const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const canvasPreviewRef = useRef<HTMLCanvasElement | null>(null)
   const [engineReady, setEngineReady] = useState<boolean>(false)
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const canvasPreview = canvasPreviewRef.current;
+
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = state.screenColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    if(canvasPreview) {
+      const ctxPreview = canvasPreview.getContext('2d')
+
+      if(ctxPreview) {
+        ctxPreview.fillStyle = state.screenColor;
+        ctxPreview.fillRect(0, 0, canvasPreview.width, canvasPreview.height)
+      }
+    }
+  }, [state.screenColor]);
   
 
   useEffect(() => {
@@ -43,13 +65,13 @@ const Canvas = () => {
     <>
       <canvas
         ref={canvasRef}
-        className="absolute top-0 left-0 z-0 border1"
+        className="absolute top-0 left-0 z-0"
         style={{
           backgroundColor: state.screenColor,
         }} />
       <canvas
         ref={canvasPreviewRef}
-        className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent border1"
+        className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
       />
 
       {engineReady && (

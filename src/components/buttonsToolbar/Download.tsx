@@ -23,6 +23,12 @@ const Download = () => {
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
 
+      // Fill with background color first
+      const computedStyle = getComputedStyle(canvas);
+      const backgroundColor = computedStyle.backgroundColor || '#ffffff';
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
+
       // Draw the original canvas content over the background
       ctx.drawImage(canvas, 0, 0);
 
