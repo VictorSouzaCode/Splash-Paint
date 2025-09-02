@@ -10,7 +10,7 @@
 ![Alt text](src/assets/Splash-paint-Big-logo-pencil-for-gitHub.png)
 
 **Splash Paint** is a lightweight, React-based drawing application offering a modern take on Microsoft Paint. it was designed for simplicity and to give you full control over your creative flow.
-<a href="https://splash-paint.vercel.app/" target="_blank" rel="noopener noreferrer">check it out</a>
+<a href="https://splash-paint.vercel.app/" target="_blank" rel="noopener noreferrer">give it a try</a>
 
 ---
 

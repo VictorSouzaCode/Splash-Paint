@@ -17,6 +17,8 @@ const MAX_SNAPSHOTS = 20;
 /* const undoStack:ImageBitmap[] = [];
 const redoStack:ImageBitmap[] = []; */
 
+// I CAN FUTHER... improve performance in this code there is a lot of room for improvements
+
 
 export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HTMLCanvasElement | null) => {
 
@@ -26,9 +28,6 @@ export const createDrawingEngine = (canvas: HTMLCanvasElement, canvasPreview: HT
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
 
     if(!ctx || !ctxPreview) throw new Error('Canvas 2D context not supported')
-
-    const previewWidth = canvasPreview.width
-    const previewHeight = canvasPreview.height
 
     let pendingStrokes: Stroke[] = []
     let currentStroke: Stroke | null = null

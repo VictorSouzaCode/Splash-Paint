@@ -3,13 +3,6 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
 
-type CanvasPropRef = React.RefObject<HTMLCanvasElement | null>
-
-type CanvasPropRef2 = React.RefObject<HTMLCanvasElement | null>
-
-type CanvasPropRef3 = React.RefObject<HTMLCanvasElement | null>
-
-
 export const useResizeCanvas = (
   bgRef: React.RefObject<HTMLCanvasElement | null>,
   drawRef: React.RefObject<HTMLCanvasElement | null>,
