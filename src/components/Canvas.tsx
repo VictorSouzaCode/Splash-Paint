@@ -44,13 +44,16 @@ const Canvas = () => {
     <div className="relative w-full h-full">
       {/* Background layer*/}
       <canvas
+      id="bgCanvas"
         ref={canvasBgRef}
         className="absolute top-0 left-0 z-0"
       />
       <canvas
+      id="drawCanvas"
         ref={canvasRef}
         className="absolute top-0 left-0 z-0" />
       <canvas
+      id="previewCanvas"
         ref={canvasPreviewRef}
         className="absolute top-0 left-0 z-0 pointer-events-none bg-transparent"
       />
